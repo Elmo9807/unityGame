@@ -1,15 +1,16 @@
+<<<<<<< HEAD
 using System.Collections;
 using UnityEngine;
 
 public class playerplatform : MonoBehaviour
 {
-    private GameObject currentOneWayPlatform; 
+    private GameObject currentOneWayPlatform;
 
-    [SerializeField] private BoxCollider2D playerCollider; 
+    [SerializeField] private BoxCollider2D playerCollider;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) 
+        if (Input.GetKeyDown(KeyCode.S))
         {
             if (currentOneWayPlatform != null)
             {
@@ -30,16 +31,15 @@ public class playerplatform : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("OneWayPlatform"))
         {
-            currentOneWayPlatform = null; 
+            currentOneWayPlatform = null;
         }
     }
 
-    private IEnumerator DisableCollision() 
+    private IEnumerator DisableCollision()
     {
         BoxCollider2D platformCollider = currentOneWayPlatform.GetComponent<BoxCollider2D>();
-        Physics2D.IgnoreCollision(playerCollider, platformCollider); 
+        Physics2D.IgnoreCollision(playerCollider, platformCollider);
         yield return new WaitForSeconds(0.25f);
-        Physics2D.IgnoreCollision(playerCollider, platformCollider, false );
+        Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
     }
 }
-

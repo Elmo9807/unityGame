@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
+<<<<<<< HEAD
   tags: []
+=======
+  tags:
+  - OneWayPlatform
+>>>>>>> temp-backup
   layers:
   - Default
   - TransparentFX
@@ -11,6 +16,7 @@ TagManager:
   - Ground
   - Water
   - UI
+<<<<<<< HEAD
   - 
   - 
   - 
@@ -36,7 +42,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Enemies
   m_SortingLayers:
   - name: Default
     uniqueID: 0

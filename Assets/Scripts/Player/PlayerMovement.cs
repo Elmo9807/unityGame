@@ -1,13 +1,14 @@
+<<<<<<< HEAD
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
     private float speed = 8f;
-    private float jumpingPower = 16f;
+    private float jumpingPower = 12f;
     private bool isFacingRight = true;
 
-    private bool doubleJump; 
+    private bool doubleJump;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -17,25 +18,26 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (IsGrounded() && !Input.GetButton("Jump"))
+        // Reset double jump when grounded
+        if (IsGrounded())
         {
             doubleJump = false;
         }
 
+        // Handle jumping (calculate force at the moment of key press)
         if (Input.GetButtonDown("Jump"))
         {
-            if(IsGrounded() || doubleJump) 
+            if (IsGrounded())
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); 
-
-                doubleJump =!doubleJump; 
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Jump instantly
+                Debug.Log("First Jump");
             }
-            
-        }
-
-        if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);  
+            else if (!doubleJump)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Double jump instantly
+                doubleJump = true;
+                Debug.Log("Double Jump");
+            }
         }
 
         Flip();
@@ -43,12 +45,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);  
+        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
     }
 
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, 0.3f, groundLayer);
     }
 
     private void Flip()
@@ -61,4 +63,5 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = localScale;
         }
     }
+>>>>>>> temp-backup
 }
