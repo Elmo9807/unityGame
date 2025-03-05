@@ -9,7 +9,7 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Attack Setup")]
     [SerializeField] private Transform attackPoint;
-    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] private LayerMask Enemies;
 
     // Placeholder for animations when we get them
     [SerializeField] private Animator animator;
@@ -40,7 +40,7 @@ public class PlayerAttack : MonoBehaviour
             animator.SetTrigger("Attack");
         }
 
-        Collider2D[] atkEnemy = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        Collider2D[] atkEnemy = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, Enemies);
 
         Debug.Log("Found " + atkEnemy.Length + " enemies in range");
 
@@ -61,8 +61,6 @@ public class PlayerAttack : MonoBehaviour
             }
         }
     }
-
-    // Draw attack range in editor
     void OnDrawGizmosSelected()
     {
         if (attackPoint == null)
@@ -72,8 +70,6 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
-
-// IDamageable implemented to force damage
 public interface IDamageable
 {
     void TakeDamage(float damage);

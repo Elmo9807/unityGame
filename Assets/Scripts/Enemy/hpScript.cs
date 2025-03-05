@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class hpScript : MonoBehaviour
+public class hpScript : MonoBehaviour, IDamageable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float health = 100f;
+
+    public void TakeDamage(float damage)
     {
-        
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Die()
     {
-        
+        Destroy(gameObject);
     }
 }
