@@ -17,14 +17,12 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        // Reset double jump when grounded
-        if (IsGrounded())
+        if (IsGrounded()) // Reset double jump when grounded
         {
             doubleJump = false;
         }
 
-        // Handle jumping (calculate force at the moment of key press)
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump")) // Handle jumping (calculate force at the moment of key press)
         {
             if (IsGrounded())
             {
