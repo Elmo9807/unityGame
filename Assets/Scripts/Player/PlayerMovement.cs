@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -63,5 +62,4 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = localScale;
         }
     }
->>>>>>> temp-backup
 }

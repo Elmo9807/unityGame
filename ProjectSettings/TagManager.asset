@@ -3,20 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-<<<<<<< HEAD
   tags: []
-=======
-  tags:
-  - OneWayPlatform
->>>>>>> temp-backup
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
-<<<<<<< HEAD
   - 
   - 
   - 
@@ -42,19 +36,10 @@ TagManager:
   - 
   - 
   - 
-  - Enemies
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Background
-    uniqueID: 378969553
-    locked: 0
-  - name: Player
-    uniqueID: 991537945
-    locked: 0
-  - name: Environ
-    uniqueID: 2117650633
     locked: 0
   m_RenderingLayers:
   - Default
