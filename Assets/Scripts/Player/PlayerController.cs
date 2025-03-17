@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     private Player playerData;
+
+    [Header("Health UI")]
+    [SerializeField] private HealthBarController healthBar;
 
     [Header("Inventory UI")]
     [SerializeField] private InventoryUI inventoryUI;
@@ -29,6 +32,39 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerData = new Player();
+
+        HealthBarController existingHealthBar = FindAnyObjectByType<HealthBarController>();
+
+        if(existingHealthBar != null)
+        {
+            healthBar = existingHealthBar;
+        }
+
+        if (healthBar != null)
+        {
+            healthBar.SetTarget(transform);
+            healthBar.UpdateHealth(playerData.Health, playerData.MaxHealth);
+
+            playerData.OnHealthChanged += OnHealthChanged;
+        }
+    }
+
+    public int GetCurrentHealth()
+    {
+        return playerData.Health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return playerData.MaxHealth;
+    }
+
+    private void OnHealthChanged(int currentHealth, int maxHealth)
+    {
+        if (healthBar != null)
+        {
+            healthBar.UpdateHealth(currentHealth, maxHealth);
+        }
     }
 
     private void Update()
@@ -40,6 +76,13 @@ public class PlayerController : MonoBehaviour
         playerData.UpdateEffects(Time.deltaTime);
     }
 
+    private void OnDestroy()
+    {
+        if (playerData != null)
+        {
+            playerData.OnHealthChanged -= OnHealthChanged;
+        }
+    }
     private void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -95,6 +138,18 @@ public class PlayerController : MonoBehaviour
         {
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             damageable?.TakeDamage(attackDamage);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+
+        Debug.Log("TakeDamage called. Damage: " + damage); //Debugger, ensure TakeDamage is being called correctly.
+        bool isDead = playerData.TakeDamage((int)damage);
+
+        if(isDead)
+        {
+            Debug.Log("The player is dead. Oh no...");
         }
     }
 
