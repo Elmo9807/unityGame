@@ -8,10 +8,10 @@ public class LevelPathGenerator : MonoBehaviour
     public RoomTemplate bossRoom;
     public RoomTemplate shopRoom;
 
-    public int minRooms = 5; // Minimum number of rooms before the boss
-    public int maxRooms = 10; // Maximum number of rooms before the boss
-    public Vector2 roomSize = new Vector2(10, 10); // Size of each room
-    public Vector2Int startRoomPosition = Vector2Int.zero; // Starting position of the path
+    public int minRooms = 5;
+    public int maxRooms = 10;
+    public Vector2 roomSize = new Vector2(10, 10);
+    public Vector2Int startRoomPosition = Vector2Int.zero;
 
     private List<Vector2Int> roomPositions = new List<Vector2Int>();
 
@@ -20,14 +20,14 @@ public class LevelPathGenerator : MonoBehaviour
         roomPositions.Clear();
         Vector2Int currentPos = Vector2Int.zero;
 
-        // Step 1: Place the Start Room at (0,0)
+        
         roomPositions.Add(currentPos);
 
-        // Step 2: Move right from the Start Room
+        
         currentPos += Vector2Int.right;
         roomPositions.Add(currentPos);
 
-        // Step 3: Generate intermediate rooms
+        
         int roomCount = Random.Range(minRooms, maxRooms + 1);
         for (int i = 1; i < roomCount; i++)
         {
@@ -35,11 +35,11 @@ public class LevelPathGenerator : MonoBehaviour
             roomPositions.Add(currentPos);
         }
 
-        // Step 4: Place the Shop Room at the end of the path
+        
         currentPos += Vector2Int.right;
         roomPositions.Add(currentPos);
 
-        // Step 5: Place the Boss Room to the right of the Shop Room
+        
         currentPos += Vector2Int.right;
         roomPositions.Add(currentPos);
     }

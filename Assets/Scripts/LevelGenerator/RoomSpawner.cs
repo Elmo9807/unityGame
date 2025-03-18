@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class RoomSpawner : MonoBehaviour
 {
-    public List<RoomTemplate> roomTemplates; // List of available rooms
-    public Transform roomParent; // Parent object for organization
+    public List<RoomTemplate> roomTemplates;
+    public Transform roomParent;
     private Dictionary<Vector2Int, GameObject> spawnedRooms = new Dictionary<Vector2Int, GameObject>();
 
     private LevelPathGenerator pathGenerator;
@@ -37,15 +37,15 @@ public class RoomSpawner : MonoBehaviour
             RoomTemplate chosenRoom;
             if (i == 0)
             {
-                chosenRoom = startRoom; // Start Room (always exits right)
+                chosenRoom = startRoom;
             }
             else if (i == path.Count - 2)
             {
-                chosenRoom = shopRoom; // Shop Room (left & right exits)
+                chosenRoom = shopRoom;
             }
             else if (i == path.Count - 1)
             {
-                chosenRoom = bossRoom; // Boss Room (left entrance)
+                chosenRoom = bossRoom;
             }
             else
             {
@@ -91,7 +91,7 @@ public class RoomSpawner : MonoBehaviour
 
         foreach (RoomTemplate room in roomTemplates)
         {
-            bool isValid = true; // Assume the room is valid
+            bool isValid = true;
 
             if (needTopExit && !room.hasTopExit) isValid = false;
             if (needBottomExit && !room.hasBottomExit) isValid = false;
@@ -100,7 +100,7 @@ public class RoomSpawner : MonoBehaviour
 
             if (isValid)
             {
-                validRooms.Add(room); // Add the room to the list if it meets all conditions
+                validRooms.Add(room);
             }
         }
 
