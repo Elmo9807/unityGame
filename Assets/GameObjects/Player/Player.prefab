@@ -420,17 +420,17 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 337df74f82642e447bdd771de1af028c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!114 &8467125949970938918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +454,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 337df74f82642e447bdd771de1af028c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -554,6 +554,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   animator: {fileID: 0}
+  nonStick: {fileID: 0}
+  bouncyMaterial: {fileID: 0}
 --- !u!114 &6090236744492535555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,7 +569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  healthBar: {fileID: 0}
+  healthBarPrefab: {fileID: 9015584980583395882, guid: cfbbfb81c148b994498fdf55b20667aa, type: 3}
 --- !u!1 &7889079601041943396
 GameObject:
   m_ObjectHideFlags: 0

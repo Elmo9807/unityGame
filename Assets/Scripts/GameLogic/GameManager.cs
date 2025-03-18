@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private HealthBarController healthBar;
 
     private PlayerController playerController;
+    public GameObject playerPrefab;
+    private Player player;
 
     private void Awake()
     {
@@ -26,12 +28,15 @@ public class GameManager : MonoBehaviour
         playerController = FindFirstObjectByType<PlayerController>();
     }
 
-    private void Start()
+    void Start()
     {
+        GameObject playerObject = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        player = new Player(playerObject.transform);
+        healthBar = FindFirstObjectByType<HealthBarController>();
+        player.SetHPBar(healthBar);
+
         isGameOver = false;
         isGamePaused = false;
-        UpdateHealthBar();
-   
     }
 
     public void HandleGameOver()

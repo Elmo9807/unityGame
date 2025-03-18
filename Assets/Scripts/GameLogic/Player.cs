@@ -15,8 +15,9 @@ public class Player
 
     private List<GameEffect> activeEffects = new List<GameEffect>();
     private HealthBarController healthBarController;
+    private Transform playerTransform;
 
-    public Player()
+    public Player(Transform transform)
     {
         MaxHealth = 100;
         Health = MaxHealth;
@@ -26,19 +27,14 @@ public class Player
     public void SetHPBar(HealthBarController controller)
     {
         healthBarController = controller;
+        healthBarController.SetTarget(playerTransform);
+        OnHealthChanged += healthBarController.UpdateHealth;
     }
 
-    public bool TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
-        Health -= (int)damage;
-        if(Health <= 0)
-        {
-            Health = 0;
-            return true;
-        }
-
+        Health = Mathf.Max(Health - damage, 0);
         OnHealthChanged?.Invoke(Health, MaxHealth);
-        return false;
     }
 
     public void EquipWeapon(Weapon weapon)

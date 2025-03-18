@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Animator animator;
 
+    [Header("Physics Properties")]
+    [SerializeField] private PhysicsMaterial2D nonStick;
+    [SerializeField] private PhysicsMaterial2D bouncyMaterial; //these are never actually used, can be safely deleted if necessary
+
     private float speed = 8f;
     private float jumpingPower = 12f;
     private bool isFacingRight = true;
@@ -31,22 +35,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        playerData = new Player();
+        playerData = new Player(transform);
 
-        HealthBarController existingHealthBar = FindAnyObjectByType<HealthBarController>();
-
-        if(existingHealthBar != null)
-        {
-            healthBar = existingHealthBar;
-        }
+        healthBar = FindAnyObjectByType<HealthBarController>() ?? healthBar;
 
         if (healthBar != null)
         {
             healthBar.SetTarget(transform);
             healthBar.UpdateHealth(playerData.Health, playerData.MaxHealth);
-
-            playerData.OnHealthChanged += OnHealthChanged;
         }
+
+        playerData.OnHealthChanged += OnHealthChanged;
     }
 
     public int GetCurrentHealth()
@@ -74,7 +73,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         HandleAttack();
         HandleInventoryInput();
         playerData.UpdateEffects(Time.deltaTime);
-    }
+        }
 
     private void OnDestroy()
     {
@@ -145,9 +144,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
 
         Debug.Log("TakeDamage called. Damage: " + damage); //Debugger, ensure TakeDamage is being called correctly.
-        bool isDead = playerData.TakeDamage((int)damage);
+        playerData.TakeDamage((int)damage);
 
-        if(isDead)
+        if(playerData.Health <= 0)
         {
             Debug.Log("The player is dead. Oh no...");
         }
