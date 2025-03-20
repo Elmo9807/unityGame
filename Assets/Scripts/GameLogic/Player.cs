@@ -12,22 +12,73 @@ public class Player
     public float StrengthModifier { get; private set; } = 1.0f;
 
     private List<GameEffect> activeEffects = new List<GameEffect>();
+<<<<<<< Updated upstream
 
     public Player()
+=======
+    private Transform playerTransform;
+
+    private bool isDebugLogging = true;
+
+    public Player(Transform transform)
+>>>>>>> Stashed changes
     {
+        playerTransform = transform;
         MaxHealth = 100;
         Health = MaxHealth;
         inventory = new Inventory();
     }
 
+<<<<<<< Updated upstream
+=======
+    public void TakeDamage(int damage)
+    {
+        int oldHealth = Health;
+        Health = Mathf.Max(Health - damage, 0);
+
+        if (isDebugLogging)
+        {
+            Debug.Log($"[Player] TakeDamage called with {damage}. Health: {oldHealth} -> {Health}");
+
+            if (OnHealthChanged == null)
+            {
+                Debug.LogError("[Player] OnHealthChanged event has NO subscribers!");
+            }
+            else
+            {
+                Debug.Log("[Player] OnHealthChanged has subscribers, invoking...");
+            }
+        }
+            OnHealthChanged?.Invoke(Health, MaxHealth);
+        }
+>>>>>>> Stashed changes
     public void EquipWeapon(Weapon weapon)
     {
         equippedWeapon = weapon;
     }
 
     public void Heal(int amount)
+<<<<<<< Updated upstream
     { 
         Health = Mathf.Min(Health + amount, MaxHealth);
+=======
+    {
+        int oldHealth = Health;
+        Health = Mathf.Min(Health + amount, MaxHealth);
+
+        if (isDebugLogging)
+        {
+            Debug.Log($"[Player] Heal called with {amount}. Health: {oldHealth} -> {Health}");
+
+            if (OnHealthChanged == null)
+            {
+                Debug.LogError("[Player] OnHealthChanged event has NO subscribers!");
+            }
+        }
+
+        // Always invoke even if null
+        OnHealthChanged?.Invoke(Health, MaxHealth);
+>>>>>>> Stashed changes
     }
 
     public void ApplyEffect(GameEffect effect)

@@ -14,6 +14,11 @@ public class RangedAttack : MonoBehaviour
         direction = dir.normalized; //normalise vector of projectile
     }
 
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
     void Start()
     {
         Destroy(gameObject, lifetime);

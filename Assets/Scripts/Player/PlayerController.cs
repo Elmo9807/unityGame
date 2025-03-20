@@ -37,8 +37,24 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+<<<<<<< Updated upstream
         playerData = new Player();
     }
+=======
+        playerData = new Player(transform);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return playerData.Health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return playerData.MaxHealth;
+    }
+
+>>>>>>> Stashed changes
 
     private void Update()
     {
@@ -47,7 +63,11 @@ public class PlayerController : MonoBehaviour
         HandleAttack();
         HandleInventoryInput();
         playerData.UpdateEffects(Time.deltaTime);
+<<<<<<< Updated upstream
     }
+=======
+        }
+>>>>>>> Stashed changes
 
     private void HandleMovement()
     {
@@ -132,6 +152,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    public void TakeDamage(float damage)
+    {
+        Debug.Log("[PlayerController] TakeDamage called with damage: " + damage);
+        playerData.TakeDamage((int)damage);
+    }
+
+>>>>>>> Stashed changes
     private void HandleInventoryInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -153,6 +182,14 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.I))
         {
             inventoryUI.ToggleInventory();
+        }
+    }
+
+    public void UnsubscribeFromHealthChanges(System.Action<int, int> callback)
+    {
+        if (playerData != null)
+        {
+            playerData.OnHealthChanged -= callback;
         }
     }
 
