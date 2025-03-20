@@ -13,19 +13,15 @@ public class HealthTracker : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
-
-    // Add this to expose current health for other scripts
     public int CurrentHealth => currentHealth;
 
     void Start()
     {
-        // Initialize health
         currentHealth = maxHealth;
 
-        // Try to find the health UI
         if (healthUI == null)
         {
-            healthUI = FindFirstObjectByType<PlayerHealthUI>();
+            healthUI = FindObjectOfType<PlayerHealthUI>();
         }
 
         // Initialize UI if available
@@ -41,8 +37,6 @@ public class HealthTracker : MonoBehaviour
         {
             Debug.LogWarning("No health UI found. Health will be tracked but not displayed.");
         }
-
-        // Apply the "Player" tag if not already tagged
         if (gameObject.tag != "Player")
         {
             gameObject.tag = "Player";
@@ -66,7 +60,7 @@ public class HealthTracker : MonoBehaviour
         if (damage <= 0) return;
 
         currentHealth -= damage;
-        currentHealth = Mathf.Max(0, currentHealth); // Prevent negative health
+        currentHealth = Mathf.Max(0, currentHealth);
 
         UpdateUI();
 
@@ -84,7 +78,7 @@ public class HealthTracker : MonoBehaviour
         if (amount <= 0) return;
 
         currentHealth += amount;
-        currentHealth = Mathf.Min(currentHealth, maxHealth); // Cap at max health
+        currentHealth = Mathf.Min(currentHealth, maxHealth); 
 
         UpdateUI();
 
@@ -94,7 +88,6 @@ public class HealthTracker : MonoBehaviour
 
     private void UpdateUI()
     {
-        // Update the slider if we have one
         if (healthSlider != null)
         {
             healthSlider.value = currentHealth;

@@ -55,13 +55,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Find or spawn player
         SpawnPlayer();
 
-        // Set up health UI
         SetupHealthUI();
 
-        // Initialize game state
         isGameOver = false;
         isGamePaused = false;
         Time.timeScale = 1f;
@@ -75,7 +72,6 @@ public class GameManager : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        // First check if player already exists
         GameObject existingPlayer = GameObject.FindGameObjectWithTag("Player");
 
         if (existingPlayer != null)
@@ -94,7 +90,6 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No player prefab assigned and no player in scene!");
         }
 
-        // Get the player controller
         if (currentPlayer != null)
         {
             playerController = currentPlayer.GetComponent<PlayerController>();
@@ -108,16 +103,12 @@ public class GameManager : MonoBehaviour
     private void SetupHealthUI()
     {
         if (!createHealthUI) return;
-
-        // Check if PlayerHealthUI already exists in the scene
         PlayerHealthUI existingUI = FindFirstObjectByType<PlayerHealthUI>();
         if (existingUI != null)
         {
-            // Use the existing UI
             healthUI = existingUI;
             Debug.Log("Using existing PlayerHealthUI in scene");
 
-            // Connect it to our player
             if (currentPlayer != null)
             {
                 healthUI.playerHealthTracker = currentPlayer.GetComponent<HealthTracker>();
@@ -125,7 +116,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Check if the player has a health tracker
         if (currentPlayer != null)
         {
             HealthTracker healthTracker = currentPlayer.GetComponent<HealthTracker>();
@@ -194,12 +184,10 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        // Add your restart logic here
         isGameOver = false;
         isGamePaused = false;
         Time.timeScale = 1f;
 
-        // Hide game over UI
         if (gameOverUI != null)
         {
             gameOverUI.SetActive(false);

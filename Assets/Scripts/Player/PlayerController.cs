@@ -24,12 +24,11 @@ public class PlayerController : MonoBehaviour
     private float speed = 8f;
     private float jumpingPower = 12f;
 
-    private float coyoteTime = 0.2f ; 
-    private float coyoteTimeCounter ; 
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
 
-    private float jumpBufferTime = 0.2f ; 
-    private float jumpBufferCounter ; 
-
+    private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
 
     private bool isFacingRight = true;
     private bool doubleJump;
@@ -37,10 +36,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-<<<<<<< Updated upstream
-        playerData = new Player();
-    }
-=======
         playerData = new Player(transform);
     }
 
@@ -54,8 +49,6 @@ public class PlayerController : MonoBehaviour
         return playerData.MaxHealth;
     }
 
->>>>>>> Stashed changes
-
     private void Update()
     {
         HandleMovement();
@@ -63,11 +56,7 @@ public class PlayerController : MonoBehaviour
         HandleAttack();
         HandleInventoryInput();
         playerData.UpdateEffects(Time.deltaTime);
-<<<<<<< Updated upstream
     }
-=======
-        }
->>>>>>> Stashed changes
 
     private void HandleMovement()
     {
@@ -82,51 +71,42 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJumping()
     {
-    if (IsGrounded())
-    {
-        coyoteTimeCounter = coyoteTime;
-        doubleJump = false; 
-    }
-    else
-    {
-        coyoteTimeCounter -= Time.deltaTime;  // Count down coyote time when not grounded
-    }
-
-    if (Input.GetButton("Jump"))
-    {
-        jumpBufferCounter = jumpBufferTime ; 
-    }
-    else 
-    {
-        jumpBufferCounter -= Time.deltaTime ; 
-    }
-
-    
-    if (Input.GetButtonDown("Jump"))
-    {
-        // First jump with coyote time
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+        if (IsGrounded())
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Use rb.velocity instead of linearVelocity
-            Debug.Log("First Jump");
-             // Reset coyote time after jumping
-             coyoteTimeCounter = 0f;
-             
-             jumpBufferCounter = 0f ; 
+            coyoteTimeCounter = coyoteTime;
+            doubleJump = false;
         }
-        
-        else if (!doubleJump)
+        else
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Double jump logic
-            doubleJump = true;  
-            Debug.Log("Double Jump");
+            coyoteTimeCounter -= Time.deltaTime;
+        }
 
-            
-            
+        if (Input.GetButton("Jump"))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                Debug.Log("First Jump");
+                coyoteTimeCounter = 0f;
+                jumpBufferCounter = 0f;
+            }
+            else if (!doubleJump)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                doubleJump = true;
+                Debug.Log("Double Jump");
+            }
         }
     }
-}
-
 
     private void HandleAttack()
     {
@@ -152,15 +132,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-=======
     public void TakeDamage(float damage)
     {
         Debug.Log("[PlayerController] TakeDamage called with damage: " + damage);
         playerData.TakeDamage((int)damage);
     }
 
->>>>>>> Stashed changes
     private void HandleInventoryInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -182,14 +159,6 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.I))
         {
             inventoryUI.ToggleInventory();
-        }
-    }
-
-    public void UnsubscribeFromHealthChanges(System.Action<int, int> callback)
-    {
-        if (playerData != null)
-        {
-            playerData.OnHealthChanged -= callback;
         }
     }
 
