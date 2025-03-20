@@ -1,11 +1,9 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour
 {
     private Player playerData;
-
-    [Header("Health UI")]
-    [SerializeField] private HealthBarController healthBar;
 
     [Header("Inventory UI")]
     [SerializeField] private InventoryUI inventoryUI;
@@ -23,47 +21,23 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Animator animator;
 
-    [Header("Physics Properties")]
-    [SerializeField] private PhysicsMaterial2D nonStick;
-    [SerializeField] private PhysicsMaterial2D bouncyMaterial; //these are never actually used, can be safely deleted if necessary
-
     private float speed = 8f;
     private float jumpingPower = 12f;
+
+    private float coyoteTime = 0.2f ; 
+    private float coyoteTimeCounter ; 
+
+    private float jumpBufferTime = 0.2f ; 
+    private float jumpBufferCounter ; 
+
+
     private bool isFacingRight = true;
     private bool doubleJump;
     private float nextAttackTime = 0f;
 
     private void Start()
     {
-        playerData = new Player(transform);
-
-        healthBar = FindAnyObjectByType<HealthBarController>() ?? healthBar;
-
-        if (healthBar != null)
-        {
-            healthBar.SetTarget(transform);
-            healthBar.UpdateHealth(playerData.Health, playerData.MaxHealth);
-        }
-
-        playerData.OnHealthChanged += OnHealthChanged;
-    }
-
-    public int GetCurrentHealth()
-    {
-        return playerData.Health;
-    }
-
-    public int GetMaxHealth()
-    {
-        return playerData.MaxHealth;
-    }
-
-    private void OnHealthChanged(int currentHealth, int maxHealth)
-    {
-        if (healthBar != null)
-        {
-            healthBar.UpdateHealth(currentHealth, maxHealth);
-        }
+        playerData = new Player();
     }
 
     private void Update()
@@ -73,15 +47,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         HandleAttack();
         HandleInventoryInput();
         playerData.UpdateEffects(Time.deltaTime);
-        }
-
-    private void OnDestroy()
-    {
-        if (playerData != null)
-        {
-            playerData.OnHealthChanged -= OnHealthChanged;
-        }
     }
+
     private void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -95,26 +62,51 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void HandleJumping()
     {
-        if (IsGrounded())
-        {
-            doubleJump = false;
-        }
+    if (IsGrounded())
+    {
+        coyoteTimeCounter = coyoteTime;
+        doubleJump = false; 
+    }
+    else
+    {
+        coyoteTimeCounter -= Time.deltaTime;  // Count down coyote time when not grounded
+    }
 
-        if (Input.GetButtonDown("Jump"))
+    if (Input.GetButton("Jump"))
+    {
+        jumpBufferCounter = jumpBufferTime ; 
+    }
+    else 
+    {
+        jumpBufferCounter -= Time.deltaTime ; 
+    }
+
+    
+    if (Input.GetButtonDown("Jump"))
+    {
+        // First jump with coyote time
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
-            if (IsGrounded())
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-                Debug.Log("First Jump");
-            }
-            else if (!doubleJump)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-                doubleJump = true;
-                Debug.Log("Double Jump");
-            }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Use rb.velocity instead of linearVelocity
+            Debug.Log("First Jump");
+             // Reset coyote time after jumping
+             coyoteTimeCounter = 0f;
+             
+             jumpBufferCounter = 0f ; 
+        }
+        
+        else if (!doubleJump)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Double jump logic
+            doubleJump = true;  
+            Debug.Log("Double Jump");
+
+            
+            
         }
     }
+}
+
 
     private void HandleAttack()
     {
@@ -137,18 +129,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             damageable?.TakeDamage(attackDamage);
-        }
-    }
-
-    public void TakeDamage(float damage)
-    {
-
-        Debug.Log("TakeDamage called. Damage: " + damage); //Debugger, ensure TakeDamage is being called correctly.
-        playerData.TakeDamage((int)damage);
-
-        if(playerData.Health <= 0)
-        {
-            Debug.Log("The player is dead. Oh no...");
         }
     }
 
