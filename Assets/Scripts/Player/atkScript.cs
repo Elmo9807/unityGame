@@ -70,7 +70,3 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
-public interface IDamageable
-{
-    void TakeDamage(float damage);
-}

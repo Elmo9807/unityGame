@@ -47,8 +47,14 @@ public class GameManager : MonoBehaviour
                 GameObject canvasObject = new GameObject("UI_Canvas");
                 uiCanvas = canvasObject.AddComponent<Canvas>();
                 uiCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                canvasObject.AddComponent<CanvasScaler>();
+
+                CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1920, 1080);
+
                 canvasObject.AddComponent<GraphicRaycaster>();
+
+                Debug.Log("Created new UI canvas");
             }
         }
     }
@@ -83,11 +89,12 @@ public class GameManager : MonoBehaviour
         {
             currentPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
             currentPlayer.tag = "Player";
-            Debug.Log("Spawned new player from prefab");
+            Debug.Log("Spawned new player from prefab at position: " + currentPlayer.transform.position);
         }
         else
         {
             Debug.LogError("No player prefab assigned and no player in scene!");
+            return;
         }
 
         if (currentPlayer != null)
@@ -97,12 +104,35 @@ public class GameManager : MonoBehaviour
             {
                 Debug.LogWarning("Player doesn't have a PlayerController component");
             }
+
+            // Find camera follow component and assign target
+            CameraFollow cameraFollow = FindFirstObjectByType<CameraFollow>();
+            if (cameraFollow != null)
+            {
+                cameraFollow.SetTarget(currentPlayer.transform);
+                Debug.Log("Camera target set to player: " + currentPlayer.name);
+            }
+            else
+            {
+                Debug.LogWarning("No CameraFollow component found in scene! Make sure it's attached to your camera.");
+
+                // Try to add CameraFollow to main camera if not found
+                Camera mainCamera = Camera.main;
+                if (mainCamera != null)
+                {
+                    cameraFollow = mainCamera.gameObject.AddComponent<CameraFollow>();
+                    cameraFollow.SetTarget(currentPlayer.transform);
+                    Debug.Log("Added CameraFollow to main camera and set target to player");
+                }
+            }
         }
     }
 
     private void SetupHealthUI()
     {
         if (!createHealthUI) return;
+
+        // First check if a PlayerHealthUI already exists
         PlayerHealthUI existingUI = FindFirstObjectByType<PlayerHealthUI>();
         if (existingUI != null)
         {
@@ -111,7 +141,12 @@ public class GameManager : MonoBehaviour
 
             if (currentPlayer != null)
             {
-                healthUI.playerHealthTracker = currentPlayer.GetComponent<HealthTracker>();
+                HealthTracker healthTracker = currentPlayer.GetComponent<HealthTracker>();
+                if (healthTracker != null)
+                {
+                    healthUI.playerHealthTracker = healthTracker;
+                    Debug.Log("Connected existing health UI to player");
+                }
             }
             return;
         }
@@ -143,17 +178,18 @@ public class GameManager : MonoBehaviour
 
                 // Connect it to the health tracker
                 healthTracker.SetHealthSlider(healthSlider);
-                Debug.Log("Health UI created from prefab");
+                Debug.Log("Health UI created from prefab and connected to player");
             }
             else
             {
-                // Option 2: Use the PlayerHealthUI script
+                // Option 2: Create the PlayerHealthUI script
                 GameObject healthUIObject = new GameObject("PlayerHealthUI");
                 healthUIObject.transform.SetParent(uiCanvas.transform, false);
 
                 healthUI = healthUIObject.AddComponent<PlayerHealthUI>();
                 healthUI.playerHealthTracker = healthTracker;
-                Debug.Log("Health UI created using PlayerHealthUI script");
+                healthUI.useWorldSpace = false; // Make sure it's in screen space
+                Debug.Log("Health UI created using PlayerHealthUI script and connected to player");
             }
         }
     }

@@ -49,6 +49,11 @@ public class PlayerController : MonoBehaviour
         return playerData.MaxHealth;
     }
 
+    public Player GetPlayerData()
+    {
+        return playerData;
+    }
+
     private void Update()
     {
         HandleMovement();

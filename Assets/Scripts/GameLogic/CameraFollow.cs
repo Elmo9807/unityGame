@@ -10,15 +10,30 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null)
         {
-            return;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if(player != null)
+            {
+                target = player.transform;
+                Debug.Log("Camera: Player found and regrafted");
+            }
+            else
+            {
+                Debug.LogWarning("Camera: Player not found");
+                return;
+            }
         }
-            Vector3 targetPosition = new Vector3(target.position.x + offset.x, target.position.y + offset.y, transform.position.z);
 
+            Vector3 targetPosition = new Vector3(target.position.x + offset.x, target.position.y + offset.y, transform.position.z);
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, smoothSpeed * Time.deltaTime);
         }
+
         public void SetTarget(Transform newTarget)
     {
         target = newTarget;
+        Debug.Log("Camera target set to: " + newTarget.name);
+
+        Vector3 targetPosition = new Vector3(target.position.x + offset.x, target.position.y + offset.y, transform.position.z);
+        transform.position = targetPosition;
     }
 }

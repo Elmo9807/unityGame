@@ -10,16 +10,42 @@ public class ProjectileAttacker : MonoBehaviour
 
     public bool CanAttack(Transform target)
     {
+        if (target == null) return false;
+
+        // Always get the most current player position for range check
+        GameObject currentPlayer = GameObject.FindGameObjectWithTag("Player");
+        Vector3 targetPosition = currentPlayer != null ? currentPlayer.transform.position : target.position;
+
+        // Calculate distance to current player position
+        float currentDistance = Vector3.Distance(transform.position, targetPosition);
+
         return Time.time - lastAttackTime >= attackCooldown &&
-               Vector3.Distance(transform.position, target.position) <= attackRange;
+               currentDistance <= attackRange;
     }
 
     public void ShootProjectile(Transform target, string attackName)
     {
         if (projectilePrefab != null && target != null)
         {
-            // Calculate direction toward target
-            Vector3 direction = (target.position - transform.position).normalized;
+            // IMPORTANT: Force a refresh of the player position
+            GameObject currentPlayer = GameObject.FindGameObjectWithTag("Player");
+            Vector3 currentTargetPosition;
+
+            if (currentPlayer != null)
+            {
+                // Use the current active player instead of the cached reference
+                currentTargetPosition = currentPlayer.transform.position;
+                Debug.Log($"Using REFRESHED player position: {currentTargetPosition}");
+            }
+            else
+            {
+                // Fallback to the provided transform
+                currentTargetPosition = target.position;
+                Debug.Log($"Using provided target position: {currentTargetPosition}");
+            }
+
+            // Calculate direction toward current target position
+            Vector3 direction = (currentTargetPosition - transform.position).normalized;
 
             // Spawn the arrow at a small offset in the direction it's firing
             Vector3 spawnPosition = transform.position + direction * 0.5f;
@@ -33,6 +59,7 @@ public class ProjectileAttacker : MonoBehaviour
             {
                 arrowComponent.speed = projectileSpeed;
                 arrowComponent.SetDirection(direction);
+                Debug.Log($"Arrow direction set to: {direction} targeting position: {currentTargetPosition}");
             }
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

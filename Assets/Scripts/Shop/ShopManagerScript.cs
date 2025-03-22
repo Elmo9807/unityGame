@@ -34,7 +34,7 @@ public class ShopManagerScript : MonoBehaviour
     }
 
     
-    public void Buy()
+   /* public void Buy()
     {
         GameObject ButtonRef = GameObject.FindGameObjectsWithTag("Event").GetComponent<EventSystem>().currentSelectedGameObject; 
 
@@ -48,5 +48,5 @@ public class ShopManagerScript : MonoBehaviour
 
 
         }
-    }
+    } */
 }

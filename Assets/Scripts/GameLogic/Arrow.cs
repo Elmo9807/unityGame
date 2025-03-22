@@ -16,25 +16,39 @@ public class Arrow : MonoBehaviour
         startPosition = transform.position;
         spawnTime = Time.time;
 
+        Debug.Log($"Arrow spawned at {startPosition} with direction {direction}");
+
         Destroy(gameObject, maxLifetime);
     }
 
     public void SetDirection(Vector2 dir)
     {
         direction = dir.normalized;
+
+        // Set the rotation immediately to match the direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        Debug.Log($"Arrow direction set to {direction}, angle: {angle}");
     }
 
     private void Update()
     {
-        transform.position += (Vector3)direction * speed * Time.deltaTime;
-        if (Vector3.Distance(startPosition, transform.position) > maxDistance)
+        // Move the arrow in its set direction
+        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+
+        // Check if arrow has traveled too far
+        float distanceTraveled = Vector3.Distance(startPosition, transform.position);
+        if (distanceTraveled > maxDistance)
         {
+            Debug.Log($"Arrow traveled max distance ({distanceTraveled}/{maxDistance}) and was destroyed");
             Destroy(gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Ignore collisions for a brief period after spawning to prevent hitting the archer
         if (Time.time - spawnTime < ignoreCollisionsTime)
         {
             return;
@@ -42,7 +56,6 @@ public class Arrow : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-
             HealthTracker playerHealth = collision.GetComponent<HealthTracker>();
             if (playerHealth != null)
             {
@@ -55,6 +68,7 @@ public class Arrow : MonoBehaviour
         // Check if we hit anything besides an enemy
         else if (!collision.CompareTag("Enemy"))
         {
+            Debug.Log($"Arrow hit non-player object: {collision.gameObject.name}");
             Destroy(gameObject); // Destroy the arrow on impact
         }
     }

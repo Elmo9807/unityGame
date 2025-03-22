@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2972577248602871955, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
       propertyPath: m_Name
-      value: Enemy Variant
+      value: enemyRanged
       objectReference: {fileID: 0}
     - target: {fileID: 2972577248602871955, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
       propertyPath: m_Layer
@@ -22,11 +22,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4804326455258264777, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.253
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4804326455258264777, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.815
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4804326455258264777, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
       propertyPath: m_LocalPosition.z
@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5366168672057002341, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -73,6 +77,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2972577248602871955, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6684402312697146091}
+    - targetCorrespondingSourceObject: {fileID: 2972577248602871955, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8096195173681027094}
   m_SourcePrefab: {fileID: 100100000, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
 --- !u!4 &1803541369855468629 stripped
 Transform:
@@ -160,3 +167,30 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &-8096195173681027094
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8280894201705203727}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
