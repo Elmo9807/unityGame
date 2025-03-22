@@ -8,7 +8,7 @@ public class Arrow : MonoBehaviour
     public int damage = 10;
     private Vector2 direction;
     private Vector3 startPosition;
-    private float ignoreCollisionsTime = 0.1f; // Ignore collisions for this many seconds after spawning, helps avoid arrow getting deleted too soon
+    private float ignoreCollisionsTime = 0.1f; // Ignore collisions for this many seconds after spawning
     private float spawnTime;
 
     private void Start()
@@ -16,26 +16,25 @@ public class Arrow : MonoBehaviour
         startPosition = transform.position;
         spawnTime = Time.time;
 
-        Debug.Log($"Arrow spawned at {startPosition} with direction {direction}");
-
+        // Set a lifetime to prevent arrows from flying forever
         Destroy(gameObject, maxLifetime);
+
+        Debug.Log($"Arrow spawned at {transform.position} with direction {direction}");
     }
 
     public void SetDirection(Vector2 dir)
     {
         direction = dir.normalized;
 
-        // Set the rotation immediately to match the direction
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-
+        // Calculate angle for proper rotation
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Debug.Log($"Arrow direction set to {direction}, angle: {angle}");
     }
 
     private void Update()
     {
-        // Move the arrow in its set direction
-        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+        // Move arrow based on direction and speed
+        transform.position += (Vector3)direction * speed * Time.deltaTime;
 
         // Check if arrow has traveled too far
         float distanceTraveled = Vector3.Distance(startPosition, transform.position);
@@ -48,19 +47,45 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignore collisions for a brief period after spawning to prevent hitting the archer
+        // Avoid immediate collisions with the shooter
         if (Time.time - spawnTime < ignoreCollisionsTime)
         {
             return;
         }
 
+        // Check if we hit player
         if (collision.CompareTag("Player"))
         {
+            // Try to get a HealthTracker component first
             HealthTracker playerHealth = collision.GetComponent<HealthTracker>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
                 Debug.Log($"Arrow hit player for {damage} damage!");
+            }
+            else
+            {
+                // Fall back to PlayerController
+                PlayerController playerController = collision.GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    playerController.TakeDamage(damage);
+                    Debug.Log($"Arrow hit player via PlayerController for {damage} damage!");
+                }
+                else
+                {
+                    // Last resort, try IDamageable
+                    IDamageable damageable = collision.GetComponent<IDamageable>();
+                    if (damageable != null)
+                    {
+                        damageable.TakeDamage(damage);
+                        Debug.Log($"Arrow hit player via IDamageable for {damage} damage!");
+                    }
+                    else
+                    {
+                        Debug.LogError($"Arrow hit player but found no way to apply damage!");
+                    }
+                }
             }
 
             Destroy(gameObject); // Destroy the arrow on impact
@@ -68,7 +93,7 @@ public class Arrow : MonoBehaviour
         // Check if we hit anything besides an enemy
         else if (!collision.CompareTag("Enemy"))
         {
-            Debug.Log($"Arrow hit non-player object: {collision.gameObject.name}");
+            Debug.Log($"Arrow hit {collision.gameObject.name} and was destroyed");
             Destroy(gameObject); // Destroy the arrow on impact
         }
     }

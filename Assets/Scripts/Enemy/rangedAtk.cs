@@ -1,47 +1,73 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class RangedAttack : MonoBehaviour
+public class FireballBehaviour : MonoBehaviour
 {
-    public float speed = 5f; //speed of projectile
-    public int damage = 10; //damage done to player or surface
-    public float lifetime = 3f; //projectile flight time before despawn
+    public float speed = 8f;
+    public int damage = 20;
+    public float lifetime = 3f;
 
     private Vector2 direction;
-
-    public void SetDirection(Vector2 dir)
-    {
-        direction = dir.normalized; //normalise vector of projectile
-    }
-
-    public void SetSpeed(float newSpeed)
-    {
-        speed = newSpeed;
-    }
+    private Vector3 startPosition;
 
     void Start()
     {
+
+        startPosition = transform.position;
+
         Destroy(gameObject, lifetime);
+
+        Debug.Log("Fireball spawned and moving in direction: " + direction);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.position += (Vector3)direction * speed * Time.deltaTime;
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
+        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+
+        if (Random.value > 0.8f)
         {
-            HealthTracker playerHealth = other.GetComponent<HealthTracker>(); //fetch HealthTracker information, assign in playerHealth, assign damage if applicable and/or destroy player gameObj when HP threshold is met
-            if(playerHealth != null)
+            // UNITY PARTICLE EFFECTS PACKAGE PLACEHOLDER, I'LL GET TO IT EVENTUALLY
+        }
+    }
+
+    public void SetDirection(Vector2 dir)
+    {
+        direction = dir.normalized;
+
+        // Set the rotation to match the direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Check if hitting player
+        if (collision.CompareTag("Player"))
+        {
+            // Try to damage player
+            IDamageable damageable = collision.GetComponent<IDamageable>();
+            if (damageable != null)
             {
-                playerHealth.TakeDamage(damage);
+                damageable.TakeDamage(damage);
+                Debug.Log("Fireball hit player for " + damage + " damage!");
             }
+            else
+            {
+                // Fallback to standard health tracking
+                HealthTracker playerHealth = collision.GetComponent<HealthTracker>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    Debug.Log("Fireball hit player through HealthTracker for " + damage + " damage!");
+                }
+            }
+
+            // Destroy fireball on hit
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Wall")) //handle when projectile strikes walls, floor etc, not finished yet
+        // Check if hitting anything else like walls [EXCL ENEMIES]
+        else if (!collision.CompareTag("Enemy"))
         {
+            // Destroy fireball on hitting walls or other obstacles
             Destroy(gameObject);
         }
     }

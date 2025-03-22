@@ -4,6 +4,8 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     private Player playerData;
+    private HealthTracker healthTracker;
+    private Player.HealthChangeHandler healthChangeHandler;
 
     [Header("Inventory UI")]
     [SerializeField] private InventoryUI inventoryUI;
@@ -21,6 +23,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Animator animator;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugHealth = true;
+
     private float speed = 8f;
     private float jumpingPower = 12f;
 
@@ -34,23 +39,124 @@ public class PlayerController : MonoBehaviour
     private bool doubleJump;
     private float nextAttackTime = 0f;
 
-    private void Start()
+    // RECURSION PREVENTION FLAG
+    private bool _isConnectingEvents = false;
+
+    private void Awake()
     {
         playerData = new Player(transform);
+
+        healthTracker = GetComponent<HealthTracker>();
+        if (healthTracker == null)
+        {
+            Debug.LogWarning("[PlayerController] No HealthTracker found, adding one...");
+            healthTracker = gameObject.AddComponent<HealthTracker>();
+
+
+            if (playerData != null)
+            {
+                healthTracker.SetMaxHealth(playerData.MaxHealth);
+                healthTracker.SetHealth(playerData.Health);
+                Debug.Log($"[PlayerController] Initialized HealthTracker with Player's health: {playerData.Health}/{playerData.MaxHealth}");
+            }
+        }
+
+        healthChangeHandler = (currentHealth, maxHealth) => {
+            if (healthTracker != null)
+            {
+                if (debugHealth)
+                    Debug.Log($"[PlayerController] Health changed event: {currentHealth}/{maxHealth}");
+
+                healthTracker.SetHealth(currentHealth);
+            }
+        };
+    }
+
+    private void Start()
+    {
+        ConnectHealthEvents();
+
+        if (healthTracker != null && playerData != null)
+        {
+            healthTracker.SetHealth(playerData.Health);
+            if (debugHealth)
+                Debug.Log($"[PlayerController] Initial health sync: {playerData.Health}/{playerData.MaxHealth}");
+        }
+    }
+
+    private void OnEnable()
+    {
+        ConnectHealthEvents();
+    }
+
+    private void ConnectHealthEvents()
+    {
+        // IMPORTANT: RECURSION PROTECTOR
+        if (_isConnectingEvents)
+        {
+            Debug.LogError("[PlayerController] Prevented recursive call to ConnectHealthEvents!");
+            return;
+        }
+
+        _isConnectingEvents = true;
+
+        try
+        {
+            if (playerData == null)
+            {
+                playerData = new Player(transform);
+                Debug.Log("[PlayerController] Created new playerData");
+            }
+
+            if (healthTracker == null)
+            {
+                healthTracker = GetComponent<HealthTracker>();
+                if (healthTracker == null)
+                {
+                    healthTracker = gameObject.AddComponent<HealthTracker>();
+                    Debug.Log("[PlayerController] Created new HealthTracker component");
+                }
+            }
+
+            if (playerData != null && healthTracker != null)
+            {
+
+                playerData.OnHealthChanged -= healthChangeHandler;
+
+                playerData.OnHealthChanged += healthChangeHandler;
+
+                if (debugHealth)
+                    Debug.Log("[PlayerController] Connected Player health events to HealthTracker");
+            }
+            else
+            {
+                Debug.LogError($"[PlayerController] Failed to connect health events: playerData={playerData != null}, healthTracker={healthTracker != null}");
+            }
+        }
+        finally
+        {
+            _isConnectingEvents = false;
+        }
     }
 
     public int GetCurrentHealth()
     {
-        return playerData.Health;
+        return playerData != null ? playerData.Health : 0;
     }
 
     public int GetMaxHealth()
     {
-        return playerData.MaxHealth;
+        return playerData != null ? playerData.MaxHealth : 100;
     }
 
     public Player GetPlayerData()
     {
+        if (playerData == null)
+        {
+            Debug.LogWarning("[PlayerController] GetPlayerData: playerData was null, re-creating it");
+            playerData = new Player(transform);
+            ConnectHealthEvents();
+        }
         return playerData;
     }
 
@@ -60,7 +166,18 @@ public class PlayerController : MonoBehaviour
         HandleJumping();
         HandleAttack();
         HandleInventoryInput();
-        playerData.UpdateEffects(Time.deltaTime);
+
+        // Safely update effects
+        if (playerData != null)
+        {
+            playerData.UpdateEffects(Time.deltaTime);
+        }
+        else
+        {
+            // Emergency recovery
+            Debug.LogError("[PlayerController] playerData is null in Update!");
+            GetPlayerData(); // This will recreate it [V IMPORTANT DO NO DELETE OR RISK RE-INITIALISATION WIPING OUT PLAYER HEALTH DATA]
+        }
     }
 
     private void HandleMovement()
@@ -100,7 +217,6 @@ public class PlayerController : MonoBehaviour
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-                Debug.Log("First Jump");
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
             }
@@ -108,7 +224,6 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
-                Debug.Log("Double Jump");
             }
         }
     }
@@ -130,38 +245,87 @@ public class PlayerController : MonoBehaviour
         }
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+
         foreach (Collider2D enemy in hitEnemies)
         {
+            // Try IDamageable interface first
             IDamageable damageable = enemy.GetComponent<IDamageable>();
-            damageable?.TakeDamage(attackDamage);
+            if (damageable != null)
+            {
+                damageable.TakeDamage(attackDamage);
+                continue;
+            }
+
+            // Try Enemy component as fallback
+            Enemy enemyComponent = enemy.GetComponent<Enemy>();
+            if (enemyComponent != null)
+            {
+                enemyComponent.TakeDamage(Mathf.RoundToInt(attackDamage));
+            }
         }
     }
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("[PlayerController] TakeDamage called with damage: " + damage);
-        playerData.TakeDamage((int)damage);
+        if (debugHealth)
+            Debug.Log($"[PlayerController] TakeDamage called with damage: {damage}");
+
+        int damageAmount = Mathf.RoundToInt(damage);
+
+        bool recoveryNeeded = false;
+
+        if (playerData == null)
+        {
+            playerData = new Player(transform);
+            ConnectHealthEvents();
+            recoveryNeeded = true;
+            Debug.LogWarning("[PlayerController] Recreated missing playerData in TakeDamage");
+        }
+
+        if (healthTracker == null)
+        {
+            healthTracker = GetComponent<HealthTracker>();
+            if (healthTracker == null)
+            {
+                healthTracker = gameObject.AddComponent<HealthTracker>();
+            }
+            recoveryNeeded = true;
+            Debug.LogWarning("[PlayerController] Recreated missing healthTracker in TakeDamage");
+        }
+
+        if (recoveryNeeded)
+        {
+
+            healthTracker.SetMaxHealth(playerData.MaxHealth);
+            healthTracker.SetHealth(playerData.Health);
+            Debug.Log($"[PlayerController] Synced health values after recovery: {playerData.Health}/{playerData.MaxHealth}");
+        }
+
+        playerData.TakeDamage(damageAmount);
+        healthTracker.TakeDamage(damageAmount);
+
+        Debug.Log($"[PlayerController] After damage: Player:{playerData.Health}, HealthTracker:{healthTracker.CurrentHealth}");
     }
 
     private void HandleInventoryInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            playerData.inventory.UseWeapon(0, playerData);
+            if (playerData != null) playerData.inventory.UseWeapon(0, playerData);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            playerData.inventory.UseWeapon(1, playerData);
+            if (playerData != null) playerData.inventory.UseWeapon(1, playerData);
         }
         else if (Input.GetKeyDown(KeyCode.H))
         {
-            playerData.inventory.UseHealingPotion(playerData);
+            if (playerData != null) playerData.inventory.UseHealingPotion(playerData);
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            playerData.inventory.UseConsumable(playerData);
+            if (playerData != null) playerData.inventory.UseConsumable(playerData);
         }
-        else if (Input.GetKeyDown(KeyCode.I))
+        else if (Input.GetKeyDown(KeyCode.I) && inventoryUI != null)
         {
             inventoryUI.ToggleInventory();
         }

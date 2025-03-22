@@ -16,11 +16,16 @@ public class HealthTracker : MonoBehaviour
     public int CurrentHealth => currentHealth;
     private Player playerComponent;
 
-    void Start()
+    void Awake()
     {
         currentHealth = maxHealth;
 
-        // Try to find player component and subscribe to events
+        if (showDebugLogs)
+            Debug.Log($"[HealthTracker] Initialized with {currentHealth}/{maxHealth} health");
+    }
+
+    void Start()
+    {
         PlayerController playerController = GetComponent<PlayerController>();
         if (playerController != null)
         {
@@ -34,20 +39,28 @@ public class HealthTracker : MonoBehaviour
                     UpdateUI();
 
                     if (showDebugLogs)
-                        Debug.Log($"[HealthTracker] Health changed: {currentHealth}/{maxHealth}");
+                        Debug.Log($"[HealthTracker] Health changed via event: {currentHealth}/{maxHealth}");
                 };
 
                 if (showDebugLogs)
                     Debug.Log("[HealthTracker] Successfully subscribed to player health events");
+
+                // Set initial health from Player to HealthTracker
+                this.currentHealth = playerComponent.Health;
+                this.maxHealth = playerComponent.MaxHealth;
             }
         }
 
-        // Look for a PlayerHealthUI if we don't have one
         if (healthUI == null)
         {
             healthUI = FindFirstObjectByType<PlayerHealthUI>();
-            if (healthUI != null && showDebugLogs)
-                Debug.Log("[HealthTracker] Found PlayerHealthUI in scene");
+            if (healthUI != null)
+            {
+                if (showDebugLogs)
+                    Debug.Log("[HealthTracker] Found PlayerHealthUI in scene");
+
+                healthUI.playerHealthTracker = this;
+            }
         }
 
         // Initialize slider UI if available
@@ -64,7 +77,6 @@ public class HealthTracker : MonoBehaviour
             Debug.LogWarning("[HealthTracker] No health UI found. Health will be tracked but not displayed.");
         }
 
-        // Ensure the object has the Player tag
         if (gameObject.tag != "Player")
         {
             gameObject.tag = "Player";
@@ -72,8 +84,47 @@ public class HealthTracker : MonoBehaviour
                 Debug.Log("[HealthTracker] Set object tag to 'Player'");
         }
 
-        // Force update the UI once at start
         UpdateUI();
+    }
+
+    public void SetMaxHealth(int value)
+    {
+        if (value <= 0) return;
+
+        maxHealth = value;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+        }
+
+        if (showDebugLogs)
+            Debug.Log($"[HealthTracker] Max health set to {maxHealth}");
+
+        UpdateUI();
+    }
+
+    public void SetHealth(int value)
+    {
+        if (value == currentHealth) return;
+
+        int oldHealth = currentHealth;
+        currentHealth = Mathf.Clamp(value, 0, maxHealth);
+
+        UpdateUI();
+
+        if (showDebugLogs)
+            Debug.Log($"[HealthTracker] Health set from {oldHealth} to {currentHealth}/{maxHealth}");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public void SetHealthSlider(Slider slider)
@@ -87,21 +138,27 @@ public class HealthTracker : MonoBehaviour
         if (showDebugLogs)
             Debug.Log("[HealthTracker] Health slider set with value: " + currentHealth);
 
-        // Force update the UI after setting slider
         UpdateUI();
     }
 
     public void TakeDamage(int damage)
     {
+        if (damage == 0)
+        {
+            UpdateUI();
+            return;
+        }
+
         if (damage <= 0) return;
 
+        int oldHealth = currentHealth;
         currentHealth -= damage;
         currentHealth = Mathf.Max(0, currentHealth);
 
         UpdateUI();
 
         if (showDebugLogs)
-            Debug.Log("[HealthTracker] Player took " + damage + " damage. Current health: " + currentHealth);
+            Debug.Log($"[HealthTracker] Player took {damage} damage. Health: {oldHealth} -> {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -113,61 +170,69 @@ public class HealthTracker : MonoBehaviour
     {
         if (amount <= 0) return;
 
+        int oldHealth = currentHealth;
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
 
         UpdateUI();
 
         if (showDebugLogs)
-            Debug.Log("[HealthTracker] Player healed " + amount + " health. Current health: " + currentHealth);
+            Debug.Log($"[HealthTracker] Player healed {amount} health. Health: {oldHealth} -> {currentHealth}");
     }
+
+    // RECURSION PROTECTOR
+    private bool _isUpdatingUI = false;
+    private bool _triedFindingHealthUI = false;
 
     private void UpdateUI()
     {
-        // Update slider if we have one
-        if (healthSlider != null)
+        if (_isUpdatingUI) return;
+
+        // Set recursion protection flag
+        _isUpdatingUI = true;
+
+        try
         {
-            healthSlider.value = currentHealth;
+            if (healthSlider != null)
+            {
+                healthSlider.value = currentHealth;
+            }
 
-            if (showDebugLogs)
-                Debug.Log("[HealthTracker] Updated health slider to: " + currentHealth);
-        }
-
-        // Update the PlayerHealthUI if we have it
-        if (healthUI != null)
-        {
-            healthUI.UpdateHealthUI(currentHealth);
-
-            if (showDebugLogs)
-                Debug.Log("[HealthTracker] Updated PlayerHealthUI to: " + currentHealth);
-        }
-        else if (showDebugLogs)
-        {
-            Debug.LogWarning("[HealthTracker] No PlayerHealthUI found to update");
-
-            // Try to find it again in case it was created after this component
-            healthUI = FindFirstObjectByType<PlayerHealthUI>();
             if (healthUI != null)
             {
-                healthUI.playerHealthTracker = this;
                 healthUI.UpdateHealthUI(currentHealth);
-                Debug.Log("[HealthTracker] Found and updated PlayerHealthUI");
             }
+            else if (showDebugLogs)
+            {
+                if (!_triedFindingHealthUI)
+                {
+                    _triedFindingHealthUI = true;
+
+                    healthUI = FindFirstObjectByType<PlayerHealthUI>();
+                    if (healthUI != null)
+                    {
+                        healthUI.playerHealthTracker = this;
+                        healthUI.UpdateHealthUI(currentHealth);
+                        Debug.Log("[HealthTracker] Found and updated PlayerHealthUI");
+                    }
+                }
+            }
+        }
+        finally
+        {
+            _isUpdatingUI = false;
         }
     }
 
     void Die()
     {
         Debug.Log("[HealthTracker] Player has been slain.");
-
-        // Try to notify the GameManager
         if (GameManager.Instance != null)
         {
             GameManager.Instance.HandleGameOver();
         }
         else
         {
-            // If we don't have a game manager, just disable the object
             gameObject.SetActive(false); // Better than destroying, in case we want to respawn
         }
     }
