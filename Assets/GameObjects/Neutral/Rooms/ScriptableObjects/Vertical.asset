@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPrefab: {fileID: 4060972933801193960, guid: 180cc9be92681d049ab2710ad4beed20, type: 3}
   hasTopExit: 1
-  hasBottomExit: 0
-  hasLeftExit: 1
+  hasBottomExit: 1
+  hasLeftExit: 0
   hasRightExit: 0
