@@ -160,7 +160,7 @@ public class Enemy : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    protected void FindPlayer()
+    protected virtual void FindPlayer()
     {
         _playerObject = null;
         _playerTransform = null;

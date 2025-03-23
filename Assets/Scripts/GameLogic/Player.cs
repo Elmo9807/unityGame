@@ -70,6 +70,7 @@ public class Player
         if (amount <= 0) return;
 
         int oldHealth = Health;
+        // Prevent max health overcap, we can change later if necessary
         Health = Mathf.Min(Health + amount, MaxHealth);
 
         if (isDebugLogging)

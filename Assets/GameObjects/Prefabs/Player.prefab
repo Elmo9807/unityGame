@@ -116,7 +116,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   animator: {fileID: 0}
+  arrowPrefab: {fileID: 0}
+  bowFirePoint: {fileID: 0}
+  dashForce: 12
+  dashDuration: 0.15
+  dashCooldown: 1
+  dashTrail: {fileID: 0}
+  dashParticles: {fileID: 0}
+  dashInvulnerability: 1
   debugHealth: 1
+  debugDash: 1
 --- !u!212 &50211828194017558
 SpriteRenderer:
   m_ObjectHideFlags: 0

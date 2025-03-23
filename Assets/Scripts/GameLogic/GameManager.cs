@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Screen.fullScreen = true;
+
         SpawnPlayer();
 
         SetupHealthUI();

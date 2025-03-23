@@ -61,7 +61,6 @@ public class Mage : Enemy
         }
     }
 
-    [System.Obsolete]
     protected override void Update()
     {
         if (Time.time > lastPlayerCheckTime + playerCheckInterval)
@@ -73,7 +72,15 @@ public class Mage : Enemy
             else
             {
                 lastKnownPlayerPosition = _playerTransform.position;
+
                 currentPlayerDistance = Vector3.Distance(transform.position, _playerTransform.position);
+
+                if (currentPlayerDistance > detectionRadius * 1.5f)
+                {
+                    Debug.Log($"[Mage] Player moved out of extended detection range ({detectionRadius * 1.5f}), stopping pursuit");
+                    _playerTransform = null;
+                    _playerObject = null;
+                }
             }
 
             lastPlayerCheckTime = Time.time;
@@ -95,13 +102,21 @@ public class Mage : Enemy
 
             UpdateFacing();
 
-            if (currentPlayerDistance <= attackRange && projectileAttacker.CanAttack(_playerTransform))
+            if (currentPlayerDistance <= attackRange && currentPlayerDistance <= detectionRadius &&
+                projectileAttacker.CanAttack(_playerTransform))
             {
                 StartCoroutine(CastFireball());
             }
             else if (currentPlayerDistance <= detectionRadius)
             {
                 Fly(targetPosition);
+            }
+            else
+            {
+                if (rb != null)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                }
             }
         }
     }
@@ -118,6 +133,29 @@ public class Mage : Enemy
         else
         {
             rb.isKinematic = false;
+        }
+    }
+
+    protected override void FindPlayer()
+    {
+        base.FindPlayer(); // Call base implementation first
+
+        // Check if player is within detection range
+        if (IsPlayerValid)
+        {
+            currentPlayerDistance = Vector3.Distance(transform.position, _playerTransform.position);
+
+            if (currentPlayerDistance > detectionRadius)
+            {
+                Debug.Log($"[Mage] Found player but they're outside detection radius ({currentPlayerDistance} > {detectionRadius})");
+                // Don't acknowledge player is beyond detection radius
+                _playerTransform = null;
+                _playerObject = null;
+            }
+            else
+            {
+                Debug.Log($"[Mage] Found player within detection radius ({currentPlayerDistance} <= {detectionRadius})");
+            }
         }
     }
 

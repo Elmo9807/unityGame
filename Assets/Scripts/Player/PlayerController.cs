@@ -23,11 +23,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Animator animator;
 
+    [Header("Bow Properties")]
+    [SerializeField] private GameObject arrowPrefab; 
+    [SerializeField] private Transform bowFirePoint; 
+    private bool hasBow = false; 
+    private float nextBowAttackTime = 0f;
+    private float bowCooldown = 0.5f;
+
+
+    [Header("Dash Properties")]
+    [SerializeField] private float dashForce = 24f;
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private TrailRenderer dashTrail;
+    [SerializeField] private ParticleSystem dashParticles;
+    [SerializeField] private bool dashInvulnerability = true;
+
     [Header("Debug")]
     [SerializeField] private bool debugHealth = true;
+    [SerializeField] private bool debugDash = true;
 
     private float speed = 8f;
-    private float jumpingPower = 12f;
+    private float jumpingPower = 8f;
 
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
@@ -39,8 +56,30 @@ public class PlayerController : MonoBehaviour
     private bool doubleJump;
     private float nextAttackTime = 0f;
 
-    // RECURSION PREVENTION FLAG
+    
     private bool _isConnectingEvents = false;
+
+    
+    private bool _isProcessingDamage = false;
+
+    
+    private bool isDashing = false;
+    private bool canDash = true;
+    private float dashTimeLeft;
+    private float lastDashTime = -10f;
+    private Vector2 dashDirection;
+
+    
+    private float horizontalInput;
+    private bool jumpPressed;
+    private bool jumpHeld;
+    private bool attackPressed;
+    private bool dashPressed;
+    private bool useItem1Pressed;
+    private bool useItem2Pressed;
+    private bool useHealPressed;
+    private bool useConsumablePressed;
+    private bool toggleInventoryPressed;
 
     private void Awake()
     {
@@ -52,7 +91,6 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("[PlayerController] No HealthTracker found, adding one...");
             healthTracker = gameObject.AddComponent<HealthTracker>();
 
-
             if (playerData != null)
             {
                 healthTracker.SetMaxHealth(playerData.MaxHealth);
@@ -62,7 +100,7 @@ public class PlayerController : MonoBehaviour
         }
 
         healthChangeHandler = (currentHealth, maxHealth) => {
-            if (healthTracker != null)
+            if (healthTracker != null && !_isProcessingDamage)
             {
                 if (debugHealth)
                     Debug.Log($"[PlayerController] Health changed event: {currentHealth}/{maxHealth}");
@@ -70,6 +108,12 @@ public class PlayerController : MonoBehaviour
                 healthTracker.SetHealth(currentHealth);
             }
         };
+
+        
+        if (dashTrail != null)
+        {
+            dashTrail.emitting = false;
+        }
     }
 
     private void Start()
@@ -82,6 +126,14 @@ public class PlayerController : MonoBehaviour
             if (debugHealth)
                 Debug.Log($"[PlayerController] Initial health sync: {playerData.Health}/{playerData.MaxHealth}");
         }
+
+        if (bowFirePoint == null)
+        {
+            bowFirePoint = transform;
+        }
+
+        
+        SetupPlayerWeapons();
     }
 
     private void OnEnable()
@@ -91,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
     private void ConnectHealthEvents()
     {
-        // IMPORTANT: RECURSION PROTECTOR
+        
         if (_isConnectingEvents)
         {
             Debug.LogError("[PlayerController] Prevented recursive call to ConnectHealthEvents!");
@@ -120,9 +172,7 @@ public class PlayerController : MonoBehaviour
 
             if (playerData != null && healthTracker != null)
             {
-
                 playerData.OnHealthChanged -= healthChangeHandler;
-
                 playerData.OnHealthChanged += healthChangeHandler;
 
                 if (debugHealth)
@@ -162,37 +212,27 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();
-        HandleJumping();
-        HandleAttack();
-        HandleInventoryInput();
+        
+        GatherInput();
 
-        // Safely update effects
-        if (playerData != null)
+        
+        if (!isDashing)
         {
-            playerData.UpdateEffects(Time.deltaTime);
+            HandleBowAttack();
+            if (attackPressed) HandleAttack();
+            if (dashPressed) HandleDashInput();
+            HandleInventoryInputs();
         }
         else
         {
-            // Emergency recovery
-            Debug.LogError("[PlayerController] playerData is null in Update!");
-            GetPlayerData(); // This will recreate it [V IMPORTANT DO NO DELETE OR RISK RE-INITIALISATION WIPING OUT PLAYER HEALTH DATA]
+            
+            UpdateDashTimer();
         }
-    }
 
-    private void HandleMovement()
-    {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+        
+        HandleJumpBuffer();
 
-        if ((isFacingRight && horizontal < 0f) || (!isFacingRight && horizontal > 0f))
-        {
-            Flip();
-        }
-    }
-
-    private void HandleJumping()
-    {
+        
         if (IsGrounded())
         {
             coyoteTimeCounter = coyoteTime;
@@ -203,7 +243,47 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if (Input.GetButton("Jump"))
+        
+        if (playerData != null)
+        {
+            playerData.UpdateEffects(Time.deltaTime);
+        }
+        else
+        {
+            
+            Debug.LogError("[PlayerController] playerData is null in Update!");
+            GetPlayerData(); 
+        }
+    }
+
+    private void GatherInput()
+    {
+        
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        
+        if (Input.GetButtonDown("Jump"))
+            jumpPressed = true;
+
+        jumpHeld = Input.GetButton("Jump");
+
+        
+        attackPressed = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z);
+
+        
+        dashPressed = Input.GetKeyDown(KeyCode.LeftShift);
+
+        
+        useItem1Pressed = Input.GetKeyDown(KeyCode.Alpha1);
+        useItem2Pressed = Input.GetKeyDown(KeyCode.Alpha2);
+        useHealPressed = Input.GetKeyDown(KeyCode.H);
+        useConsumablePressed = Input.GetKeyDown(KeyCode.C);
+        toggleInventoryPressed = Input.GetKeyDown(KeyCode.I);
+    }
+
+    private void HandleJumpBuffer()
+    {
+        if (jumpHeld)
         {
             jumpBufferCounter = jumpBufferTime;
         }
@@ -211,33 +291,130 @@ public class PlayerController : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
+    }
 
-        if (Input.GetButtonDown("Jump"))
+    private void FixedUpdate()
+    {
+        if (!isDashing)
+        {
+            
+            ApplyMovement();
+            ProcessJump();
+        }
+        else
+        {
+            
+            ProcessDashPhysics();
+        }
+    }
+
+    private void ApplyMovement()
+    {
+        
+        rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
+
+        
+        if ((isFacingRight && horizontalInput < 0f) || (!isFacingRight && horizontalInput > 0f))
+        {
+            Flip();
+        }
+    }
+
+    private void ProcessJump()
+    {
+        
+        if (jumpPressed)
         {
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
             {
+                
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
+
+                if (debugHealth) 
+                    Debug.Log("[PlayerController] Performed first jump");
             }
             else if (!doubleJump)
             {
+                
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
+
+                if (debugHealth) 
+                    Debug.Log("[PlayerController] Performed double jump");
             }
+        }
+
+        
+        
+        if (jumpPressed)
+            jumpPressed = false;
+    }
+
+    private void SetupPlayerWeapons()
+    {
+        
+        WeaponLoader weaponLoader = FindFirstObjectByType<WeaponLoader>();
+        if (weaponLoader == null)
+        {
+            
+            GameObject weaponLoaderGO = new GameObject("WeaponLoader");
+            weaponLoader = weaponLoaderGO.AddComponent<WeaponLoader>();
+
+            
+            weaponLoader.arrowPrefab = arrowPrefab;
+            if (weaponLoader.arrowPrefab == null)
+            {
+                
+                weaponLoader.arrowPrefab = Resources.Load<GameObject>("PlayerProjectile");
+
+                if (weaponLoader.arrowPrefab == null)
+                {
+                    Debug.LogWarning("PlayerProjectile prefab not found. Bow attacks will not work properly.");
+                }
+            }
+        }
+
+        
+        if (playerData != null && playerData.inventory != null)
+        {
+            Bow bow = weaponLoader.CreateBow();
+            playerData.inventory.AddWeapon(bow);
+            hasBow = true;
+            Debug.Log("Added bow to player's inventory");
+
+            
+            HealingPotion extraPotion = weaponLoader.CreateHealingPotion("standard");
+            playerData.inventory.AddHealingPotion(extraPotion);
+            Debug.Log("Added healing potion to player's inventory");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerData or inventory not initialized, cannot add bow.");
         }
     }
 
     private void HandleAttack()
     {
-        if (Time.time >= nextAttackTime && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z)))
+        if (Time.time >= nextAttackTime)
         {
-            Attack();
+            PerformAttack();
             nextAttackTime = Time.time + 1f / attackRate;
         }
     }
 
-    private void Attack()
+    private void HandleBowAttack()
+    {
+        
+        if (hasBow && Time.time >= nextBowAttackTime && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.X)))
+        {
+            BowAttack();
+            nextBowAttackTime = Time.time + bowCooldown;
+        }
+    }
+
+    private void PerformAttack()
     {
         if (animator != null)
         {
@@ -248,7 +425,7 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            // Try IDamageable interface first
+            
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             if (damageable != null)
             {
@@ -256,7 +433,7 @@ public class PlayerController : MonoBehaviour
                 continue;
             }
 
-            // Try Enemy component as fallback
+            
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
@@ -265,69 +442,209 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    private void BowAttack()
     {
-        if (debugHealth)
-            Debug.Log($"[PlayerController] TakeDamage called with damage: {damage}");
-
-        int damageAmount = Mathf.RoundToInt(damage);
-
-        bool recoveryNeeded = false;
-
-        if (playerData == null)
+        
+        
+        if (playerData != null && playerData.inventory != null && playerData.inventory.weapons.Count > 1)
         {
-            playerData = new Player(transform);
-            ConnectHealthEvents();
-            recoveryNeeded = true;
-            Debug.LogWarning("[PlayerController] Recreated missing playerData in TakeDamage");
-        }
+            playerData.inventory.UseWeapon(1, playerData);
 
-        if (healthTracker == null)
-        {
-            healthTracker = GetComponent<HealthTracker>();
-            if (healthTracker == null)
+            if (animator != null)
             {
-                healthTracker = gameObject.AddComponent<HealthTracker>();
+                animator.SetTrigger("BowAttack");
             }
-            recoveryNeeded = true;
-            Debug.LogWarning("[PlayerController] Recreated missing healthTracker in TakeDamage");
-        }
 
-        if (recoveryNeeded)
+            Debug.Log("Player fired bow");
+        }
+        else
         {
-
-            healthTracker.SetMaxHealth(playerData.MaxHealth);
-            healthTracker.SetHealth(playerData.Health);
-            Debug.Log($"[PlayerController] Synced health values after recovery: {playerData.Health}/{playerData.MaxHealth}");
+            Debug.LogWarning("No bow available in inventory");
         }
-
-        playerData.TakeDamage(damageAmount);
-        healthTracker.TakeDamage(damageAmount);
-
-        Debug.Log($"[PlayerController] After damage: Player:{playerData.Health}, HealthTracker:{healthTracker.CurrentHealth}");
     }
 
-    private void HandleInventoryInput()
+    private void HandleDashInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (canDash && Time.time >= lastDashTime + dashCooldown)
+        {
+            StartDash();
+        }
+    }
+
+    private void StartDash()
+    {
+        
+        float vertical = Input.GetAxisRaw("Vertical");
+
+        
+        if (horizontalInput == 0 && vertical == 0)
+        {
+            dashDirection = isFacingRight ? Vector2.right : Vector2.left;
+        }
+        else
+        {
+            
+            dashDirection = new Vector2(horizontalInput, vertical).normalized;
+        }
+
+        isDashing = true;
+        canDash = false;
+        dashTimeLeft = dashDuration;
+        lastDashTime = Time.time;
+
+        
+        if (dashTrail != null)
+        {
+            dashTrail.emitting = true;
+        }
+
+        if (dashParticles != null)
+        {
+            dashParticles.Play();
+        }
+
+        
+        if (animator != null)
+        {
+            animator.SetTrigger("Dash");
+        }
+
+        if (debugDash)
+        {
+            Debug.Log($"[PlayerController] Dashing in direction: {dashDirection}, force: {dashForce}");
+        }
+    }
+
+    private void UpdateDashTimer()
+    {
+        dashTimeLeft -= Time.deltaTime;
+
+        if (dashTimeLeft <= 0)
+        {
+            EndDash();
+        }
+    }
+
+    private void ProcessDashPhysics()
+    {
+        
+        rb.linearVelocity = dashDirection * dashForce;
+    }
+
+    private void EndDash()
+    {
+        isDashing = false;
+
+        
+        rb.linearVelocity = rb.linearVelocity * 0.6f;
+
+        if (dashTrail != null)
+        {
+            dashTrail.emitting = false;
+        }
+
+        Invoke("ResetDash", 0.1f);
+
+        if (debugDash)
+        {
+            Debug.Log("[PlayerController] Dash ended");
+        }
+    }
+
+    private void ResetDash()
+    {
+        canDash = true;
+    }
+
+    private void HandleInventoryInputs()
+    {
+        if (useItem1Pressed)
         {
             if (playerData != null) playerData.inventory.UseWeapon(0, playerData);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (useItem2Pressed)
         {
             if (playerData != null) playerData.inventory.UseWeapon(1, playerData);
         }
-        else if (Input.GetKeyDown(KeyCode.H))
+        else if (useHealPressed)
         {
             if (playerData != null) playerData.inventory.UseHealingPotion(playerData);
         }
-        else if (Input.GetKeyDown(KeyCode.C))
+        else if (useConsumablePressed)
         {
             if (playerData != null) playerData.inventory.UseConsumable(playerData);
         }
-        else if (Input.GetKeyDown(KeyCode.I) && inventoryUI != null)
+        else if (toggleInventoryPressed && inventoryUI != null)
         {
             inventoryUI.ToggleInventory();
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        
+        if (_isProcessingDamage) return;
+
+        _isProcessingDamage = true;
+
+        try
+        {
+            if (isDashing && dashInvulnerability)
+            {
+                if (debugDash || debugHealth)
+                    Debug.Log("[PlayerController] Damage avoided while dashing!");
+                return;
+            }
+
+            if (debugHealth)
+                Debug.Log($"[PlayerController] TakeDamage called with damage: {damage}");
+
+            int damageAmount = Mathf.RoundToInt(damage);
+
+            bool recoveryNeeded = false;
+
+            if (playerData == null)
+            {
+                playerData = new Player(transform);
+                ConnectHealthEvents();
+                recoveryNeeded = true;
+                Debug.LogWarning("[PlayerController] Recreated missing playerData in TakeDamage");
+            }
+
+            if (healthTracker == null)
+            {
+                healthTracker = GetComponent<HealthTracker>();
+                if (healthTracker == null)
+                {
+                    healthTracker = gameObject.AddComponent<HealthTracker>();
+                }
+                recoveryNeeded = true;
+                Debug.LogWarning("[PlayerController] Recreated missing healthTracker in TakeDamage");
+            }
+
+            if (recoveryNeeded)
+            {
+                healthTracker.SetMaxHealth(playerData.MaxHealth);
+                healthTracker.SetHealth(playerData.Health);
+                Debug.Log($"[PlayerController] Synced health values after recovery: {playerData.Health}/{playerData.MaxHealth}");
+            }
+
+            
+            playerData.TakeDamage(damageAmount);
+
+            
+            int currentPlayerHealth = playerData.Health;
+            if (healthTracker.CurrentHealth != currentPlayerHealth)
+            {
+                Debug.LogWarning($"[PlayerController] Health desync detected! Player:{currentPlayerHealth}, HealthTracker:{healthTracker.CurrentHealth}. Fixing...");
+                healthTracker.SetHealth(currentPlayerHealth);
+            }
+
+            Debug.Log($"[PlayerController] After damage: Player:{playerData.Health}, HealthTracker:{healthTracker.CurrentHealth}");
+        }
+        finally
+        {
+            _isProcessingDamage = false;
         }
     }
 
@@ -351,5 +668,10 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+
+        
+        Gizmos.color = Color.blue;
+        Vector3 dashEndPoint = transform.position + (isFacingRight ? Vector3.right : Vector3.left) * dashForce * dashDuration * 0.5f;
+        Gizmos.DrawLine(transform.position, dashEndPoint);
     }
 }
