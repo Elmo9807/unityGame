@@ -54,7 +54,7 @@
 			<destination>{153798d2-6458-44d8-892d-238009c04351}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{8716b76f-2686-4023-8f97-7df2be320d4d}</destination>
+			<destination>{1a65ca4b-3b3c-4c39-b1aa-8ec862942bdf}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{96f596fb-0eb5-4d3b-aec1-c25b91b48502}" />
@@ -101,7 +101,6 @@
 		<property name="length">
 			<value>16.632000000000001</value>
 		</property>
-		<property name="name" />
 		<property name="pitch">
 			<value>-1.39999998</value>
 		</property>
