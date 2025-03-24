@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using FMOD.Studio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -81,6 +82,9 @@ public class PlayerController : MonoBehaviour
     private bool useConsumablePressed;
     private bool toggleInventoryPressed;
 
+    // audio
+    private EventInstance playerFootstepRough;
+
     private void Awake()
     {
         playerData = new Player(transform);
@@ -118,6 +122,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough);
+
         ConnectHealthEvents();
 
         if (healthTracker != null && playerData != null)
@@ -300,11 +306,13 @@ public class PlayerController : MonoBehaviour
             
             ApplyMovement();
             ProcessJump();
+            UpdateSound();
         }
         else
         {
             
             ProcessDashPhysics();
+            UpdateSound();
         }
     }
 
@@ -331,7 +339,7 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
-
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
                 if (debugHealth) 
                     Debug.Log("[PlayerController] Performed first jump");
             }
@@ -340,7 +348,7 @@ public class PlayerController : MonoBehaviour
                 
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
-
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
                 if (debugHealth) 
                     Debug.Log("[PlayerController] Performed double jump");
             }
@@ -420,7 +428,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Attack");
         }
-
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
         foreach (Collider2D enemy in hitEnemies)
@@ -454,7 +462,7 @@ public class PlayerController : MonoBehaviour
             {
                 animator.SetTrigger("BowAttack");
             }
-
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.BowAttack, this.transform.position);
             Debug.Log("Player fired bow");
         }
         else
@@ -659,6 +667,23 @@ public class PlayerController : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;
+    }
+
+    private void UpdateSound()
+    {   // if player is moving on ground, starts footstep loop sound
+        if(rb.linearVelocity.x != 0 && IsGrounded()){
+            // checks if footsteps already playing
+            PLAYBACK_STATE playbackState;
+            playerFootstepRough.getPlaybackState(out playbackState);
+            if (playbackState != PLAYBACK_STATE.PLAYING)
+            {
+                playerFootstepRough.start();
+            }
+        }
+        else // else, stops footstep loop sound
+        {
+            playerFootstepRough.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
 
     private void OnDrawGizmosSelected()

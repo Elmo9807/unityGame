@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using FMODUnity;
 
 public class Mage : Enemy
 {
@@ -22,6 +23,8 @@ public class Mage : Enemy
     private bool isCasting = false;
     private float baseY;
     private Vector3 targetPosition;
+
+    private StudioEventEmitter emitter; // for levitating sfx
 
     protected override void Start()
     {

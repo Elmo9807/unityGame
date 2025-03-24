@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{c585d32a-c681-463e-a1bb-547ec24c5b56}">
+		<property name="assetPath">
+			<value>UI/10_UI_Menu_SFX/033_Denied_03.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.3333333333333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{4553cde7-6a69-4e19-8962-38bd2c830f87}</destination>
+		</relationship>
+	</object>
+</objects>

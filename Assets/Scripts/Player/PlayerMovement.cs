@@ -27,12 +27,14 @@ public class PlayerMovement : MonoBehaviour
             if (IsGrounded())
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Jump instantly
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerFootstepRough, this.transform.position);
                 Debug.Log("First Jump");
             }
             else if (!doubleJump)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); // Double jump instantly
                 doubleJump = true;
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerFootstepRough, this.transform.position);
                 Debug.Log("Double Jump");
             }
         }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{2dc3b8f0-c255-42db-a028-2420dbd68c18}">
+		<property name="assetPath">
+			<value>Character/12_Player_Movement_SFX/42_Cling_climb_03.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.66666666666666663</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{4553cde7-6a69-4e19-8962-38bd2c830f87}</destination>
+		</relationship>
+	</object>
+</objects>

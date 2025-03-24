@@ -751,6 +751,99 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60d84ce6dcbcac740ba642ec12fa9954, type: 3}
+--- !u!1 &917175328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 917175329}
+  - component: {fileID: 917175330}
+  m_Layer: 0
+  m_Name: FMODEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &917175329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917175328}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2073166793}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &917175330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917175328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050a60635dd5aaa48b62ef8d015957f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PlayerFootstepRough>k__BackingField:
+    Guid:
+      Data1: -1246026763
+      Data2: 1119626554
+      Data3: -1061220711
+      Data4: -1348698377
+    Path: event:/SFX/Character/Footsteps/PlayerFootstepsRough
+  <PlayerJump>k__BackingField:
+    Guid:
+      Data1: -1721871514
+      Data2: 1309090839
+      Data3: 1848927643
+      Data4: -155948864
+    Path: event:/SFX/Character/Jump/PlayerJump
+  <BowAttack>k__BackingField:
+    Guid:
+      Data1: 704019449
+      Data2: 1146873611
+      Data3: 264861581
+      Data4: 779083000
+    Path: event:/SFX/Character/Combat/ArrowShoot
+  <SwordAttack>k__BackingField:
+    Guid:
+      Data1: 889668631
+      Data2: 1175139353
+      Data3: -68942456
+      Data4: -54994479
+    Path: event:/SFX/Character/Combat/SwordAttack
+  <DungeonAmbience>k__BackingField:
+    Guid:
+      Data1: 917498343
+      Data2: 1260314302
+      Data3: 793944226
+      Data4: 1934077764
+    Path: event:/Ambience/DungeonAmbience
+  <PianoLoop>k__BackingField:
+    Guid:
+      Data1: -1834885995
+      Data2: 1133212692
+      Data3: 832936634
+      Data4: 740414969
+    Path: event:/Music/pianoloop
+  <MageLevitate>k__BackingField:
+    Guid:
+      Data1: -36630791
+      Data2: 1102208442
+      Data3: 796228245
+      Data4: -1794482380
+    Path: event:/SFX/Enemies/Movement/MageLevitate
 --- !u!1 &975217363
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,6 +960,42 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9405435365105b244bdc75199cd48d83, type: 3}
+--- !u!1 &1460249028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5796174073587326845, guid: c43fa13738b1f2e4589e446b98c2b63a, type: 3}
+  m_PrefabInstance: {fileID: 4729642324612065188}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1460249034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460249028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -36630791
+      Data2: 1102208442
+      Data3: 796228245
+      Data4: -1794482380
+    Path: event:/SFX/Enemies/Movement/MageLevitate
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1833559173
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +1056,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 917175329}
   m_Father: {fileID: 659122831}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2073166794
@@ -942,6 +1072,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8f9ac50c41c054591b226a8b2ecef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  masterVolume: 1
+  musicVolume: 1
+  ambienceVolume: 1
+  uiSFXVolume: 1
+  gameSFXVolume: 1
 --- !u!1001 &2078895770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1078,7 +1213,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5796174073587326845, guid: c43fa13738b1f2e4589e446b98c2b63a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1460249034}
   m_SourcePrefab: {fileID: 100100000, guid: c43fa13738b1f2e4589e446b98c2b63a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
