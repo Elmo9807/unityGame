@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-6404392974174020157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Archer/EnemyArrowShoot
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Archer/EnemyArrowShoot
+  Guid:
+    Data1: 1062085853
+    Data2: 1326626319
+    Data3: 1956232879
+    Data4: -204482697
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 700
 --- !u!114 &-6104483362754535016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,11 +69,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638783990690386732
+  lastModified: 638784055212198446
   FileSizes:
   - Name: Desktop
-    Value: 338240
+    Value: 386016
   Exists: 1
+--- !u!114 &-1766127894116074527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Mage/MageFireballThrow
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Mage/MageFireballThrow
+  Guid:
+    Data1: 1766599012
+    Data2: 1266170390
+    Data3: -1869865035
+    Data4: -563821185
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 540
 --- !u!114 &-1313372175471959357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +129,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 195555
+--- !u!114 &-1296900666266230239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/SwordHit
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/SwordHit
+  Guid:
+    Data1: -2121355441
+    Data2: 1283453700
+    Data3: 2070558375
+    Data4: -9335314
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 255
 --- !u!114 &-803212371336956093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,14 +236,45 @@ MonoBehaviour:
   - {fileID: 1029216154037550626}
   - {fileID: -1313372175471959357}
   - {fileID: -506145940980821131}
-  - {fileID: 6504142096366950792}
+  - {fileID: -1766127894116074527}
+  - {fileID: 3462653498980048440}
+  - {fileID: 738550034174508720}
+  - {fileID: -6404392974174020157}
+  - {fileID: -1296900666266230239}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638783990690386732
+  cacheTime: 638784055212198446
   cacheVersion: 131846
+--- !u!114 &738550034174508720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Mage/MageFireballExplosion
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Mage/MageFireballExplosion
+  Guid:
+    Data1: -288610305
+    Data2: 1154621972
+    Data3: 1081003692
+    Data4: 2051520688
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &795992159213790067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,10 +290,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638783990689788113
+  lastModified: 638784055211874247
   FileSizes:
   - Name: Desktop
-    Value: 1546
+    Value: 1760
   Exists: 1
 --- !u!114 &1029216154037550626
 MonoBehaviour:
@@ -234,6 +346,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &3462653498980048440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Mage/MageLevitate
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Mage/MageLevitate
+  Guid:
+    Data1: -36630791
+    Data2: 1102208442
+    Data3: 796228245
+    Data4: -1794482380
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 16632
 --- !u!114 &3484959865789138482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,33 +413,6 @@ MonoBehaviour:
   - Name: Desktop
     Value: 2572416
   Exists: 1
---- !u!114 &6504142096366950792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Enemies/Movement/MageLevitate
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Enemies/Movement/MageLevitate
-  Guid:
-    Data1: -36630791
-    Data2: 1102208442
-    Data3: 796228245
-    Data4: -1794482380
-  Banks:
-  - {fileID: -6104483362754535016}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 16632
 --- !u!114 &6533021381237429663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +428,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638783990689778054
+  lastModified: 638784055211849151
   FileSizes:
   - Name: Desktop
     Value: 1802

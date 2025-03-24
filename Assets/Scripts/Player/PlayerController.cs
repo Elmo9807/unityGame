@@ -433,10 +433,12 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
+
             
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             if (damageable != null)
             {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
                 damageable.TakeDamage(attackDamage);
                 continue;
             }
@@ -445,6 +447,7 @@ public class PlayerController : MonoBehaviour
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
                 enemyComponent.TakeDamage(Mathf.RoundToInt(attackDamage));
             }
         }

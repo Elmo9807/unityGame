@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using FMODUnity;
+using FMOD.Studio;
 
 public class Mage : Enemy
 {
@@ -25,6 +26,7 @@ public class Mage : Enemy
     private Vector3 targetPosition;
 
     private StudioEventEmitter emitter; // for levitating sfx
+    private EventInstance fireballThrow;
 
     protected override void Start()
     {
@@ -287,6 +289,7 @@ public class Mage : Enemy
         if (projectileAttacker != null && _playerTransform != null)
         {
             projectileAttacker.ShootProjectile(_playerTransform, "fireball");
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballThrow, this.transform.position);
 
             if (showDebugLogs)
                 Debug.Log($"{Name} cast fireball at player!");

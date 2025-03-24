@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nonRigidbodyVelocity: 0
-  attenuationObject: {fileID: 0}
+  attenuationObject: {fileID: 2221878393784143265, guid: 0ae42fb747e102c44a76fd2148ac178f, type: 3}
 --- !u!1 &659122830
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,6 +823,13 @@ MonoBehaviour:
       Data3: -68942456
       Data4: -54994479
     Path: event:/SFX/Character/Combat/SwordAttack
+  <SwordHit>k__BackingField:
+    Guid:
+      Data1: -2121355441
+      Data2: 1283453700
+      Data3: 2070558375
+      Data4: -9335314
+    Path: event:/SFX/Character/Combat/SwordHit
   <DungeonAmbience>k__BackingField:
     Guid:
       Data1: 917498343
@@ -843,7 +850,28 @@ MonoBehaviour:
       Data2: 1102208442
       Data3: 796228245
       Data4: -1794482380
-    Path: event:/SFX/Enemies/Movement/MageLevitate
+    Path: event:/SFX/Enemies/Mage/MageLevitate
+  <MageFireballThrow>k__BackingField:
+    Guid:
+      Data1: 1766599012
+      Data2: 1266170390
+      Data3: -1869865035
+      Data4: -563821185
+    Path: event:/SFX/Enemies/Mage/MageFireballThrow
+  <MageFireballExplosion>k__BackingField:
+    Guid:
+      Data1: -288610305
+      Data2: 1154621972
+      Data3: 1081003692
+      Data4: 2051520688
+    Path: event:/SFX/Enemies/Mage/MageFireballExplosion
+  <ArcherArrowShoot>k__BackingField:
+    Guid:
+      Data1: 1062085853
+      Data2: 1326626319
+      Data3: 1956232879
+      Data4: -204482697
+    Path: event:/SFX/Enemies/Archer/EnemyArrowShoot
 --- !u!1 &975217363
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,7 +1012,7 @@ MonoBehaviour:
       Data2: 1102208442
       Data3: 796228245
       Data4: -1794482380
-    Path: event:/SFX/Enemies/Movement/MageLevitate
+    Path: event:/SFX/Enemies/Mage/MageLevitate
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2

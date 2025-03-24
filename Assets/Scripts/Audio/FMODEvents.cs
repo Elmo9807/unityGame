@@ -10,6 +10,7 @@ public class FMODEvents : MonoBehaviour
     [field: Header("Player Combat SFX")]
     [field: SerializeField] public EventReference BowAttack { get; private set; }
     [field: SerializeField] public EventReference SwordAttack { get; private set; }
+    [field: SerializeField] public EventReference SwordHit { get; private set; }
     
     [field: Header("Ambience")]
     [field: SerializeField] public EventReference DungeonAmbience { get; private set; }
@@ -18,6 +19,9 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference PianoLoop { get; private set; }
     [field: Header("Enemy SFX")]
     [field: SerializeField] public EventReference MageLevitate { get; private set; }
+    [field: SerializeField] public EventReference MageFireballThrow { get; private set; }
+    [field: SerializeField] public EventReference MageFireballExplosion { get; private set; }
+    [field: SerializeField] public EventReference ArcherArrowShoot { get; private set; }
     
     public static FMODEvents instance { get; private set; }
 

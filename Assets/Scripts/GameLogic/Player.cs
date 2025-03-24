@@ -100,6 +100,7 @@ public class Player
     {
         if (equippedWeapon != null)
         {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.playerTransform.position);
             if (equippedWeapon is Sword sword)
             {
                 sword.PerformSlash(this, target);
