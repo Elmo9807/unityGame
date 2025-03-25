@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool debugDash = true;
 
     private float speed = 8f;
-    private float jumpingPower = 8f;
+    private float jumpingPower = 10f;
 
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
