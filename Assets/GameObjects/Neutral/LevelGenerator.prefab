@@ -51,6 +51,7 @@ MonoBehaviour:
   shopRoom: {fileID: 11400000, guid: 881b91599afc7e84cb31c05eccaec28a, type: 2}
   minRooms: 5
   maxRooms: 10
+  maxSideRooms: 3
   roomSize: {x: 10, y: 10}
   startRoomPosition: {x: 0, y: 0}
 --- !u!114 &3657411536998123383
@@ -76,6 +77,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e57206c79ea80e043bd2f7436b08d392, type: 2}
   - {fileID: 11400000, guid: ebf4358969591d844bdcc5c1da7ba020, type: 2}
   - {fileID: 11400000, guid: 2142e9782d50a614e85f25bf632b9531, type: 2}
+  - {fileID: 11400000, guid: e11cd102af52d9a4eb3f92c6478e35b7, type: 2}
+  - {fileID: 11400000, guid: 8638265f434944d45b675a17e8908b9e, type: 2}
+  - {fileID: 11400000, guid: 3435445524521df4883660a132d292a4, type: 2}
+  - {fileID: 11400000, guid: 96b6f0c2485e397479a053fbd11fb088, type: 2}
+  - {fileID: 11400000, guid: a2ce123ab53408a43ad5f968d8f903b2, type: 2}
   roomParent: {fileID: 0}
   enemySpawner: {fileID: 0}
 --- !u!114 &7170738107635062074

@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 2972577248602871955, guid: 607bbc6eaeca9b741a7433dd96c91a49, type: 3}
-  - {fileID: 8280894201705203727, guid: 37e59790c9e766c47a358a8717edb8cd, type: 3}
+  - {fileID: 5159143601770964571, guid: 5f61a7ad45f3b3d4cb8190f126c315ff, type: 3}
+  - {fileID: 8131987421911466047, guid: 60d84ce6dcbcac740ba642ec12fa9954, type: 3}
+  - {fileID: 5796174073587326845, guid: c43fa13738b1f2e4589e446b98c2b63a, type: 3}
   enemyParent: {fileID: 0}
   minEnemiesPerRoom: 1
   maxEnemiesPerRoom: 3
