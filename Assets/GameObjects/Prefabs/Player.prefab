@@ -108,6 +108,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  playerCollider: {fileID: 1520990928881931472}
   attackDamage: 100
   attackRate: 2
   attackRange: 0.5
@@ -215,7 +216,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.04122466, y: -0.002490364}
+  m_Offset: {x: -0.04122466, y: 0.003420487}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -225,7 +226,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.22581029, y: 0.47274023}
+  m_Size: {x: 0.22581029, y: 0.46091852}
   m_EdgeRadius: 0
 --- !u!50 &7323873495963865655
 Rigidbody2D:

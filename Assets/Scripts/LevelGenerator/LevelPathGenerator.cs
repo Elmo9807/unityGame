@@ -112,7 +112,7 @@ public class LevelPathGenerator : MonoBehaviour
 
     /* Gizmos to be viewed in the scene for debugginig, I removed it cause it is annoying */
 
-    private void OnDrawGizmos()
+    /* private void OnDrawGizmos()
     {
         if (mainRooms.Count == 0)
         {
@@ -148,5 +148,5 @@ public class LevelPathGenerator : MonoBehaviour
             Vector3 roomPos = new Vector3(sideRooms[i].x * roomSize.x, sideRooms[i].y * roomSize.y, 0);
             Gizmos.DrawCube(roomPos, new Vector3(2, 2, 2));
         }
-    }
+    } */
 }

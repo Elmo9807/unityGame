@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 //Anything we want to do with influencing the player object, we put in here guys, thanks.
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform bowFirePoint;
     // [SerializeField] private TrailRenderer dashTrail;
     [SerializeField] private ParticleSystem dashParticles;
+    [SerializeField] private Collider2D playerCollider;
 
     // Attacking
     [SerializeField] private float attackRate = 2f;
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private bool dashInvulnerability = true;
     private float speed = 8f;
-    private float jumpingPower = 8f;
+    private float jumpingPower = 10f;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = 0.2f;
@@ -47,7 +49,8 @@ public class PlayerController : MonoBehaviour
     private float lastDashTime = -10f;
     private Vector2 dashDirection;
 
-    // Input
+    private bool isFallingThrough = false;
+    
     private float horizontalInput;
     private bool jumpPressed;
     private bool jumpHeld;
@@ -116,6 +119,7 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleJumpBuffer();
+        HandleOneWayPlatforms();
 
         if (IsGrounded())
         {
@@ -334,6 +338,40 @@ public class PlayerController : MonoBehaviour
     private void ResetDash()
     {
         canDash = true;
+    }
+
+    private void HandleOneWayPlatforms()
+    {
+        if (Input.GetKey(KeyCode.S) && !isFallingThrough)
+        {
+            StartCoroutine(DisableCollisionTemporarily());
+        }
+    }
+
+    IEnumerator DisableCollisionTemporarily()
+    {
+        Collider2D platformCollider = GetPlatformUnderneath();
+        if (platformCollider != null)
+        {
+            isFallingThrough = true;
+
+            Physics2D.IgnoreCollision(platformCollider, playerCollider, true);
+            yield return new WaitUntil(() => playerCollider.bounds.max.y < platformCollider.bounds.min.y);
+            yield return new WaitForSeconds(0.1f);
+            Physics2D.IgnoreCollision(platformCollider, playerCollider, false);
+
+            isFallingThrough = false;
+        }
+    }
+
+    Collider2D GetPlatformUnderneath()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 1f);
+        if (hit.collider != null && hit.collider.CompareTag("OneWayPlatform"))
+        {
+            return hit.collider;
+        }
+        return null;
     }
 
     // Public Methods
