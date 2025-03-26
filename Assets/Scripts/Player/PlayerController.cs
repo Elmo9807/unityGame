@@ -356,7 +356,9 @@ public class PlayerController : MonoBehaviour
             isFallingThrough = true;
 
             Physics2D.IgnoreCollision(platformCollider, playerCollider, true);
-            yield return new WaitUntil(() => playerCollider.bounds.max.y < platformCollider.bounds.min.y);
+            yield return new WaitUntil(() => playerCollider.bounds.max.y < platformCollider.bounds.min.y || 
+            playerCollider.bounds.max.x < platformCollider.bounds.min.x ||
+            playerCollider.bounds.min.x > playerCollider.bounds.max.x);
             yield return new WaitForSeconds(0.1f);
             Physics2D.IgnoreCollision(platformCollider, playerCollider, false);
 
