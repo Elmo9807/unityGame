@@ -54,7 +54,7 @@ public class RoomSpawner : MonoBehaviour
             }
             if (chosenRoom != null)
             {
-                GameObject newRoom = Instantiate(chosenRoom.roomPrefab, new Vector3(position.x * 10, position.y * 10, 0), Quaternion.identity, roomParent);
+                GameObject newRoom = Instantiate(chosenRoom.roomPrefab, new Vector3(position.x * 30, position.y * 20, 0), Quaternion.identity, roomParent);
                 spawnedRooms.Add(position, newRoom);
                 /* if (enemySpawner != null && i > 0 && i < allRooms.Count - sideRooms.Count - 2)
                 {
