@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using FMOD.Studio;
 
 //Anything we want to do with influencing the player object, we put in here guys, thanks.
 public class PlayerController : MonoBehaviour
@@ -61,6 +62,9 @@ public class PlayerController : MonoBehaviour
 
     private bool isProcessingDamage = false;
 
+    // Audio
+    private EventInstance playerFootstepRough;
+
     // Initialization
     private void Awake()
     {
@@ -86,6 +90,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough); // initializes footstep audio
+
         playerData.OnHealthChanged += healthChangeHandler;
         healthTracker.SetHealth(playerData.Health);
 
@@ -140,10 +146,12 @@ public class PlayerController : MonoBehaviour
         {
             ApplyMovement();
             ProcessJump();
+            UpdateSound(); // plays footstep audio
         }
         else
         {
             ProcessDashPhysics();
+
         }
     }
 
@@ -188,11 +196,13 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
             }
             else if (playerData.hasDoubleJump && !doubleJump)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
             }
         }
 
@@ -438,5 +448,23 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    private void UpdateSound()
+    {   // if player is moving on ground, starts footstep loop sound
+        if (rb.linearVelocity.x != 0 && IsGrounded())
+        {
+            // checks if footsteps already playing
+            PLAYBACK_STATE playbackState;
+            playerFootstepRough.getPlaybackState(out playbackState);
+            if (playbackState != PLAYBACK_STATE.PLAYING)
+            {
+                playerFootstepRough.start();
+            }
+        }
+        else // else, stops footstep loop sound
+        {
+            playerFootstepRough.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
 }
