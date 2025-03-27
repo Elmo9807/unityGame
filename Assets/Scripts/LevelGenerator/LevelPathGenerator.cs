@@ -16,7 +16,7 @@ public class LevelPathGenerator : MonoBehaviour
     public int maxSideRooms = 3;
 
 
-    public Vector2 roomSize = new Vector2(10, 10);
+    public Vector2 roomSize = new Vector2(30, 20);
     public Vector2Int startRoomPosition = Vector2Int.zero;
 
     private List<Vector2Int> mainRooms = new List<Vector2Int>();
