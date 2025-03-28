@@ -3,18 +3,8 @@ using System.Collections.Generic;
 
 public class Player
 {
-    #region Powerup Flags
-    public bool hasBow;
-    public bool hasSword;
-    public bool hasHealingPotion;
-    public bool hasDoubleJump;
-    public bool hasDash;
-    #endregion
-
-    #region Stats
-    public float meleeAttackDamage = 20f;
-    public float bowAttackDamage = 15f;
-    public int healingAmount = 30;
+    public Inventory inventory;
+    public Weapon equippedWeapon;
 
     private int health;
     public int Health
@@ -24,24 +14,26 @@ public class Player
     }
 
     public int MaxHealth { get; private set; } = 100;
-    #endregion
+    public float StrengthModifier { get; private set; } = 1.0f;
 
     private List<GameEffect> activeEffects = new List<GameEffect>();
+    private Transform playerTransform;
+
+    private bool isDebugLogging = true;
 
     public delegate void HealthChangeHandler(int currentHealth, int maxHealth);
     public event HealthChangeHandler OnHealthChanged;
-    public delegate void DeathEventHandler();
-    public event System.Action OnDeath;
 
-    public Player()
+    public Player(Transform transform = null)
     {
+        playerTransform = transform;
         Health = MaxHealth;
+        inventory = new Inventory();
 
-        hasBow = false;
-        hasSword = true;
-        hasHealingPotion = false;
-        hasDoubleJump = false;
-        hasDash = false;
+        if (isDebugLogging)
+        {
+            Debug.Log($"[Player] New Player instance created with health: {Health}/{MaxHealth}");
+        }
     }
 
     public void TakeDamage(int damage)
@@ -51,13 +43,26 @@ public class Player
         int oldHealth = Health;
         Health = Mathf.Max(Health - damage, 0);
 
-        if (oldHealth != Health)
-            OnHealthChanged?.Invoke(Health, MaxHealth);
-
-        if (Health <= 0)
+        if (isDebugLogging)
         {
-            OnDeath();
+            Debug.Log($"[Player] TakeDamage called with {damage}. Health: {oldHealth} -> {Health}");
         }
+
+        // Only raise event if health actually changed
+        if (oldHealth != Health)
+        {
+            if (isDebugLogging && OnHealthChanged == null)
+            {
+                Debug.LogWarning("[Player] OnHealthChanged event has NO subscribers!");
+            }
+
+            OnHealthChanged?.Invoke(Health, MaxHealth);
+        }
+    }
+
+    public void EquipWeapon(Weapon weapon)
+    {
+        equippedWeapon = weapon;
     }
 
     public void Heal(int amount)
@@ -65,18 +70,23 @@ public class Player
         if (amount <= 0) return;
 
         int oldHealth = Health;
+        // Prevent max health overcap, we can change later if necessary
         Health = Mathf.Min(Health + amount, MaxHealth);
 
-        if (oldHealth != Health)
-            OnHealthChanged?.Invoke(Health, MaxHealth);
-    }
-
-    public void UseHealingPotion()
-    {
-        if (hasHealingPotion)
+        if (isDebugLogging)
         {
-            Heal(healingAmount);
-            hasHealingPotion = false;
+            Debug.Log($"[Player] Heal called with {amount}. Health: {oldHealth} -> {Health}");
+        }
+
+        // Only raise event if health actually changed
+        if (oldHealth != Health)
+        {
+            if (isDebugLogging && OnHealthChanged == null)
+            {
+                Debug.LogWarning("[Player] OnHealthChanged event has NO subscribers!");
+            }
+
+            OnHealthChanged?.Invoke(Health, MaxHealth);
         }
     }
 
@@ -84,6 +94,22 @@ public class Player
     {
         activeEffects.Add(effect);
         effect.ApplyTo(this);
+    }
+
+    public void Attack(Enemy target)
+    {
+        if (equippedWeapon != null)
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.playerTransform.position);
+            if (equippedWeapon is Sword sword)
+            {
+                sword.PerformSlash(this, target);
+            }
+            else
+            {
+                target.TakeDamage(equippedWeapon.Damage);
+            }
+        }
     }
 
     public void UpdateEffects(float deltaTime)
@@ -94,7 +120,9 @@ public class Player
             effect.Duration -= deltaTime;
 
             if (effect.Duration <= 0)
+            {
                 activeEffects.RemoveAt(i);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory
@@ -111,4 +111,4 @@ public class Inventory
             Debug.Log($"Equipped {weapons[index].Name}");
         }
     }
-}*/
+}

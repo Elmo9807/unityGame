@@ -27,14 +27,10 @@ public class FMODEvents : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
-            Debug.LogError("Found more than one FMOD Events script in the scene, destroying GameObject.");
-            Destroy(gameObject);
-        }else{
-            instance = this;
-            DontDestroyOnLoad(gameObject); // ensures FMODEvents persists through scenes, allowing for seemless audio playback
+            Debug.LogError("Found more than one FMOD Events script in the scene.");
         }
-        
+        instance = this;
     }
 }

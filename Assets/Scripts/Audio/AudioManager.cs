@@ -30,16 +30,11 @@ public class AudioManager : MonoBehaviour
     private void Awake()
 
     {
-        if(instance != null)
+        if(instance == null)
         {
-            Debug.LogError("More than one audio manager in the scene is running, destroying gameObject.");
-            Destroy(gameObject);
+            Debug.LogError("More than one audio manager in the scene is running!");
         }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // ensures AudioManager persists through scenes, allowing for seemless audio playback
-        }
+        instance = this;
 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
