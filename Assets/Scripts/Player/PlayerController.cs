@@ -274,6 +274,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Attack");
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
@@ -283,12 +284,14 @@ public class PlayerController : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(playerData.meleeAttackDamage);
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
                 continue;
             }
 
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
                 enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage));
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
         }
     }
 
