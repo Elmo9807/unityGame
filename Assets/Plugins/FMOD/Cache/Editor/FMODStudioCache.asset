@@ -69,11 +69,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638785260910891071
+  lastModified: 638786889885846727
   FileSizes:
   - Name: Desktop
     Value: 386016
   Exists: 1
+--- !u!114 &-2606886245630602060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/pianoloop
+  m_EditorClassIdentifier: 
+  Path: event:/Music/pianoloop
+  Guid:
+    Data1: -1834885995
+    Data2: 1133212692
+    Data3: 832936634
+    Data4: 740414969
+  Banks:
+  - {fileID: 4478899813613896146}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 279004
 --- !u!114 &-1766127894116074527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,33 +210,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-506145940980821131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/pianoloop
-  m_EditorClassIdentifier: 
-  Path: event:/Music/pianoloop
-  Guid:
-    Data1: -1834885995
-    Data2: 1133212692
-    Data3: 832936634
-    Data4: 740414969
-  Banks:
-  - {fileID: 4478899813613896146}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 279004
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,18 +235,18 @@ MonoBehaviour:
   - {fileID: -803212371336956093}
   - {fileID: 1029216154037550626}
   - {fileID: -1313372175471959357}
-  - {fileID: -506145940980821131}
   - {fileID: -1766127894116074527}
   - {fileID: 3462653498980048440}
   - {fileID: 738550034174508720}
   - {fileID: -6404392974174020157}
   - {fileID: -1296900666266230239}
+  - {fileID: -2606886245630602060}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638785260910891071
+  cacheTime: 638786889885846727
   cacheVersion: 131846
 --- !u!114 &738550034174508720
 MonoBehaviour:
@@ -290,7 +290,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638785260910795991
+  lastModified: 638785306845524851
   FileSizes:
   - Name: Desktop
     Value: 1760
@@ -388,7 +388,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638785260910795991
+  lastModified: 638786889885517646
   FileSizes:
   - Name: Desktop
     Value: 1915968
@@ -408,7 +408,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638785260910881028
+  lastModified: 638786889885781604
   FileSizes:
   - Name: Desktop
     Value: 2572416
@@ -428,7 +428,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638785260910795991
+  lastModified: 638785306845524851
   FileSizes:
   - Name: Desktop
     Value: 1802
