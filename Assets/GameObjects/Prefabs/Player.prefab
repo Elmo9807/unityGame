@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 1520990928881931472}
   - component: {fileID: 7323873495963865655}
   - component: {fileID: 6254969669430585625}
+  - component: {fileID: -8802784503655471950}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -102,16 +103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5026ac01e8a8f544a6264a3d23c6243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 0}
   rb: {fileID: 7323873495963865655}
   groundCheck: {fileID: 1653041343866352155}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  playerCollider: {fileID: 1520990928881931472}
-  attackDamage: 100
-  attackRate: 2
-  attackRange: 0.5
   attackPoint: {fileID: 2826269697015391046}
   enemyLayer:
     serializedVersion: 2
@@ -119,14 +115,14 @@ MonoBehaviour:
   animator: {fileID: 0}
   arrowPrefab: {fileID: 0}
   bowFirePoint: {fileID: 0}
+  dashParticles: {fileID: 0}
+  playerCollider: {fileID: 1520990928881931472}
+  attackRate: 2
+  attackRange: 0.5
   dashForce: 12
   dashDuration: 0.15
   dashCooldown: 1
-  dashTrail: {fileID: 0}
-  dashParticles: {fileID: 0}
   dashInvulnerability: 1
-  debugHealth: 1
-  debugDash: 1
 --- !u!212 &50211828194017558
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179,7 +175,7 @@ SpriteRenderer:
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &1520990928881931472
@@ -270,6 +266,28 @@ MonoBehaviour:
   maxHealth: 100
   healthSlider: {fileID: 0}
   showDebugLogs: 1
+--- !u!95 &-8802784503655471950
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2221878393784143265}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d62e81d7663c2934caea7d2fc2a6edbd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5920270301616863033
 GameObject:
   m_ObjectHideFlags: 0

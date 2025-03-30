@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using FMOD.Studio;
+using System;
 
 //Anything we want to do with influencing the player object, we put in here guys, thanks.
 public class PlayerController : MonoBehaviour
@@ -91,6 +92,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough); // initializes footstep audio
+        animator = GetComponent<Animator>();
 
         playerData.OnHealthChanged += healthChangeHandler;
         healthTracker.SetHealth(playerData.Health);
@@ -131,6 +133,7 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTime;
             doubleJump = false;
+            animator.SetBool("isJumping", !IsGrounded()); // grounded animation plays if grounded, else plays jump animation
         }
         else
         {
@@ -147,6 +150,8 @@ public class PlayerController : MonoBehaviour
             ApplyMovement();
             ProcessJump();
             UpdateSound(); // plays footstep audio
+            animator.SetFloat("xVelocity", Math.Abs(rb.linearVelocity.x)); // speed of running animation is based off of player's x velocity
+            animator.SetFloat("yVelocity", rb.linearVelocity.y); // triggers falling animation if y velocity is negative (going doing), else triggers jumping animation if y velocity is positive (going up)
         }
         else
         {
@@ -246,6 +251,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("BowAttack");
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.BowAttack, this.transform.position);
 
         Vector2 direction;
         float horizontalInput = Input.GetAxisRaw("Horizontal");
