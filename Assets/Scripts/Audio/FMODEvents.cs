@@ -6,7 +6,8 @@ public class FMODEvents : MonoBehaviour
     [field: Header("Player Move SFX")]
     [field: SerializeField] public EventReference PlayerFootstepRough { get; private set; }
     [field: SerializeField] public EventReference PlayerJump { get; private set; }
-    
+    [field: SerializeField] public EventReference PlayerDash { get; private set; }
+
     [field: Header("Player Combat SFX")]
     [field: SerializeField] public EventReference BowAttack { get; private set; }
     [field: SerializeField] public EventReference SwordAttack { get; private set; }

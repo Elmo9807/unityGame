@@ -321,6 +321,7 @@ public class PlayerController : MonoBehaviour
         canDash = false;
         dashTimeLeft = dashDuration;
         lastDashTime = Time.time;
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDash, this.transform.position);
 
         // dashTrail.emitting = true;
 

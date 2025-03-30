@@ -214,6 +214,11 @@ Thumbs.db
 !/[Aa]ssets/StreamingAssets/**/*.bank
 !/[Aa]ssets/StreamingAssets/**/*.bank.meta
 
+# Ignores hidden folders in the FMOD-Studio project folder
+/FMOD-Audio/*/.cache/
+/FMOD-Audio/*/.unsaved/
+/FMOD-Audio/*/.user/
+
 # If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
 # Log files can be ignored.
 fmod_editor.log

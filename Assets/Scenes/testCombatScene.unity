@@ -1050,6 +1050,13 @@ MonoBehaviour:
       Data3: 1848927643
       Data4: -155948864
     Path: event:/SFX/Character/Jump/PlayerJump
+  <PlayerDash>k__BackingField:
+    Guid:
+      Data1: 772075872
+      Data2: 1239133104
+      Data3: -1816127336
+      Data4: -73987398
+    Path: event:/SFX/Character/Dash/Dash
   <BowAttack>k__BackingField:
     Guid:
       Data1: 704019449
