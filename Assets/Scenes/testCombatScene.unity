@@ -1092,6 +1092,13 @@ MonoBehaviour:
       Data3: 832936634
       Data4: 740414969
     Path: event:/Music/pianoloop
+  <dungeonBgm>k__BackingField:
+    Guid:
+      Data1: 821742326
+      Data2: 1167825345
+      Data3: -1549651062
+      Data4: -1425158146
+    Path: event:/Music/dungeonbgm
   <MageLevitate>k__BackingField:
     Guid:
       Data1: -36630791
@@ -1653,7 +1660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterVolume: 1
-  musicVolume: 1
+  musicVolume: 0.6
   ambienceVolume: 1
   uiSFXVolume: 1
   gameSFXVolume: 1

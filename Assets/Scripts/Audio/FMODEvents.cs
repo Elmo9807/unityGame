@@ -18,6 +18,7 @@ public class FMODEvents : MonoBehaviour
 
     [field: Header("Music")]
     [field: SerializeField] public EventReference PianoLoop { get; private set; }
+    [field: SerializeField] public EventReference dungeonBgm { get; private set; }
     [field: Header("Enemy SFX")]
     [field: SerializeField] public EventReference MageLevitate { get; private set; }
     [field: SerializeField] public EventReference MageFireballThrow { get; private set; }

@@ -56,7 +56,7 @@ public class AudioManager : MonoBehaviour
     private void Start() // mainly used to load bgm/ambience
     {
         InitializeAmbience(FMODEvents.instance.DungeonAmbience);
-        InitializeMusic(FMODEvents.instance.PianoLoop);
+        InitializeMusic(FMODEvents.instance.dungeonBgm);
         
     }
 
