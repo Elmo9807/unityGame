@@ -26,7 +26,11 @@ public class PlayerController : MonoBehaviour
     // Attacking
     [SerializeField] private float attackRate = 2f;
     [SerializeField] private float attackRange = 0.5f;
+    [SerializeField] private float heavyAttackRate = 10f;
+    [SerializeField] private float heavyAttackRange = 2f;
+    [SerializeField] private float heavyAttackDamageMultiplier = 2f;
     private float nextAttackTime = 0f;
+    private float nextHeavyAttackTime = 0f;
     private float nextBowAttackTime = 0f;
     private float bowCooldown = 0.5f;
 
@@ -57,6 +61,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed;
     private bool jumpHeld;
     private bool attackPressed;
+    private bool heavyAttackPressed;
     private bool bowAttackPressed;
     private bool dashPressed;
     private bool useHealPressed;
@@ -118,6 +123,7 @@ public class PlayerController : MonoBehaviour
         {
             if (playerData.hasBow && bowAttackPressed) HandleBowAttack();
             if (attackPressed) HandleAttack();
+            if (heavyAttackPressed) HandleHeavyAttack();
             if (playerData.hasDash && dashPressed) HandleDashInput();
             if (useHealPressed && playerData.hasHealingPotion) playerData.UseHealingPotion();
         }
@@ -171,6 +177,7 @@ public class PlayerController : MonoBehaviour
         jumpHeld = Input.GetButton("Jump");
         attackPressed = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z);
         bowAttackPressed = Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.X);
+        heavyAttackPressed = Input.GetKeyDown(KeyCode.R);
         dashPressed = Input.GetKeyDown(KeyCode.LeftShift);
         useHealPressed = Input.GetKeyDown(KeyCode.H);
     }
@@ -247,6 +254,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void HandleHeavyAttack()
+    {
+        if (Time.time >= nextHeavyAttackTime)
+        {
+            PerformHeavyAttack();
+            nextHeavyAttackTime = Time.time + 1f / heavyAttackRate;
+        }
+    }
+
     private void ShootArrow()
     {
         if (animator != null)
@@ -298,6 +314,31 @@ public class PlayerController : MonoBehaviour
             if (enemyComponent != null)
                 enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage));
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+        }
+    }
+
+    private void PerformHeavyAttack()
+    {
+        if (animator != null)
+            animator.SetTrigger("HeavyAttack");
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, heavyAttackRange, enemyLayer);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(playerData.meleeAttackDamage * heavyAttackDamageMultiplier);
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+                continue;
+            }
+
+            Enemy enemyComponent = enemy.GetComponent<Enemy>();
+            if (enemyComponent != null)
+                enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage * heavyAttackDamageMultiplier));
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
         }
     }
 

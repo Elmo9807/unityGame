@@ -118,8 +118,11 @@ MonoBehaviour:
   dashParticles: {fileID: 0}
   playerCollider: {fileID: 1520990928881931472}
   attackRate: 2
-  attackRange: 0.5
-  dashForce: 12
+  attackRange: 2
+  heavyAttackRate: 1
+  heavyAttackRange: 2
+  heavyAttackDamageMultiplier: 2
+  dashForce: 16
   dashDuration: 0.15
   dashCooldown: 1
   dashInvulnerability: 1
