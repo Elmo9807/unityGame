@@ -229,7 +229,7 @@ public class HealthTracker : MonoBehaviour
         Debug.Log("[HealthTracker] Player has been slain.");
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.HandleGameOver();
+            GameManager.Instance.GameOver();
         }
         else
         {

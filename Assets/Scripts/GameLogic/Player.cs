@@ -20,10 +20,10 @@ public class Player
     public int Health
     {
         get { return health; }
-        private set { health = Mathf.Clamp(value, 0, MaxHealth); }
+        set { health = Mathf.Clamp(value, 0, MaxHealth); }
     }
 
-    public int MaxHealth { get; private set; } = 100;
+    public int MaxHealth { get; set; } = 100;
     #endregion
 
     private List<GameEffect> activeEffects = new List<GameEffect>();

@@ -108,10 +108,10 @@ public class PlayerController : MonoBehaviour
         if (arrowPrefab == null)
             arrowPrefab = Resources.Load<GameObject>("PlayerProjectile");
 
-        playerData.hasBow = true;
+        /* playerData.hasBow = true;
         playerData.hasDash = true;
         playerData.hasDoubleJump = true;
-        playerData.hasHealingPotion = true;
+        playerData.hasHealingPotion = true; */
     }
 
     // Main Update
@@ -472,7 +472,7 @@ public class PlayerController : MonoBehaviour
                 // Call game over since we can't directly access HealthTracker.Die()
                 if (GameManager.Instance != null)
                 {
-                    GameManager.Instance.HandleGameOver();
+                    GameManager.Instance.GameOver();
                 }
                 else
                 {
@@ -488,7 +488,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
-        GameManager.Instance.HandleGameOver();
+        GameManager.Instance.GameOver();
     }
 
     // Gizmos

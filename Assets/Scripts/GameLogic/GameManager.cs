@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,14 +8,30 @@ public class GameManager : MonoBehaviour
     public bool isGamePaused;
     public bool isGameOver;
 
+    //Define game states for fsm
+    public enum GameState
+    {
+        Gameplay,
+        Paused,
+        GameOver
+    }
+
+    public GameState currentState;
+    public GameState previousState;
+
     [Header("UI References")]
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject pauseScreen;
     [SerializeField] private Canvas uiCanvas; // Reference to main UI canvas
+    [SerializeField] public GameObject shopPanel;
 
     [Header("Player References")]
     public GameObject playerPrefab;
+    public PowerupManager powerupManager;
     private GameObject currentPlayer;
     private PlayerController playerController;
+    private Player playerData;
+    private HealthTracker healthTracker;
 
     [Header("Health UI")]
     [SerializeField] private Slider healthSliderPrefab;
@@ -23,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        DisableScreens();
         // Singleton pattern
         if (Instance == null)
         {
@@ -57,7 +75,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Created new UI canvas");
             }
         }
-    }
+}
 
     void Start()
     {
@@ -76,8 +94,32 @@ public class GameManager : MonoBehaviour
         {
             gameOverUI.SetActive(false);
         }
+        LoadPlayerData();
+        Debug.Log("Player melee damage is: " + playerData.meleeAttackDamage);
     }
 
+    private void Update()
+    {
+        switch (currentState)
+        {
+            case GameState.Gameplay:
+                CheckForPauseAndResume();
+                break;
+
+            case GameState.Paused:
+                CheckForPauseAndResume();
+                break;
+
+            case GameState.GameOver:
+                if (!isGameOver)
+                {
+                    isGameOver = true;
+                    Time.timeScale = 0f;
+                    DisplayGameOverUi();
+                }
+                break;
+        }
+    }
     private void SpawnPlayer()
     {
         GameObject existingPlayer = GameObject.FindGameObjectWithTag("Player");
@@ -89,7 +131,7 @@ public class GameManager : MonoBehaviour
         }
         else if (playerPrefab != null)
         {
-            currentPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+            currentPlayer = Instantiate(playerPrefab, new Vector3(-10, -8, 0), Quaternion.identity);
             currentPlayer.tag = "Player";
             Debug.Log("Spawned new player from prefab at position: " + currentPlayer.transform.position);
         }
@@ -106,6 +148,9 @@ public class GameManager : MonoBehaviour
             {
                 Debug.LogWarning("Player doesn't have a PlayerController component");
             }
+
+            playerData = playerController.GetPlayerData(); //added for saving stats
+            healthTracker = playerPrefab.GetComponent<HealthTracker>(); //added for changing max health
 
             // Find camera follow component and assign target
             CameraFollow cameraFollow = FindFirstObjectByType<CameraFollow>();
@@ -143,7 +188,7 @@ public class GameManager : MonoBehaviour
 
             if (currentPlayer != null)
             {
-                HealthTracker healthTracker = currentPlayer.GetComponent<HealthTracker>();
+                // HealthTracker healthTracker = currentPlayer.GetComponent<HealthTracker>();
                 if (healthTracker != null)
                 {
                     healthUI.playerHealthTracker = healthTracker;
@@ -155,7 +200,7 @@ public class GameManager : MonoBehaviour
 
         if (currentPlayer != null)
         {
-            HealthTracker healthTracker = currentPlayer.GetComponent<HealthTracker>();
+            // HealthTracker healthTracker = currentPlayer.GetComponent<HealthTracker>();
 
             if (healthTracker == null)
             {
@@ -198,6 +243,7 @@ public class GameManager : MonoBehaviour
 
     public void HandleGameOver()
     {
+        GameOver();
         isGameOver = true;
 
         if (gameOverUI != null)
@@ -209,7 +255,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Game Over UI not assigned!");
         }
 
-        Time.timeScale = 0f;
+        
         Debug.Log("Game Over");
     }
 
@@ -218,6 +264,50 @@ public class GameManager : MonoBehaviour
         isGamePaused = !isGamePaused;
         Time.timeScale = isGamePaused ? 0f : 1f;
         Debug.Log(isGamePaused ? "Game Paused" : "Game Resumed");
+    }
+
+
+    public void ChangeState(GameState newState)
+    {
+        currentState = newState;
+    }
+
+    public void PauseGame()
+    {
+        if (currentState != GameState.Paused)
+        {
+            previousState = currentState;
+            ChangeState(GameState.Paused);
+            Time.timeScale = 0f;
+            pauseScreen.SetActive(true);
+            Debug.Log("Game paused");
+        }
+    }
+
+    public void ResumeGame()
+    {
+        if (currentState == GameState.Paused)
+        {
+            ChangeState(previousState);
+            Time.timeScale = 1f;
+            pauseScreen.SetActive(false);
+            Debug.Log("Game Resumed");
+        }
+    }
+
+    void CheckForPauseAndResume()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Paused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
     }
 
     public void RestartGame()
@@ -231,13 +321,64 @@ public class GameManager : MonoBehaviour
             gameOverUI.SetActive(false);
         }
 
-        // Respawn player if needed
+        UnityEngine.SceneManagement.SceneManager.LoadScene("testCombatScene");
+        LoadPlayerData();
+
+        /* // Respawn player if needed
         if (currentPlayer == null)
         {
             SpawnPlayer();
             SetupHealthUI();
         }
 
-        Debug.Log("Game Restarted");
+        Debug.Log("Game Restarted"); */
     }
+
+    void DisableScreens()
+    {
+        pauseScreen.SetActive(false);
+        gameOverUI.SetActive(false);
+    }
+
+    public void SceneChange(string name)
+    {
+        SceneManager.LoadScene(name);
+        Time.timeScale = 1;
+    }
+
+    public void GameOver()
+    {
+        ChangeState(GameState.GameOver);
+        SaveManager.SavePlayer(playerData, powerupManager, healthTracker);
+    }
+
+    public void DisplayGameOverUi()
+    {
+        gameOverUI.SetActive(true);
+    }
+
+    public void LoadPlayerData()
+    {
+        PlayerSaveData data = SaveManager.LoadPlayer();
+        if (data != null)
+        {
+            playerData.hasBow = data.hasBow;
+            playerData.hasDash = data.hasDash;
+            playerData.hasHealingPotion = data.hasHealingPot;
+            playerData.meleeAttackDamage = data.meleeDmg;
+            playerData.bowAttackDamage = data.rangedDmg;
+            powerupManager.playerCurrency = data.currency;
+            powerupManager.startWithBow = data.startWithBow;
+            powerupManager.startWithDash = data.startWithDash;
+            powerupManager.startWithHealingPotion = data.startWithPot;
+            healthTracker.SetMaxHealth(data.maxHealth);
+            playerData.MaxHealth = data.maxHealth;
+            healthTracker.SetHealth(playerData.MaxHealth);
+            playerData.Health = playerData.MaxHealth;
+            Debug.Log("Max health stored is " + data.maxHealth);
+        }
+    }
+
+    public void ShowShopUi() => shopPanel.SetActive(true);
+    public void HideShopUi() => shopPanel.SetActive(false);
 }
