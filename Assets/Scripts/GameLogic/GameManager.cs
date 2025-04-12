@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMOD.Studio;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,13 +46,14 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
             Destroy(gameObject);
             return;
         }
+        
 
         // Make sure we have a UI canvas
         if (uiCanvas == null)
@@ -74,28 +76,14 @@ public class GameManager : MonoBehaviour
 
                 Debug.Log("Created new UI canvas");
             }
+
         }
 }
 
     void Start()
     {
-        Screen.fullScreen = true;
-
-        SpawnPlayer();
-
-        SetupHealthUI();
-
-        isGameOver = false;
-        isGamePaused = false;
-        Time.timeScale = 1f;
-
-        // Make sure GameOver UI is hidden initially
-        if (gameOverUI != null)
-        {
-            gameOverUI.SetActive(false);
-        }
-        LoadPlayerData();
-        Debug.Log("Player melee damage is: " + playerData.meleeAttackDamage);
+        // Code moved to OnSceneLoaded(): This is to handle loading the game on a scene-by-scene basis, rather than whenever the script first starts.
+        // This functionality is for DontDestroyOnLoad support
     }
 
     private void Update()
@@ -119,6 +107,50 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        //if (gameOverUI == null)
+        //{
+        //    gameOverUI = GameObject.FindGameObjectWithTag("GameOverUI");
+        //}
+
+        //if (pauseScreen == null)
+        //{
+        //    pauseScreen = GameObject.FindGameObjectWithTag("PauseUI");
+        //}
+
+        //if (shopPanel == null)
+        //{
+        //    shopPanel = GameObject.FindGameObjectWithTag("ShopUI");
+        //}
+
+        //if (powerupManager == null)
+        //{
+        //    powerupManager = Object.FindFirstObjectByType<PowerupManager>();
+        //}
+        Debug.Log("Game Manager: Loading scene");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Screen.fullScreen = true;
+
+        SpawnPlayer();
+
+        SetupHealthUI();
+
+        isGameOver = false;
+        isGamePaused = false;
+        Time.timeScale = 1f;
+
+        // Make sure GameOver UI is hidden initially
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(false);
+        }
+        LoadPlayerData();
+        AudioManager.instance.pauseUnmute();
+        Debug.Log("Player melee damage is: " + playerData.meleeAttackDamage);
+
     }
     private void SpawnPlayer()
     {
@@ -263,6 +295,7 @@ public class GameManager : MonoBehaviour
     {
         isGamePaused = !isGamePaused;
         Time.timeScale = isGamePaused ? 0f : 1f;
+
         Debug.Log(isGamePaused ? "Game Paused" : "Game Resumed");
     }
 
@@ -280,6 +313,7 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.Paused);
             Time.timeScale = 0f;
             pauseScreen.SetActive(true);
+            AudioManager.instance.pauseMute();
             Debug.Log("Game paused");
         }
     }
@@ -291,6 +325,7 @@ public class GameManager : MonoBehaviour
             ChangeState(previousState);
             Time.timeScale = 1f;
             pauseScreen.SetActive(false);
+            AudioManager.instance.pauseUnmute();
             Debug.Log("Game Resumed");
         }
     }
@@ -321,17 +356,15 @@ public class GameManager : MonoBehaviour
             gameOverUI.SetActive(false);
         }
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("testCombatScene");
-        LoadPlayerData();
 
-        /* // Respawn player if needed
-        if (currentPlayer == null)
-        {
-            SpawnPlayer();
-            SetupHealthUI();
-        }
+        //// Respawn player if needed
+        //if (currentPlayer == null)
+        //{
+        //    SpawnPlayer();
+        //    SetupHealthUI();
+        //}
 
-        Debug.Log("Game Restarted"); */
+        //Debug.Log("Game Restarted"); 
     }
 
     void DisableScreens()
@@ -381,4 +414,10 @@ public class GameManager : MonoBehaviour
 
     public void ShowShopUi() => shopPanel.SetActive(true);
     public void HideShopUi() => shopPanel.SetActive(false);
+
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // remove scene to prevent memory leak
+    }
 }
