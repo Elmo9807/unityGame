@@ -139,12 +139,20 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTime;
             doubleJump = false;
-            animator.SetBool("isJumping", !IsGrounded()); // grounded animation plays if grounded, else plays jump animation
+            if(Math.Abs(rb.linearVelocity.y) == 0)
+            {
+                animator.SetBool("isJumping", false);
+            }
+                
+
+
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
+
+
 
         playerData.UpdateEffects(Time.deltaTime);
     }
@@ -203,24 +211,36 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpPressed)
         {
-            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+            
+            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f) // jump 1
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
+                animator.SetBool("isJumping", true);
             }
-            else if (playerData.hasDoubleJump && !doubleJump)
+            else if (playerData.hasDoubleJump && !doubleJump) // jump 2
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
-                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDoubleJump, this.transform.position);
+                animator.SetBool("isJumping", true);
             }
+            
         }
 
         if (jumpPressed)
             jumpPressed = false;
     }
+
+    //void OnGUI() // Jump debugging
+    //{
+    //    GUILayout.Label($"Grounded: {IsGrounded()}");
+    //    GUILayout.Label($"Double Jump: {doubleJump}");
+    //    GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
+    //    GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
+    //}
 
     private bool IsGrounded()
     {
@@ -321,7 +341,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("HeavyAttack");
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHeavyAttack, this.transform.position);
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, heavyAttackRange, enemyLayer);
 
@@ -465,6 +485,7 @@ public class PlayerController : MonoBehaviour
 
             int damageAmount = Mathf.RoundToInt(damage);
             playerData.TakeDamage(damageAmount);
+
 
             // Add death check here
             if (playerData.Health <= 0)

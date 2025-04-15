@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -125,6 +127,7 @@ public class Enemy : MonoBehaviour, IDamageable
             {
                 _jumpCount = 0;
             }
+            
             EnforceGravity();
         }
     }
@@ -430,7 +433,7 @@ public class Enemy : MonoBehaviour, IDamageable
         if (collision.gameObject.CompareTag("Enemy") && !isCircumnavigating)
         {
             isCircumnavigating = true;
-            circumnavigationDirection = Random.value > 0.5f ? 1f : -1f;
+            circumnavigationDirection = UnityEngine.Random.value > 0.5f ? 1f : -1f;
             lastPathChangeTime = Time.time;
 
             if (showDebugLogs)

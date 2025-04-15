@@ -1,5 +1,8 @@
+using System;
 using UnityEngine;
 using System.Collections;
+using FMOD.Studio;
+
 
 public class Grunt : Enemy
 {
@@ -23,13 +26,15 @@ public class Grunt : Enemy
     private float navigationCheckCooldown = 0.5f;
     private float lastNavigationCheck = 0f;
 
+    // Audio
+    private EventInstance GruntFootstep;
+
     protected override void Start()
     {
         
         MaxHealth = 100;
         Speed = 4f;
         Name = "Grunt";
-
         base.Start();
     }
 
@@ -85,6 +90,12 @@ public class Grunt : Enemy
             
             MoveTowardsPlayer();
         }
+    }
+
+    protected override void FixedUpdate()
+    {
+        animator.SetFloat("xVelocity", Math.Abs(rb.linearVelocity.x)); // speed of running animation is based off of enemy's x velocity
+        base.FixedUpdate();
     }
 
     private void MoveTowardsPlayer()
@@ -222,6 +233,8 @@ public class Grunt : Enemy
             animator.SetTrigger("Attack");
         }
 
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.GruntAttack, this.transform.position);
+
         if (showDebugLogs)
             Debug.Log($"{Name} is attacking player");
 
@@ -270,6 +283,24 @@ public class Grunt : Enemy
         yield return new WaitForSeconds(delay);
         isAttacking = false;
     }
+
+
+    private void CallFootsteps() // This is called on certain frames of the walk animation. 
+    {
+        // Check if grounded
+        if (Math.Abs(rb.linearVelocity.y) < 0.1f)
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.GruntFootstep, transform.position);
+        }
+    }
+
+    //void OnGUI()
+    //{
+    //    GUILayout.Label("Grunt stats");
+    //    GUILayout.Label($"Grounded: {isGrounded}");
+    //    GUILayout.Label($"Velocity: {rb.linearVelocity.x}");
+    //    GUILayout.Label($"Anim XVel: {animator.GetFloat("xVelocity")}");
+    //}
 
     protected override void OnDrawGizmosSelected()
     {
