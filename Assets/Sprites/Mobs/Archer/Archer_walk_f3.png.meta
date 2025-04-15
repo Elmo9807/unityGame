@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 938231fbe7a18f040b43ea4cf5451d47
+guid: 62cfaf75276692f4487c5a9764788f83
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4818874289384125358
-    second: Grunt_Run_f1_0
+      213: -5788802291748688381
+    second: pixil-frame-2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -50,8 +50,8 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
-  spritePivot: {x: 0.443875, y: 0.5}
-  spritePixelsToUnits: 110
+  spritePivot: {x: 0.7047619, y: 0.5333334}
+  spritePixelsToUnits: 400
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grunt_Run_f1_0
+      name: pixil-frame-2_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 3
-        width: 41
-        height: 58
+        x: 77
+        y: 13
+        width: 113
+        height: 197
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25c0ff38d5bef1db0800000000000000
-      internalID: -4818874289384125358
+      spriteID: 30e2a5d6cfa0aafa0800000000000000
+      internalID: -5788802291748688381
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Grunt_Run_f1_0: -4818874289384125358
+      pixil-frame-2_0: -5788802291748688381
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

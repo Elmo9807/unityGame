@@ -4146,6 +4146,13 @@ MonoBehaviour:
       Data3: -1061220711
       Data4: -1348698377
     Path: event:/SFX/Character/Footsteps/PlayerFootstepsRough
+  <PlayerFootstepAction>k__BackingField:
+    Guid:
+      Data1: -403347381
+      Data2: 1097397896
+      Data3: 690982326
+      Data4: -1081888006
+    Path: event:/SFX/Character/Footsteps/FootstepsAction
   <PlayerJump>k__BackingField:
     Guid:
       Data1: -1721871514
@@ -4195,6 +4202,13 @@ MonoBehaviour:
       Data3: 2070558375
       Data4: -9335314
     Path: event:/SFX/Character/Combat/SwordHit
+  <Heal>k__BackingField:
+    Guid:
+      Data1: 998913004
+      Data2: 1131852674
+      Data3: 1819318450
+      Data4: -175805279
+    Path: event:/SFX/Character/Combat/Heal
   <DungeonAmbience>k__BackingField:
     Guid:
       Data1: 917498343
@@ -4244,6 +4258,13 @@ MonoBehaviour:
       Data3: 1956232879
       Data4: -204482697
     Path: event:/SFX/Enemies/Archer/EnemyArrowShoot
+  <ArcherFootstep>k__BackingField:
+    Guid:
+      Data1: -1363187521
+      Data2: 1158226940
+      Data3: 1373431451
+      Data4: -1228427782
+    Path: event:/SFX/Enemies/Archer/Footsteps
   <GruntFootstep>k__BackingField:
     Guid:
       Data1: 1184257417

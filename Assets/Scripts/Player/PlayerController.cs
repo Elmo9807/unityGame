@@ -68,9 +68,6 @@ public class PlayerController : MonoBehaviour
 
     private bool isProcessingDamage = false;
 
-    // Audio
-    private EventInstance playerFootstepRough;
-
     // Initialization
     private void Awake()
     {
@@ -96,7 +93,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough); // initializes footstep audio
         animator = GetComponent<Animator>();
 
         playerData.OnHealthChanged += healthChangeHandler;
@@ -125,7 +121,7 @@ public class PlayerController : MonoBehaviour
             if (attackPressed) HandleAttack();
             if (heavyAttackPressed) HandleHeavyAttack();
             if (playerData.hasDash && dashPressed) HandleDashInput();
-            if (useHealPressed && playerData.hasHealingPotion) playerData.UseHealingPotion();
+            if (useHealPressed && playerData.hasHealingPotion) HandleHealPotion();
         }
         else
         {
@@ -139,10 +135,8 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTime;
             doubleJump = false;
-            if(Math.Abs(rb.linearVelocity.y) == 0)
-            {
-                animator.SetBool("isJumping", false);
-            }
+            animator.SetBool("isJumping", false);
+
                 
 
 
@@ -150,6 +144,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+            animator.SetBool("isJumping", true);
         }
 
 
@@ -163,7 +158,6 @@ public class PlayerController : MonoBehaviour
         {
             ApplyMovement();
             ProcessJump();
-            UpdateSound(); // plays footstep audio
             animator.SetFloat("xVelocity", Math.Abs(rb.linearVelocity.x)); // speed of running animation is based off of player's x velocity
             animator.SetFloat("yVelocity", rb.linearVelocity.y); // triggers falling animation if y velocity is negative (going doing), else triggers jumping animation if y velocity is positive (going up)
         }
@@ -218,14 +212,12 @@ public class PlayerController : MonoBehaviour
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
-                animator.SetBool("isJumping", true);
             }
             else if (playerData.hasDoubleJump && !doubleJump) // jump 2
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDoubleJump, this.transform.position);
-                animator.SetBool("isJumping", true);
             }
             
         }
@@ -234,13 +226,15 @@ public class PlayerController : MonoBehaviour
             jumpPressed = false;
     }
 
-    //void OnGUI() // Jump debugging
-    //{
-    //    GUILayout.Label($"Grounded: {IsGrounded()}");
-    //    GUILayout.Label($"Double Jump: {doubleJump}");
-    //    GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
-    //    GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
-    //}
+    void OnGUI() // Jump debugging
+    {
+        GUILayout.Label($"Grounded: {IsGrounded()}");
+        GUILayout.Label($"Double Jump: {doubleJump}");
+        GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
+        GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
+        GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
+        GUILayout.Label($"jumpPressed: {jumpPressed}");
+    }
 
     private bool IsGrounded()
     {
@@ -281,6 +275,12 @@ public class PlayerController : MonoBehaviour
             PerformHeavyAttack();
             nextHeavyAttackTime = Time.time + 1f / heavyAttackRate;
         }
+    }
+
+    private void HandleHealPotion()
+    {
+        playerData.UseHealingPotion();
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Heal, this.transform.position);
     }
 
     private void ShootArrow()
@@ -522,21 +522,13 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    private void UpdateSound()
-    {   // if player is moving on ground, starts footstep loop sound
-        if (rb.linearVelocity.x != 0 && IsGrounded())
+    private void CallFootsteps() // This is called on certain frames of the walk animation. 
+    {
+        // Check if grounded
+        if (Math.Abs(rb.linearVelocity.y) < 0.1f)
         {
-            // checks if footsteps already playing
-            PLAYBACK_STATE playbackState;
-            playerFootstepRough.getPlaybackState(out playbackState);
-            if (playbackState != PLAYBACK_STATE.PLAYING)
-            {
-                playerFootstepRough.start();
-            }
-        }
-        else // else, stops footstep loop sound
-        {
-            playerFootstepRough.stop(STOP_MODE.ALLOWFADEOUT);
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerFootstepAction, transform.position);
         }
     }
+
 }
