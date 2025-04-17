@@ -102,15 +102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5026ac01e8a8f544a6264a3d23c6243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 0}
   rb: {fileID: 7323873495963865655}
   groundCheck: {fileID: 1653041343866352155}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackDamage: 100
-  attackRate: 2
-  attackRange: 0.5
   attackPoint: {fileID: 2826269697015391046}
   enemyLayer:
     serializedVersion: 2
@@ -118,14 +114,13 @@ MonoBehaviour:
   animator: {fileID: 0}
   arrowPrefab: {fileID: 0}
   bowFirePoint: {fileID: 0}
+  dashParticles: {fileID: 0}
+  attackRate: 2
+  attackRange: 0.5
   dashForce: 12
   dashDuration: 0.15
   dashCooldown: 1
-  dashTrail: {fileID: 0}
-  dashParticles: {fileID: 0}
   dashInvulnerability: 1
-  debugHealth: 1
-  debugDash: 1
 --- !u!212 &50211828194017558
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -250,7 +245,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4

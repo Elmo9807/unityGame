@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough); // initializes footstep audio
+        /*playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough);*/ // initializes footstep audio
 
         playerData.OnHealthChanged += healthChangeHandler;
         healthTracker.SetHealth(playerData.Health);
@@ -192,13 +192,13 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
-                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
+                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);*/
             }
             else if (playerData.hasDoubleJump && !doubleJump)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
-                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
+                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);*/
             }
         }
 
@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Attack");
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
+        /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);*/
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
@@ -280,14 +280,14 @@ public class PlayerController : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(playerData.meleeAttackDamage);
-                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);*/
                 continue;
             }
 
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
                 enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage));
-                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);*/
         }
     }
 

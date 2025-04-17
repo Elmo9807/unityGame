@@ -289,7 +289,7 @@ public class Mage : Enemy
         if (projectileAttacker != null && _playerTransform != null)
         {
             projectileAttacker.ShootProjectile(_playerTransform, "fireball");
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballThrow, this.transform.position);
+            /*AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballThrow, this.transform.position);*/
 
             if (showDebugLogs)
                 Debug.Log($"{Name} cast fireball at player!");

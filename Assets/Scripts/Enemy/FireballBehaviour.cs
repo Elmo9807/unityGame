@@ -81,7 +81,7 @@ public class FireballBehavior : MonoBehaviour
 
             // Create impact effect
             CreateImpactEffect();
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballExplosion, this.transform.position); 
+            /*AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballExplosion, this.transform.position); */
             // Destroy fireball
             Destroy(gameObject);
         }
@@ -91,7 +91,7 @@ public class FireballBehavior : MonoBehaviour
         {
             // Create impact effect on walls/ground/other objects
             CreateImpactEffect();
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballExplosion, this.transform.position);
+            /*AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballExplosion, this.transform.position);*/
             Destroy(gameObject);
         }
     }
