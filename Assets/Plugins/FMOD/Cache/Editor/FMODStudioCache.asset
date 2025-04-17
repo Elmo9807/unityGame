@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9033498819044168108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Footsteps/FootstepsAction
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Footsteps/FootstepsAction
+  Guid:
+    Data1: -403347381
+    Data2: 1097397896
+    Data3: 690982326
+    Data4: -1081888006
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6483852762033529924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,11 +96,92 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638789420074991850
+  lastModified: 638804924479445334
   FileSizes:
   - Name: Desktop
-    Value: 386016
+    Value: 488832
   Exists: 1
+--- !u!114 &-5337415271053191944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Grunt/Movement/FootstepsAction
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Grunt/Movement/FootstepsAction
+  Guid:
+    Data1: 1184257417
+    Data2: 1320801934
+    Data3: -1356120957
+    Data4: 164287150
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 15
+  Length: 0
+--- !u!114 &-4840037789861553035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/dungeonbgm
+  m_EditorClassIdentifier: 
+  Path: event:/Music/dungeonbgm
+  Guid:
+    Data1: 821742326
+    Data2: 1167825345
+    Data3: -1549651062
+    Data4: -1425158146
+  Banks:
+  - {fileID: 4478899813613896146}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 510406
+--- !u!114 &-4392196735210382395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/SwordSwing
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/SwordSwing
+  Guid:
+    Data1: -372491394
+    Data2: 1099038782
+    Data3: -1918100040
+    Data4: -1836386316
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2606886245630602060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,12 +349,22 @@ MonoBehaviour:
   - {fileID: -6404392974174020157}
   - {fileID: -1296900666266230239}
   - {fileID: -2606886245630602060}
+  - {fileID: -4840037789861553035}
+  - {fileID: 4375247370819371103}
+  - {fileID: 795203247646065354}
+  - {fileID: -9033498819044168108}
+  - {fileID: 1029897100061006594}
+  - {fileID: -4392196735210382395}
+  - {fileID: -5337415271053191944}
+  - {fileID: 8028996182326718088}
+  - {fileID: 2420153128212940747}
+  - {fileID: 4506120178632028454}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638789420074991850
+  cacheTime: 638804924479445334
   cacheVersion: 131846
 --- !u!114 &738550034174508720
 MonoBehaviour:
@@ -275,6 +393,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &795203247646065354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Jump/PlayerDoubleJump
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Jump/PlayerDoubleJump
+  Guid:
+    Data1: -1371256023
+    Data2: 1181972620
+    Data3: 442736312
+    Data4: -1374742907
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &795992159213790067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,10 +435,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638785260910795991
+  lastModified: 638804924478797818
   FileSizes:
   - Name: Desktop
-    Value: 1760
+    Value: 2234
   Exists: 1
 --- !u!114 &1029216154037550626
 MonoBehaviour:
@@ -322,6 +467,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &1029897100061006594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Dash/Dash
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Dash/Dash
+  Guid:
+    Data1: 772075872
+    Data2: 1239133104
+    Data3: -1816127336
+    Data4: -73987398
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
+--- !u!114 &2420153128212940747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Grunt/Movement/Footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Grunt/Movement/Footsteps
+  Guid:
+    Data1: 239531211
+    Data2: 1303753516
+    Data3: 1345519238
+    Data4: 513276474
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
 --- !u!114 &2610125960349318455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,11 +587,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638789413050783663
+  lastModified: 638804924478777735
   FileSizes:
   - Name: Desktop
-    Value: 1915968
+    Value: 1916480
   Exists: 1
+--- !u!114 &4375247370819371103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Grunt/Combat/Attack
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Grunt/Combat/Attack
+  Guid:
+    Data1: -1266046201
+    Data2: 1129233772
+    Data3: -656736371
+    Data4: 940835440
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &4478899813613896146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,11 +634,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638789413050957594
+  lastModified: 638804924479385185
   FileSizes:
   - Name: Desktop
-    Value: 2572416
+    Value: 8527360
   Exists: 1
+--- !u!114 &4506120178632028454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/Heal
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/Heal
+  Guid:
+    Data1: 998913004
+    Data2: 1131852674
+    Data3: 1819318450
+    Data4: -175805279
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &6533021381237429663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,6 +686,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1802
   Exists: 1
+--- !u!114 &8028996182326718088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Archer/Footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Archer/Footsteps
+  Guid:
+    Data1: -1363187521
+    Data2: 1158226940
+    Data3: 1373431451
+    Data4: -1228427782
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8277615243774728565
 MonoBehaviour:
   m_ObjectHideFlags: 0

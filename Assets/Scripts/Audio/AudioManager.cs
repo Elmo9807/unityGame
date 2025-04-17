@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
@@ -25,19 +26,26 @@ public class AudioManager : MonoBehaviour
 
     private EventInstance ambienceEventInstance;
     private EventInstance musicEventInstance;
+
     public static AudioManager instance { get; private set; } // Singleton: other scripts can read this instance (public), but only AudioManager can modify instance property
 
     private void Awake()
 
     {
-        if(instance == null)
+        // Singleton pattern
+        if (instance == null)
         {
-            Debug.LogError("More than one audio manager in the scene is running!");
+            instance = this;
+            transform.parent = null;
+            DontDestroyOnLoad(gameObject);
         }
-        instance = this;
-
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
         eventInstances = new List<EventInstance>();
-        eventEmitters = new List<StudioEventEmitter>();
+        eventEmitters = new List<StudioEventEmitter>(); // for objects using persisting spatial audio
 
         masterBus = RuntimeManager.GetBus("Bus:/");
         musicBus = RuntimeManager.GetBus("Bus:/Music");
@@ -46,12 +54,12 @@ public class AudioManager : MonoBehaviour
         gameSFXBus = RuntimeManager.GetBus("Bus:/Game SFX");
         reverbBus = RuntimeManager.GetBus("Bus:/Reverb");
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
     }
 
-    private void Start() // mainly used to load bgm/ambience
+    private void Start()
     {
-        InitializeAmbience(FMODEvents.instance.DungeonAmbience);
-        InitializeMusic(FMODEvents.instance.PianoLoop);
         
     }
 
@@ -62,6 +70,7 @@ public class AudioManager : MonoBehaviour
         ambienceBus.setVolume(ambienceVolume);
         uiSFXBus.setVolume(uiSFXVolume);
         gameSFXBus.setVolume(gameSFXVolume); reverbBus.setVolume(gameSFXVolume); // game SFX is routed to the reverb in FMOD, so their volumes must change at the same time
+
     }
 
     private void InitializeAmbience(EventReference ambienceEventReference)
@@ -69,12 +78,26 @@ public class AudioManager : MonoBehaviour
         ambienceEventInstance = CreateInstance(ambienceEventReference);
         ambienceEventInstance.setParameterByName("ambience_intensity", 1f);
         ambienceEventInstance.start();
+        eventInstances.Add(ambienceEventInstance);
     }
 
     private void InitializeMusic(EventReference musicEventReference)
     {
         musicEventInstance = CreateInstance(musicEventReference);
-        musicEventInstance.start(); 
+        musicEventInstance.start();
+        eventInstances.Add(musicEventInstance);
+    }
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("AudioManager: Changing scene");
+        CleanUp();
+        if (scene.name == "Dungeon01")
+        {
+            InitializeAmbience(FMODEvents.instance.DungeonAmbience);
+        }
+        
     }
 
     public void PlayOneShot(EventReference sound, Vector3 worldPos) // Used for playing short SFXs like jumping, picking up items, UI, etc.
@@ -96,16 +119,49 @@ public class AudioManager : MonoBehaviour
         return emitter;
     }
 
+    public void pauseMute() // mutes all buses except ui
+    {
+        musicBus.setMute(true);
+        ambienceBus.setMute(true);
+        gameSFXBus.setMute(true);
+    }
+
+    public void pauseUnmute()
+    {
+        musicBus.setMute(false);
+        ambienceBus.setMute(false);
+        gameSFXBus.setMute(false);
+    }
+
     private void CleanUp()
-    {   // stops and releases created instances in scene
-        foreach(EventInstance eventInstance in eventInstances)
+    {
+        // stops and releases created eventinstances in scene, e.g. footsteps, bgm
+        if (eventInstances != null)
         {
-            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            eventInstance.release();
-        //  stops event emitters so that they dont stay whilst in other scenes
-        }foreach(StudioEventEmitter emitter in eventEmitters)
-        {
-            emitter.Stop();
+            foreach (EventInstance eventInstance in eventInstances)
+            {
+                eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                eventInstance.release();
+            }
+            eventInstances.Clear();
         }
+        
+
+        // stops event emitters so that they don't stay while in other scenes
+        if(eventEmitters != null)
+        {
+            foreach (StudioEventEmitter emitter in eventEmitters)
+            {
+                if (emitter.IsPlaying()) emitter.Stop();
+            }
+            eventEmitters.Clear();
+        }
+        
+    }
+
+    private void OnDestroy()
+    {
+        CleanUp();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

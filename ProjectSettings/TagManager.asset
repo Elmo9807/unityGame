@@ -9,6 +9,9 @@ TagManager:
   - Platform
   - PlayerProjectile
   - Event
+  - OneWayPlatform
+  - Event
+  - ShopUI
   layers:
   - Default
   - TransparentFX

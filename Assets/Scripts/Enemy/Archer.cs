@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+
 
 public class Archer : Enemy
 {
@@ -132,6 +134,7 @@ public class Archer : Enemy
 
     protected override void FixedUpdate()
     {
+        animator.SetFloat("xVelocity", Math.Abs(rb.linearVelocity.x));
         base.FixedUpdate();
 
         
@@ -435,7 +438,7 @@ public class Archer : Enemy
             else
             {
                 
-                float strafeDir = (Random.value > 0.5f) ? 1f : -1f;
+                float strafeDir = (UnityEngine.Random.value > 0.5f) ? 1f : -1f;
                 if (CheckIfCanMove(strafeDir))
                 {
                     rb.linearVelocity = new Vector2(strafeDir * Speed, rb.linearVelocity.y);
@@ -482,8 +485,9 @@ public class Archer : Enemy
         {
             
             UpdateFacing();
-            
-            
+
+
+            animator.SetTrigger("Attack");
             projectileAttacker.ShootProjectile(_playerTransform, "arrow");
             //AudioManager.instance.PlayOneShot(FMODEvents.instance.ArcherArrowShoot, this.transform.position);
             Debug.Log($"Archer shot arrow at {targetPosition}");
@@ -503,8 +507,16 @@ public class Archer : Enemy
             }
         }
     }
-    
-    
+
+    private void CallFootsteps() // This is called on certain frames of the walk animation. 
+    {
+        // Check if grounded
+        if (Math.Abs(rb.linearVelocity.y) < 0.1f)
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.ArcherFootstep, transform.position);
+        }
+    }
+
     protected override void OnDrawGizmosSelected()
     {
         base.OnDrawGizmosSelected();
@@ -521,4 +533,5 @@ public class Archer : Enemy
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, retreatRange);
     }
+
 }

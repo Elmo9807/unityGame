@@ -187,6 +187,7 @@ public class Mage : Enemy
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color originalColor = spriteRenderer.color;
 
+        // Fade out effect
         while (Time.time < startTime + 0.5f)
         {
             float t = (Time.time - startTime) / 0.5f;
@@ -194,18 +195,22 @@ public class Mage : Enemy
             yield return null;
         }
 
+        // Calculate initial teleport position
         Vector3 directionFromPlayer = (transform.position - _playerTransform.position).normalized;
         Vector3 newPosition = _playerTransform.position + directionFromPlayer * teleportDistance;
-
         newPosition.y = _playerTransform.position.y + levitationHeight;
 
+        // Find a valid teleport position using raycasting
+        newPosition = FindValidTeleportPosition(newPosition);
+
+        // Perform the teleport
         transform.position = newPosition;
         baseY = transform.position.y;
 
         UpdateFacing();
 
+        // Fade in effect
         startTime = Time.time;
-
         while (Time.time < startTime + 0.5f)
         {
             float t = (Time.time - startTime) / 0.5f;
@@ -214,8 +219,68 @@ public class Mage : Enemy
         }
 
         spriteRenderer.color = originalColor;
-
         isTeleporting = false;
+    }
+
+    private Vector3 FindValidTeleportPosition(Vector3 proposedPosition)
+    {
+        // Get collider size
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider == null)
+        {
+            if (showDebugLogs)
+                Debug.LogWarning($"{Name} has no Collider2D component for teleport collision check");
+            return proposedPosition;
+        }
+
+        // Define what the mage can and cannot collide with
+        int layerMask = ~0; // All layers by default
+
+        // Exclude the mage's own layer to prevent self-collision
+        layerMask &= ~(1 << gameObject.layer);
+
+        // Also exclude any other layers you want to allow teleporting through
+        // For example, if you have a "MageProjectile" layer (layer 10):
+        // layerMask &= ~(1 << 10);
+
+        // Sanity check if position is valid
+        if (Physics2D.OverlapBox(proposedPosition, collider.bounds.size, 0, layerMask))
+        {
+            if (showDebugLogs)
+                Debug.Log($"{Name} cannot teleport to initial position due to collision, trying alternatives");
+
+            // Try multiple directions in a circular pattern
+            float[] angles = { 0, 45, -45, 90, -90, 135, -135, 180 };
+            float distanceStep = teleportDistance / 2; // Try half distance
+
+            // Try different angles and distances
+            for (int a = 0; a < angles.Length; a++)
+            {
+                for (float distance = distanceStep; distance <= teleportDistance; distance += distanceStep)
+                {
+                    float radians = angles[a] * Mathf.Deg2Rad;
+                    Vector2 dir = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+
+                    Vector3 testPosition = _playerTransform.position + new Vector3(dir.x, dir.y, 0) * distance;
+                    testPosition.y = Mathf.Max(testPosition.y, _playerTransform.position.y + levitationHeight);
+
+                    // Check if this position is clear
+                    if (!Physics2D.OverlapBox(testPosition, collider.bounds.size, 0, layerMask))
+                    {
+                        if (showDebugLogs)
+                            Debug.Log($"{Name} found valid teleport position at angle {angles[a]} and distance {distance}");
+                        return testPosition;
+                    }
+                }
+            }
+
+            // If we get here, we couldn't find a valid position
+            if (showDebugLogs)
+                Debug.LogWarning($"{Name} could not find a valid teleport position, staying in place");
+            return transform.position; // Stay in current position
+        }
+
+        return proposedPosition; // Original position was valid
     }
 
     private IEnumerator CastFireball()
@@ -289,7 +354,7 @@ public class Mage : Enemy
         if (projectileAttacker != null && _playerTransform != null)
         {
             projectileAttacker.ShootProjectile(_playerTransform, "fireball");
-            /*AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballThrow, this.transform.position);*/
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.MageFireballThrow, this.transform.position);
 
             if (showDebugLogs)
                 Debug.Log($"{Name} cast fireball at player!");

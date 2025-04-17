@@ -1,5 +1,6 @@
 using UnityEngine;
 using FMOD.Studio;
+using System;
 
 //Anything we want to do with influencing the player object, we put in here guys, thanks.
 public class PlayerController : MonoBehaviour
@@ -23,7 +24,11 @@ public class PlayerController : MonoBehaviour
     // Attacking
     [SerializeField] private float attackRate = 2f;
     [SerializeField] private float attackRange = 0.5f;
+    [SerializeField] private float heavyAttackRate = 10f;
+    [SerializeField] private float heavyAttackRange = 2f;
+    [SerializeField] private float heavyAttackDamageMultiplier = 2f;
     private float nextAttackTime = 0f;
+    private float nextHeavyAttackTime = 0f;
     private float nextBowAttackTime = 0f;
     private float bowCooldown = 0.5f;
 
@@ -33,7 +38,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private bool dashInvulnerability = true;
     private float speed = 8f;
-    private float jumpingPower = 8f;
+    private float jumpingPower = 16f;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = 0.2f;
@@ -53,14 +58,12 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed;
     private bool jumpHeld;
     private bool attackPressed;
+    private bool heavyAttackPressed;
     private bool bowAttackPressed;
     private bool dashPressed;
     private bool useHealPressed;
 
     private bool isProcessingDamage = false;
-
-    // Audio
-    private EventInstance playerFootstepRough;
 
     // Initialization
     private void Awake()
@@ -87,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        /*playerFootstepRough = AudioManager.instance.CreateInstance(FMODEvents.instance.PlayerFootstepRough);*/ // initializes footstep audio
+        animator = GetComponent<Animator>();
 
         playerData.OnHealthChanged += healthChangeHandler;
         healthTracker.SetHealth(playerData.Health);
@@ -113,8 +116,9 @@ public class PlayerController : MonoBehaviour
         {
             if (playerData.hasBow && bowAttackPressed) HandleBowAttack();
             if (attackPressed) HandleAttack();
+            if (heavyAttackPressed) HandleHeavyAttack();
             if (playerData.hasDash && dashPressed) HandleDashInput();
-            if (useHealPressed && playerData.hasHealingPotion) playerData.UseHealingPotion();
+            if (useHealPressed && playerData.hasHealingPotion) HandleHealPotion();
         }
         else
         {
@@ -127,11 +131,19 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTime;
             doubleJump = false;
+            animator.SetBool("isJumping", false);
+
+                
+
+
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+            animator.SetBool("isJumping", true);
         }
+
+
 
         playerData.UpdateEffects(Time.deltaTime);
     }
@@ -142,7 +154,8 @@ public class PlayerController : MonoBehaviour
         {
             ApplyMovement();
             ProcessJump();
-            UpdateSound(); // plays footstep audio
+            animator.SetFloat("xVelocity", Math.Abs(rb.linearVelocity.x)); // speed of running animation is based off of player's x velocity
+            animator.SetFloat("yVelocity", rb.linearVelocity.y); // triggers falling animation if y velocity is negative (going doing), else triggers jumping animation if y velocity is positive (going up)
         }
         else
         {
@@ -162,6 +175,7 @@ public class PlayerController : MonoBehaviour
         jumpHeld = Input.GetButton("Jump");
         attackPressed = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z);
         bowAttackPressed = Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.X);
+        heavyAttackPressed = Input.GetKeyDown(KeyCode.R);
         dashPressed = Input.GetKeyDown(KeyCode.LeftShift);
         useHealPressed = Input.GetKeyDown(KeyCode.H);
     }
@@ -187,23 +201,35 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpPressed)
         {
-            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+            
+            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f) // jump 1
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
                 /*AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);*/
             }
-            else if (playerData.hasDoubleJump && !doubleJump)
+            else if (playerData.hasDoubleJump && !doubleJump) // jump 2
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = true;
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);*/
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDoubleJump, this.transform.position);
             }
+            
         }
 
         if (jumpPressed)
             jumpPressed = false;
+    }
+
+    void OnGUI() // Jump debugging
+    {
+        GUILayout.Label($"Grounded: {IsGrounded()}");
+        GUILayout.Label($"Double Jump: {doubleJump}");
+        GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
+        GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
+        GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
+        GUILayout.Label($"jumpPressed: {jumpPressed}");
     }
 
     private bool IsGrounded()
@@ -238,10 +264,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void HandleHeavyAttack()
+    {
+        if (Time.time >= nextHeavyAttackTime)
+        {
+            PerformHeavyAttack();
+            nextHeavyAttackTime = Time.time + 1f / heavyAttackRate;
+        }
+    }
+
+    private void HandleHealPotion()
+    {
+        playerData.UseHealingPotion();
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Heal, this.transform.position);
+    }
+
     private void ShootArrow()
     {
         if (animator != null)
             animator.SetTrigger("BowAttack");
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.BowAttack, this.transform.position);
 
         Vector2 direction;
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -291,6 +333,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void PerformHeavyAttack()
+    {
+        if (animator != null)
+            animator.SetTrigger("HeavyAttack");
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHeavyAttack, this.transform.position);
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, heavyAttackRange, enemyLayer);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(playerData.meleeAttackDamage * heavyAttackDamageMultiplier);
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+                continue;
+            }
+
+            Enemy enemyComponent = enemy.GetComponent<Enemy>();
+            if (enemyComponent != null)
+                enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage * heavyAttackDamageMultiplier));
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+        }
+    }
+
     // Dash
     private void HandleDashInput()
     {
@@ -311,6 +378,7 @@ public class PlayerController : MonoBehaviour
         canDash = false;
         dashTimeLeft = dashDuration;
         lastDashTime = Time.time;
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDash, this.transform.position);
 
         // dashTrail.emitting = true;
 
@@ -378,13 +446,14 @@ public class PlayerController : MonoBehaviour
             int damageAmount = Mathf.RoundToInt(damage);
             playerData.TakeDamage(damageAmount);
 
+
             // Add death check here
             if (playerData.Health <= 0)
             {
                 // Call game over since we can't directly access HealthTracker.Die()
                 if (GameManager.Instance != null)
                 {
-                    GameManager.Instance.HandleGameOver();
+                    GameManager.Instance.GameOver();
                 }
                 else
                 {
@@ -400,7 +469,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
-        GameManager.Instance.HandleGameOver();
+        GameManager.Instance.GameOver();
     }
 
     // Gizmos
@@ -413,21 +482,13 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    private void UpdateSound()
-    {   // if player is moving on ground, starts footstep loop sound
-        if (rb.linearVelocity.x != 0 && IsGrounded())
+    private void CallFootsteps() // This is called on certain frames of the walk animation. 
+    {
+        // Check if grounded
+        if (Math.Abs(rb.linearVelocity.y) < 0.1f)
         {
-            // checks if footsteps already playing
-            PLAYBACK_STATE playbackState;
-            playerFootstepRough.getPlaybackState(out playbackState);
-            if (playbackState != PLAYBACK_STATE.PLAYING)
-            {
-                playerFootstepRough.start();
-            }
-        }
-        else // else, stops footstep loop sound
-        {
-            playerFootstepRough.stop(STOP_MODE.ALLOWFADEOUT);
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerFootstepAction, transform.position);
         }
     }
+
 }
