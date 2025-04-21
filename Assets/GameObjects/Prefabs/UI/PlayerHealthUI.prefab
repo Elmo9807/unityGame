@@ -41,13 +41,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8400807750815683240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1df9ff5c1a432744b653a332aff3407, type: 3}
+  m_Script: {fileID: 11500000, guid: 99fdd7e5834b83247a0b218c1e45267d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealthTracker: {fileID: 0}
   healthSlider: {fileID: 0}
   healthText: {fileID: 0}
-  topOffset: 20
-  leftOffset: 20
-  sliderWidth: 200
-  sliderHeight: 30
+  gameCanvas: {fileID: 0}
+  verticalOffset: 1.5
+  sliderWidth: 1
+  sliderHeight: 0.2
+  useWorldSpace: 0

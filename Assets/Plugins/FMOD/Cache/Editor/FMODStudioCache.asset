@@ -96,10 +96,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638808536138887730
+  lastModified: 638808554783028213
   FileSizes:
   - Name: Desktop
-    Value: 204192
+    Value: 488832
   Exists: 1
 --- !u!114 &-5337415271053191944
 MonoBehaviour:
@@ -358,12 +358,13 @@ MonoBehaviour:
   - {fileID: 8028996182326718088}
   - {fileID: 2420153128212940747}
   - {fileID: 4506120178632028454}
+  - {fileID: 7523011161659141000}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638808536138887730
+  cacheTime: 638808605803617835
   cacheVersion: 131846
 --- !u!114 &738550034174508720
 MonoBehaviour:
@@ -434,10 +435,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638808536138851954
+  lastModified: 638808601960737266
   FileSizes:
   - Name: Desktop
-    Value: 2184
+    Value: 2234
   Exists: 1
 --- !u!114 &1029216154037550626
 MonoBehaviour:
@@ -606,10 +607,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638800197598931170
+  lastModified: 638808605803617835
   FileSizes:
   - Name: Desktop
-    Value: 8527360
+    Value: 8527648
   Exists: 1
 --- !u!114 &4506120178632028454
 MonoBehaviour:
@@ -653,11 +654,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638808491445707510
+  lastModified: 638808601960717257
   FileSizes:
   - Name: Desktop
     Value: 1802
   Exists: 1
+--- !u!114 &7523011161659141000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Mage/MageLevitate
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Mage/MageLevitate
+  Guid:
+    Data1: 1856846873
+    Data2: 1118980582
+    Data3: 1786050742
+    Data4: 1898144150
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 12
+  Length: 16632
 --- !u!114 &8028996182326718088
 MonoBehaviour:
   m_ObjectHideFlags: 0

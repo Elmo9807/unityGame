@@ -229,15 +229,15 @@ public class PlayerController : MonoBehaviour
             jumpPressed = false;
     }
 
-    void OnGUI() // Jump debugging
-    {
-        GUILayout.Label($"Grounded: {IsGrounded()}");
-        GUILayout.Label($"Double Jump: {doubleJump}");
-        GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
-        GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
-        GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
-        GUILayout.Label($"jumpPressed: {jumpPressed}");
-    }
+    //void OnGUI() // Jump debugging
+    //{
+    //    GUILayout.Label($"Grounded: {IsGrounded()}");
+    //    GUILayout.Label($"Double Jump: {doubleJump}");
+    //    GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
+    //    GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
+    //    GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
+    //    GUILayout.Label($"jumpPressed: {jumpPressed}");
+    //}
 
     private bool IsGrounded()
     {
@@ -496,6 +496,7 @@ public class PlayerController : MonoBehaviour
                 // Call game over since we can't directly access HealthTracker.Die()
                 if (GameManager.Instance != null)
                 {
+
                     GameManager.Instance.GameOver();
                 }
                 else

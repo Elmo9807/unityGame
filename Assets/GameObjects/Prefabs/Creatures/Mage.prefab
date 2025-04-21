@@ -76,6 +76,8 @@ MonoBehaviour:
   teleportDistance: 6
   castingTime: 1
   teleportCooldown: 5
+  collisionCheckRadius: 0.5
+  wallAvoidanceForce: 20
 --- !u!50 &7802153667301452864
 Rigidbody2D:
   serializedVersion: 5
@@ -255,10 +257,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -36630791
-      Data2: 1102208442
-      Data3: 796228245
-      Data4: -1794482380
+      Data1: 1856846873
+      Data2: 1118980582
+      Data3: 1786050742
+      Data4: 1898144150
     Path: event:/SFX/Enemies/Mage/MageLevitate
   Event: 
   EventPlayTrigger: 1
@@ -270,4 +272,4 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMaxDistance: 12

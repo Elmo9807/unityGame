@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using static UnityEditor.PlayerSettings;
+#endif
 using JetBrains.Annotations;
 
 public class LevelPathGenerator : MonoBehaviour

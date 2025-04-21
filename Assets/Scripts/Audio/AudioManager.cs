@@ -96,6 +96,7 @@ public class AudioManager : MonoBehaviour
         if (scene.name == "Dungeon01")
         {
             InitializeAmbience(FMODEvents.instance.DungeonAmbience);
+            InitializeMusic(FMODEvents.instance.dungeonBgm);
         }
         
     }

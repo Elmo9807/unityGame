@@ -12,6 +12,7 @@ TagManager:
   - OneWayPlatform
   - Event
   - ShopUI
+  - GameUI
   layers:
   - Default
   - TransparentFX
