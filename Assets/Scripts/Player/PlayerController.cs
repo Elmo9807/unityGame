@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using FMOD.Studio;
 using System;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform bowFirePoint;
     // [SerializeField] private TrailRenderer dashTrail;
     [SerializeField] private ParticleSystem dashParticles;
+    [SerializeField] private Collider2D playerCollider;
 
     // Attacking
     [Header("Attacking")]
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private bool dashInvulnerability = true;
     [SerializeField] private float speed = 8f;
-    [SerializeField]private float jumpingPower = 16f;
+    [SerializeField] private float jumpingPower = 11f;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = 0.2f;
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour
     private float lastDashTime = -10f;
     private Vector2 dashDirection;
 
+    private bool isFallingThrough = false;
 
     private float horizontalInput;
     private bool jumpPressed;
@@ -104,10 +107,10 @@ public class PlayerController : MonoBehaviour
         if (arrowPrefab == null)
             arrowPrefab = Resources.Load<GameObject>("PlayerProjectile");
 
-        playerData.hasBow = true;
+        /* playerData.hasBow = true;
         playerData.hasDash = true;
         playerData.hasDoubleJump = true;
-        playerData.hasHealingPotion = true;
+        playerData.hasHealingPotion = true; */
     }
 
     // Main Update
@@ -129,6 +132,7 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleJumpBuffer();
+        HandleOneWayPlatforms();
 
         if (IsGrounded())
         {
@@ -136,7 +140,7 @@ public class PlayerController : MonoBehaviour
             doubleJump = false;
             animator.SetBool("isJumping", false);
 
-                
+
 
 
         }
@@ -204,7 +208,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpPressed)
         {
-            
+
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f) // jump 1
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
@@ -218,11 +222,21 @@ public class PlayerController : MonoBehaviour
                 doubleJump = true;
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDoubleJump, this.transform.position);
             }
-            
+
         }
 
         if (jumpPressed)
             jumpPressed = false;
+    }
+
+    void OnGUI() // Jump debugging
+    {
+        GUILayout.Label($"Grounded: {IsGrounded()}");
+        GUILayout.Label($"Double Jump: {doubleJump}");
+        GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
+        GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
+        GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
+        GUILayout.Label($"jumpPressed: {jumpPressed}");
     }
 
     private bool IsGrounded()
@@ -322,7 +336,7 @@ public class PlayerController : MonoBehaviour
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
                 enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage));
-                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
         }
     }
 
@@ -408,6 +422,42 @@ public class PlayerController : MonoBehaviour
     private void ResetDash()
     {
         canDash = true;
+    }
+
+    private void HandleOneWayPlatforms()
+    {
+        if (Input.GetKey(KeyCode.S) && !isFallingThrough)
+        {
+            StartCoroutine(DisableCollisionTemporarily());
+        }
+    }
+
+    IEnumerator DisableCollisionTemporarily()
+    {
+        Collider2D platformCollider = GetPlatformUnderneath();
+        if (platformCollider != null)
+        {
+            isFallingThrough = true;
+
+            Physics2D.IgnoreCollision(platformCollider, playerCollider, true);
+            yield return new WaitUntil(() => playerCollider.bounds.max.y < platformCollider.bounds.min.y ||
+            playerCollider.bounds.max.x < platformCollider.bounds.min.x ||
+            playerCollider.bounds.min.x > playerCollider.bounds.max.x);
+            yield return new WaitForSeconds(0.1f);
+            Physics2D.IgnoreCollision(platformCollider, playerCollider, false);
+
+            isFallingThrough = false;
+        }
+    }
+
+    Collider2D GetPlatformUnderneath()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 1f);
+        if (hit.collider != null && hit.collider.CompareTag("OneWayPlatform"))
+        {
+            return hit.collider;
+        }
+        return null;
     }
 
     // Public Methods
