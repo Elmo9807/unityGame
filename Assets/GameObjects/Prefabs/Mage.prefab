@@ -67,7 +67,7 @@ MonoBehaviour:
   wallCheckDistance: 0.5
   ledgeCheckDistance: 1
   enemyCheckDistance: 1.5
-  showDebugLogs: 1
+  showDebugLogs: 0
   levitationHeight: 2
   hoverAmplitude: 0.2
   hoverFrequency: 2

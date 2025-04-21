@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     private float lastDashTime = -10f;
     private Vector2 dashDirection;
 
-    // Input
+
     private float horizontalInput;
     private bool jumpPressed;
     private bool jumpHeld;

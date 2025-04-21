@@ -17,6 +17,10 @@ public class Mage : Enemy
     public float castingTime = 1f;
     public float teleportCooldown = 5f;
 
+    [Header("Collision Settings")]
+    public float collisionCheckRadius = 0.5f; // Radius for collision detection
+    public float wallAvoidanceForce = 20f; // Force applied to avoid walls
+
     private ProjectileAttacker projectileAttacker;
     private float hoverStartTime;
     private bool isTeleporting = false;
@@ -126,7 +130,76 @@ public class Mage : Enemy
         }
     }
 
-    [System.Obsolete]
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+
+        if (!isTeleporting && !isCasting && rb != null)
+        {
+            AvoidWalls();
+        }
+    }
+
+
+    private void AvoidWalls()
+    {
+
+        float[] rayAngles = { 0, 45, 90, 135, 180, 225, 270, 315 };
+        float rayDistance = collisionCheckRadius;
+        bool wallDetected = false;
+        Vector2 avoidanceDirection = Vector2.zero;
+
+        foreach (float angle in rayAngles)
+        {
+
+            float radian = angle * Mathf.Deg2Rad;
+            Vector2 direction = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayDistance, obstacleLayer);
+
+
+            if (showDebugLogs)
+            {
+                Debug.DrawRay(transform.position, direction * rayDistance,
+                    hit.collider != null ? Color.red : Color.green, 0.1f);
+            }
+
+            if (hit.collider != null)
+            {
+
+                wallDetected = true;
+                float distanceFactor = 1f - (hit.distance / rayDistance);
+                avoidanceDirection += -direction * distanceFactor;
+
+                if (showDebugLogs)
+                {
+                    Debug.Log($"[Mage] Wall detected at {hit.distance} units in direction {angle} degrees");
+                }
+            }
+        }
+
+
+        if (wallDetected)
+        {
+            avoidanceDirection.Normalize();
+            rb.AddForce(avoidanceDirection * wallAvoidanceForce, ForceMode2D.Force);
+
+            if (showDebugLogs)
+            {
+                Debug.Log($"[Mage] Applying avoidance force: {avoidanceDirection * wallAvoidanceForce}");
+            }
+        }
+    }
+
+
+    private bool IsPointInsideCollider(Vector2 point, Collider2D collider)
+    {
+        return collider.OverlapPoint(point);
+    }
+
     private void UpdateRigidbodyState()
     {
         if (rb == null) return;
@@ -145,7 +218,7 @@ public class Mage : Enemy
     {
         base.FindPlayer(); // Call base implementation first
 
-        // Check if player is within detection range
+
         if (IsPlayerValid)
         {
             currentPlayerDistance = Vector3.Distance(transform.position, _playerTransform.position);
@@ -153,7 +226,7 @@ public class Mage : Enemy
             if (currentPlayerDistance > detectionRadius)
             {
                 Debug.Log($"[Mage] Found player but they're outside detection radius ({currentPlayerDistance} > {detectionRadius})");
-                // Don't acknowledge player is beyond detection radius
+
                 _playerTransform = null;
                 _playerObject = null;
             }
@@ -187,7 +260,7 @@ public class Mage : Enemy
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color originalColor = spriteRenderer.color;
 
-        // Fade out effect
+
         while (Time.time < startTime + 0.5f)
         {
             float t = (Time.time - startTime) / 0.5f;
@@ -195,21 +268,21 @@ public class Mage : Enemy
             yield return null;
         }
 
-        // Calculate initial teleport position
+
         Vector3 directionFromPlayer = (transform.position - _playerTransform.position).normalized;
         Vector3 newPosition = _playerTransform.position + directionFromPlayer * teleportDistance;
         newPosition.y = _playerTransform.position.y + levitationHeight;
 
-        // Find a valid teleport position using raycasting
+
         newPosition = FindValidTeleportPosition(newPosition);
 
-        // Perform the teleport
+
         transform.position = newPosition;
         baseY = transform.position.y;
 
         UpdateFacing();
 
-        // Fade in effect
+
         startTime = Time.time;
         while (Time.time < startTime + 0.5f)
         {
@@ -224,7 +297,7 @@ public class Mage : Enemy
 
     private Vector3 FindValidTeleportPosition(Vector3 proposedPosition)
     {
-        // Get collider size
+
         Collider2D collider = GetComponent<Collider2D>();
         if (collider == null)
         {
@@ -233,54 +306,65 @@ public class Mage : Enemy
             return proposedPosition;
         }
 
-        // Define what the mage can and cannot collide with
-        int layerMask = ~0; // All layers by default
 
-        // Exclude the mage's own layer to prevent self-collision
-        layerMask &= ~(1 << gameObject.layer);
-
-        // Also exclude any other layers you want to allow teleporting through
-        // For example, if you have a "MageProjectile" layer (layer 10):
-        // layerMask &= ~(1 << 10);
-
-        // Sanity check if position is valid
-        if (Physics2D.OverlapBox(proposedPosition, collider.bounds.size, 0, layerMask))
+        if (Physics2D.OverlapBox(proposedPosition, collider.bounds.size, 0, obstacleLayer))
         {
             if (showDebugLogs)
                 Debug.Log($"{Name} cannot teleport to initial position due to collision, trying alternatives");
 
-            // Try multiple directions in a circular pattern
-            float[] angles = { 0, 45, -45, 90, -90, 135, -135, 180 };
-            float distanceStep = teleportDistance / 2; // Try half distance
+            float[] angles = { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330 };
+            float[] distances = { teleportDistance, teleportDistance * 0.75f, teleportDistance * 0.5f, teleportDistance * 0.25f };
 
-            // Try different angles and distances
-            for (int a = 0; a < angles.Length; a++)
+
+            foreach (float distance in distances)
             {
-                for (float distance = distanceStep; distance <= teleportDistance; distance += distanceStep)
+                foreach (float angle in angles)
                 {
-                    float radians = angles[a] * Mathf.Deg2Rad;
+                    float radians = angle * Mathf.Deg2Rad;
                     Vector2 dir = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
 
                     Vector3 testPosition = _playerTransform.position + new Vector3(dir.x, dir.y, 0) * distance;
                     testPosition.y = Mathf.Max(testPosition.y, _playerTransform.position.y + levitationHeight);
 
-                    // Check if this position is clear
-                    if (!Physics2D.OverlapBox(testPosition, collider.bounds.size, 0, layerMask))
+
+                    if (!Physics2D.OverlapBox(testPosition, collider.bounds.size, 0, obstacleLayer))
                     {
-                        if (showDebugLogs)
-                            Debug.Log($"{Name} found valid teleport position at angle {angles[a]} and distance {distance}");
-                        return testPosition;
+
+                        if (HasLineOfSightTo(testPosition))
+                        {
+                            if (showDebugLogs)
+                                Debug.Log($"{Name} found valid teleport position at angle {angle} and distance {distance}");
+                            return testPosition;
+                        }
                     }
                 }
             }
 
-            // If we get here, we couldn't find a valid position
+
             if (showDebugLogs)
                 Debug.LogWarning($"{Name} could not find a valid teleport position, staying in place");
             return transform.position; // Stay in current position
         }
 
+
+        if (!HasLineOfSightTo(proposedPosition))
+        {
+            if (showDebugLogs)
+                Debug.Log($"{Name} cannot teleport to initial position due to lack of line of sight");
+            return transform.position; // Stay in current position
+        }
+
         return proposedPosition; // Original position was valid
+    }
+
+
+    private bool HasLineOfSightTo(Vector3 targetPos)
+    {
+        Vector2 direction = (targetPos - transform.position).normalized;
+        float distance = Vector2.Distance(transform.position, targetPos);
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distance, obstacleLayer);
+        return hit.collider == null;
     }
 
     private IEnumerator CastFireball()
@@ -297,13 +381,22 @@ public class Mage : Enemy
 
         yield return new WaitForSeconds(castingTime);
 
-        Attack();
+
+        if (IsPlayerValid && HasLineOfSightTo(_playerTransform.position))
+        {
+            Attack();
+        }
+        else if (showDebugLogs)
+        {
+            Debug.Log($"{Name} lost line of sight to player during casting");
+        }
 
         isCasting = false;
     }
 
     private void Fly(Vector3 targetPos)
     {
+
         Vector3 desiredPos = new Vector3(
             targetPos.x,
             targetPos.y + levitationHeight,
@@ -313,10 +406,28 @@ public class Mage : Enemy
         float hoverOffset = hoverAmplitude * Mathf.Sin(hoverFrequency * (Time.time - hoverStartTime));
         desiredPos.y += hoverOffset;
 
+
+        if (Physics2D.OverlapPoint(desiredPos, obstacleLayer))
+        {
+
+            desiredPos = FindNearestSafePosition(desiredPos);
+        }
+
         if (rb != null)
         {
             Vector2 direction = ((Vector2)desiredPos - (Vector2)transform.position).normalized;
             float distance = Vector2.Distance(transform.position, desiredPos);
+
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distance, obstacleLayer);
+            if (hit.collider != null)
+            {
+
+                direction = Vector2.Reflect(direction, hit.normal).normalized;
+
+                if (showDebugLogs)
+                    Debug.Log($"{Name} detected obstacle, adjusting flight path");
+            }
 
             float speedMultiplier = Mathf.Min(distance, 1f);
 
@@ -337,11 +448,38 @@ public class Mage : Enemy
         }
     }
 
+
+    private Vector3 FindNearestSafePosition(Vector3 position)
+    {
+
+        float[] distances = { 0.5f, 1f, 1.5f, 2f, 2.5f, 3f };
+        float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
+
+        foreach (float distance in distances)
+        {
+            foreach (float angle in angles)
+            {
+                float radians = angle * Mathf.Deg2Rad;
+                Vector2 offset = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * distance;
+                Vector3 testPosition = position + new Vector3(offset.x, offset.y, 0);
+
+
+                if (!Physics2D.OverlapPoint(testPosition, obstacleLayer))
+                {
+                    return testPosition;
+                }
+            }
+        }
+
+
+        return transform.position;
+    }
+
     protected override void CheckSurroundings()
     {
         base.CheckSurroundings();
 
-        isGrounded = true;
+        isGrounded = false;
     }
 
     public override void MoveTowardsTarget(Vector3 targetPosition)
@@ -363,6 +501,7 @@ public class Mage : Enemy
 
     protected override void EnforceGravity()
     {
+
         return;
     }
 
@@ -379,6 +518,15 @@ public class Mage : Enemy
                 StartCoroutine(Teleport());
             }
         }
+        else if ((obstacleLayer.value & (1 << collision.gameObject.layer)) != 0)
+        {
+
+            Vector2 pushDirection = ((Vector2)transform.position - (Vector2)collision.contacts[0].point).normalized;
+            rb.AddForce(pushDirection * wallAvoidanceForce, ForceMode2D.Impulse);
+
+            if (showDebugLogs)
+                Debug.Log($"{Name} is pushing away from obstacle: {collision.gameObject.name}");
+        }
     }
 
     protected override void OnDrawGizmosSelected()
@@ -390,5 +538,9 @@ public class Mage : Enemy
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, teleportThreshold);
+
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, collisionCheckRadius);
     }
 }
