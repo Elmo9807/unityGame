@@ -96,10 +96,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638804924479445334
+  lastModified: 638808491448999279
   FileSizes:
   - Name: Desktop
-    Value: 488832
+    Value: 204192
   Exists: 1
 --- !u!114 &-5337415271053191944
 MonoBehaviour:
@@ -344,7 +344,6 @@ MonoBehaviour:
   - {fileID: 1029216154037550626}
   - {fileID: -1313372175471959357}
   - {fileID: -1766127894116074527}
-  - {fileID: 3462653498980048440}
   - {fileID: 738550034174508720}
   - {fileID: -6404392974174020157}
   - {fileID: -1296900666266230239}
@@ -364,7 +363,7 @@ MonoBehaviour:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638804924479445334
+  cacheTime: 638808491448999279
   cacheVersion: 131846
 --- !u!114 &738550034174508720
 MonoBehaviour:
@@ -435,10 +434,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638804924478797818
+  lastModified: 638808491445732569
   FileSizes:
   - Name: Desktop
-    Value: 2234
+    Value: 2184
   Exists: 1
 --- !u!114 &1029216154037550626
 MonoBehaviour:
@@ -545,33 +544,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &3462653498980048440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Enemies/Mage/MageLevitate
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Enemies/Mage/MageLevitate
-  Guid:
-    Data1: -36630791
-    Data2: 1102208442
-    Data3: 796228245
-    Data4: -1794482380
-  Banks:
-  - {fileID: -6104483362754535016}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 16632
 --- !u!114 &3484959865789138482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +559,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638804924478777735
+  lastModified: 638800999537974010
   FileSizes:
   - Name: Desktop
     Value: 1916480
@@ -634,7 +606,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638804924479385185
+  lastModified: 638800197598931170
   FileSizes:
   - Name: Desktop
     Value: 8527360
@@ -681,7 +653,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638785260910795991
+  lastModified: 638808491445707510
   FileSizes:
   - Name: Desktop
     Value: 1802

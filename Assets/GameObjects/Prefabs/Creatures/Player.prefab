@@ -116,7 +116,6 @@ MonoBehaviour:
   arrowPrefab: {fileID: 0}
   bowFirePoint: {fileID: 0}
   dashParticles: {fileID: 0}
-  playerCollider: {fileID: 1520990928881931472}
   attackRate: 2
   attackRange: 2
   heavyAttackRate: 1
@@ -126,6 +125,8 @@ MonoBehaviour:
   dashDuration: 0.15
   dashCooldown: 1
   dashInvulnerability: 1
+  speed: 8
+  jumpingPower: 11
 --- !u!212 &50211828194017558
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -218,7 +219,7 @@ BoxCollider2D:
   m_Offset: {x: -0.04122466, y: -0.002490364}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.55}
     oldSize: {x: 0.58181816, y: 0.58181816}
     newSize: {x: 0.58181816, y: 0.58181816}
     adaptiveTilingThreshold: 0.5

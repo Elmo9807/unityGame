@@ -8,7 +8,7 @@
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 0
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 000001C882CD6AA8 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 000001F36E9AC608 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
@@ -18,10 +18,64 @@
 [LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
 [LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
 [LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
-[LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
 [LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
 [LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
-[LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
+[LOG] SystemI::mixerSuspend                    : Suspending output.
+[LOG] SystemI::mixerResume                     : Resuming output.
+[LOG] SoundI::release                          :  (000001F24FF54A28)
+[LOG] SoundI::release                          :     swoosh 4 (000001F31A2881E8)
+[LOG] SoundI::release                          :  (000001F24FF562E8)
+[LOG] SoundI::release                          :     swoosh 5 (000001F31A289FE8)
+[LOG] SoundI::release                          :  (000001F24FF56B28)
+[LOG] SoundI::release                          :     swoosh 6 (000001F31A28AA68)
+[LOG] SoundI::release                          :  (000001F24FF56868)
+[LOG] SoundI::release                          :     swoosh 7 (000001F31A28BAE8)
+[LOG] SoundI::release                          :  (000001F2C2900BA8)
+[LOG] SoundI::release                          :     arrow_woosh (000001F2779D0AF8)
+[LOG] SoundI::release                          :  (000001F2C2901288)
+[LOG] SoundI::release                          :     footsteps_player_grass_01 (000001F2779D04F8)
+[LOG] SoundI::release                          :  (000001F36F47FE58)
+[LOG] SoundI::release                          :     footsteps_player_grass_03 (000001F2779D0378)
+[LOG] SoundI::release                          :  (000001F24FF55D68)
+[LOG] SoundI::release                          :     skeleton_footstep (000001F31A289E68)
+[LOG] SoundI::release                          :  (000001F24FF56DE8)
+[LOG] SoundI::release                          :     skeleton_footstep2 (000001F31A287D68)
+[LOG] SoundI::release                          :  (000001F24FF56C88)
+[LOG] SoundI::release                          :     skeleton_footstep3 (000001F31A28AD68)
+[LOG] SoundI::release                          :  (000001F36F480118)
+[LOG] SoundI::release                          :     07_human_atk_sword_2 (000001F2779D07F8)
+[LOG] SoundI::release                          :  (000001F31A688238)
+[LOG] SoundI::release                          :     footsteps_player_wood_01 (000001F024ACDD98)
+[LOG] SoundI::release                          :  (000001F31A688658)
+[LOG] SoundI::release                          :     footsteps_player_wood_02 (000001F024ACDF18)
+[LOG] SoundI::release                          :  (000001F31A688A78)
+[LOG] SoundI::release                          :     footsteps_player_wood_03 (000001F024ACDA98)
+[LOG] SoundI::release                          :  (000001F023BD5CC8)
+[LOG] SoundI::release                          :     footsteps_player_wood_04 (000001F024ACD498)
+[LOG] SoundI::release                          :  (000001F36ED4B378)
+[LOG] SoundI::release                          :     footsteps_enemy_01 (000001F0343587E8)
+[LOG] SoundI::release                          :  (000001F36ED4B0B8)
+[LOG] SoundI::release                          :     footsteps_enemy_02 (000001F034358668)
+[LOG] SoundI::release                          :  (000001F36ED4BE78)
+[LOG] SoundI::release                          :     footsteps_enemy_03 (000001F034358DE8)
+[LOG] SoundI::release                          :  (000001F24FF58D88)
+[LOG] SoundI::release                          :     footsteps_player_grass_02 (000001F31A2890E8)
+[LOG] SoundI::release                          :  (000001F319053338)
+[LOG] SoundI::release                          :     07_human_atk_sword_1 (000001F275EE5F18)
+[LOG] SoundI::release                          :  (000001F24FF569C8)
+[LOG] SoundI::release                          :     20_orc_special_atk (000001F31A28A8E8)
+[LOG] SoundI::release                          :  (000001F24FF58C28)
+[LOG] SoundI::release                          :     26_sword_hit_3 (000001F31A288968)
+[LOG] Thread::callback                         : FMOD Studio update thread finished.
+[LOG] Thread::callback                         : FMOD Studio bank load thread finished.
+[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
+[LOG] Thread::callback                         : FMOD Studio sample load thread finished.
+[LOG] LiveUpdate::release                      : 
+[LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
+[LOG] Thread::callback                         : FMOD stream thread finished.
+[LOG] Thread::callback                         : FMOD mixer thread finished.
+[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
+[LOG] SystemI::closeInternal                   : Closed.
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Thread::callback                         : FMOD Studio sample load thread finished.
 [LOG] LiveUpdate::release                      : 
@@ -29,3 +83,5 @@
 [LOG] Thread::callback                         : FMOD stream thread finished.
 [LOG] Thread::callback                         : FMOD mixer thread finished.
 [LOG] SystemI::closeInternal                   : Closed.
+[LOG] Thread::callback                         : FMOD nonblocking thread (0) finished.
+[LOG] Thread::callback                         : FMOD file thread finished.

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Player.HealthChangeHandler healthChangeHandler;
 
     // Components
+    [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ParticleSystem dashParticles;
 
     // Attacking
+    [Header("Attacking")]
     [SerializeField] private float attackRate = 2f;
     [SerializeField] private float attackRange = 0.5f;
     [SerializeField] private float heavyAttackRate = 10f;
@@ -33,12 +35,13 @@ public class PlayerController : MonoBehaviour
     private float bowCooldown = 0.5f;
 
     // Movement
+    [Header("Movement")]
     [SerializeField] private float dashForce = 24f;
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private bool dashInvulnerability = true;
-    private float speed = 8f;
-    private float jumpingPower = 16f;
+    [SerializeField] private float speed = 8f;
+    [SerializeField]private float jumpingPower = 16f;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = 0.2f;
@@ -207,7 +210,7 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);*/
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
             }
             else if (playerData.hasDoubleJump && !doubleJump) // jump 2
             {
@@ -220,16 +223,6 @@ public class PlayerController : MonoBehaviour
 
         if (jumpPressed)
             jumpPressed = false;
-    }
-
-    void OnGUI() // Jump debugging
-    {
-        GUILayout.Label($"Grounded: {IsGrounded()}");
-        GUILayout.Label($"Double Jump: {doubleJump}");
-        GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
-        GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
-        GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
-        GUILayout.Label($"jumpPressed: {jumpPressed}");
     }
 
     private bool IsGrounded()
@@ -312,7 +305,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Attack");
-        /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);*/
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
@@ -322,14 +315,14 @@ public class PlayerController : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(playerData.meleeAttackDamage);
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);*/
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
                 continue;
             }
 
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
                 enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage));
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);*/
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
         }
     }
 

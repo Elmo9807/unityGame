@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{21c302f6-041f-4552-af61-8f7e947172be}">
+		<property name="assetPath">
+			<value>UI/Stereo/ogg/JDSherbert - Ultimate UI SFX Pack - Cursor - 5.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.0052083333333335</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{4553cde7-6a69-4e19-8962-38bd2c830f87}</destination>
+		</relationship>
+	</object>
+</objects>
