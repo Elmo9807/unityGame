@@ -693,24 +693,24 @@ public class DaBigBoss : Enemy
     {
         if (!IsPlayerValid) return;
 
-        lastBiteTime = Time.time;
+        //lastBiteTime = Time.time;
 
 
-        if (animator != null)
-            animator.SetTrigger("Bite");
+        //if (animator != null)
+        //    animator.SetTrigger("Bite");
 
 
-        if (currentPlayerDistance <= biteRange)
-        {
+        //if (currentPlayerDistance <= biteRange)
+        //{
 
-            DamagePlayer(biteDamage);
+        //    DamagePlayer(biteDamage);
 
 
-            ApplyKnockbackToPlayer(playerKnockbackForce);
+        //    ApplyKnockbackToPlayer(playerKnockbackForce);
 
-            if (debugGroundDetection)
-                Debug.Log($"{Name} bit player for {biteDamage} damage with knockback");
-        }
+        //    if (debugGroundDetection)
+        //        Debug.Log($"{Name} bit player for {biteDamage} damage with knockback");
+        //}
     }
 
     private void ApplyKnockbackToPlayer(float force)
