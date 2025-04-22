@@ -77,6 +77,7 @@ public class PlayerArrow : MonoBehaviour
             {
                 enemy.TakeDamage(finalDamage);
                 Debug.Log($"Hit enemy for {finalDamage} damage! (Base: {baseDamage}, Multiplier: {damageMultiplier})");
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
             }
 
             Destroy(gameObject);
@@ -84,6 +85,7 @@ public class PlayerArrow : MonoBehaviour
         else if (!collision.CompareTag("Player"))
         {
             hasHitTarget = true;
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.BowDeflect, this.transform.position); // plays audio when deflecting projectile with arrow
             Destroy(gameObject);
         }
     }

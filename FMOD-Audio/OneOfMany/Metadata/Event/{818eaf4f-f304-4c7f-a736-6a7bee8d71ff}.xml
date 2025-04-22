@@ -130,7 +130,10 @@
 			<value>2</value>
 		</property>
 		<property name="midGain">
-			<value>-5</value>
+			<value>-8</value>
+		</property>
+		<property name="highGain">
+			<value>-6.5</value>
 		</property>
 		<property name="lowCrossover">
 			<value>340</value>

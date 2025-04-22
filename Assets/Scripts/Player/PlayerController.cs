@@ -488,6 +488,7 @@ public class PlayerController : MonoBehaviour
 
             int damageAmount = Mathf.RoundToInt(damage);
             playerData.TakeDamage(damageAmount);
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerHurt, this.transform.position);
 
 
             // Add death check here
@@ -513,6 +514,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDie, this.transform.position);
+        AudioManager.instance.FadeoutAll();
         GameManager.Instance.GameOver();
     }
 

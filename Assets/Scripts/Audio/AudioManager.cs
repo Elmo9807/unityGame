@@ -134,6 +134,24 @@ public class AudioManager : MonoBehaviour
         gameSFXBus.setMute(false);
     }
 
+    public void FadeoutAll()
+    {
+        if (eventInstances != null)
+        {
+            foreach (EventInstance eventInstance in eventInstances)
+            {
+                eventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                eventInstance.release();
+            }
+        }
+    }
+
+    public void SetMusicArea(MusicArea area)
+    {
+        musicEventInstance.setParameterByName("area", (float) area);
+        Debug.Log($"Setting music enum to {area}");
+    }
+
     private void CleanUp()
     {
         // stops and releases created eventinstances in scene, e.g. footsteps, bgm

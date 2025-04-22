@@ -160,6 +160,7 @@ public class Enemy : MonoBehaviour, IDamageable
             Debug.Log($"{Name} has been defeated!");
 
         OnDeath?.Invoke();
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.EnemyDie, this.transform.position);
         Destroy(gameObject);
     }
 

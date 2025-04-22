@@ -15,7 +15,11 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference SwordAttack { get; private set; }
     [field: SerializeField] public EventReference SwordHeavyAttack { get; private set; }
     [field: SerializeField] public EventReference SwordHit { get; private set; }
+    [field: SerializeField] public EventReference BowHit { get; private set; }
+    [field: SerializeField] public EventReference BowDeflect { get; private set; }
     [field: SerializeField] public EventReference Heal { get; private set; }
+    [field: SerializeField] public EventReference PlayerHurt { get; private set; }
+    [field: SerializeField] public EventReference PlayerDie { get; private set; }
 
     [field: Header("Ambience")]
     [field: SerializeField] public EventReference DungeonAmbience { get; private set; }
@@ -23,7 +27,9 @@ public class FMODEvents : MonoBehaviour
     [field: Header("Music")]
     [field: SerializeField] public EventReference PianoLoop { get; private set; }
     [field: SerializeField] public EventReference dungeonBgm { get; private set; }
+
     [field: Header("Enemy SFX")]
+    [field: SerializeField] public EventReference EnemyDie { get; private set; }
     [field: SerializeField] public EventReference MageLevitate { get; private set; }
     [field: SerializeField] public EventReference MageFireballThrow { get; private set; }
     [field: SerializeField] public EventReference MageFireballExplosion { get; private set; }
@@ -31,6 +37,8 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference ArcherFootstep { get; private set; }
     [field: SerializeField] public EventReference GruntFootstep { get; private set; }
     [field: SerializeField] public EventReference GruntAttack { get; private set; }
+    [field: Header("UI")]
+    [field: SerializeField] public EventReference CoinPickup { get; private set; }
 
     public static FMODEvents instance { get; private set; }
 
