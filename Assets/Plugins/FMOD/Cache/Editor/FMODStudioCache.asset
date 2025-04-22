@@ -170,10 +170,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638808882488955262
+  lastModified: 638809390495639814
   FileSizes:
   - Name: Desktop
-    Value: 607840
+    Value: 612704
   Exists: 1
 --- !u!114 &-5337415271053191944
 MonoBehaviour:
@@ -303,6 +303,60 @@ MonoBehaviour:
     Data2: 1099038782
     Data3: -1918100040
     Data4: -1836386316
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4232962612932147784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/DragonFireballThrow
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/DragonFireballThrow
+  Guid:
+    Data1: -1613158453
+    Data2: 1189869058
+    Data3: 1365239177
+    Data4: 1557289075
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 685
+--- !u!114 &-3532817609012516685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/Idle
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/Idle
+  Guid:
+    Data1: 1193785305
+    Data2: 1163028197
+    Data3: -1388838983
+    Data4: -938101326
   Banks:
   - {fileID: -6104483362754535016}
   IsStream: 0
@@ -581,12 +635,16 @@ MonoBehaviour:
   - {fileID: 38474895002818570}
   - {fileID: -5148532078423940458}
   - {fileID: -144023240398645684}
+  - {fileID: 53454565819321180}
+  - {fileID: 812511785747198340}
+  - {fileID: -4232962612932147784}
+  - {fileID: -3532817609012516685}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638808896083442981
+  cacheTime: 638809390495639814
   cacheVersion: 131846
 --- !u!114 &38474895002818570
 MonoBehaviour:
@@ -615,6 +673,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &53454565819321180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/DragonFireballExplosion
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/DragonFireballExplosion
+  Guid:
+    Data1: -882051307
+    Data2: 1206581345
+    Data3: 1826078877
+    Data4: 575897681
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &738550034174508720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,11 +769,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638808896082514334
+  lastModified: 638809390492273302
   FileSizes:
   - Name: Desktop
-    Value: 2704
+    Value: 2896
   Exists: 1
+--- !u!114 &812511785747198340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/Flying
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/Flying
+  Guid:
+    Data1: 555858563
+    Data2: 1115708798
+    Data3: 884326020
+    Data4: 1109018906
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1029216154037550626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -883,7 +995,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638808896083442981
+  lastModified: 638809390493833051
   FileSizes:
   - Name: Desktop
     Value: 7375616
@@ -930,7 +1042,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638808896082494331
+  lastModified: 638809390492253260
   FileSizes:
   - Name: Desktop
     Value: 1802

@@ -53,6 +53,7 @@ public class DaBigBoss : Enemy
     private bool isChangingHeight = false;
     private int damageSinceLastPhaseChange = 0;
     private bool isFlying => currentState == DragonState.Flying;
+    private bool isMega;
 
 
     private float lastGroundLevel;
@@ -298,6 +299,12 @@ public class DaBigBoss : Enemy
             UpdateGroundedAttacks();
     }
 
+    protected override void FixedUpdate()
+    {
+        animator.SetInteger("DragonState", (int) currentState); // 0 = Grounded, 1 = Flying, 2 = Changing Height
+        base.FixedUpdate();
+    }
+
 
     private void SmoothUpdateFlightHeight()
     {
@@ -524,8 +531,12 @@ public class DaBigBoss : Enemy
         if (!IsPlayerValid) return;
 
         lastRegularFireballTime = Time.time;
+        isMega = false;
+        animator.SetTrigger("Fireball"); // CreateRegularFireball handled in animation event
+    }
 
-
+    private void CreateRegularFireball(GameObject prefab)
+    {
         Vector3 targetPosition = _playerTransform.position;
         Vector2 startPos = transform.position + new Vector3(
             isFacingRight ? Mathf.Abs(mouthOffset.x) : -Mathf.Abs(mouthOffset.x),
@@ -536,7 +547,7 @@ public class DaBigBoss : Enemy
 
 
         GameObject projectile = Instantiate(regularFireballPrefab, startPos, Quaternion.identity);
-
+        FireballSound();
 
         float regularFireballScale = 2.5f; // Reduced from 4.0f
         projectile.transform.localScale = new Vector3(regularFireballScale, regularFireballScale, 1f);
@@ -575,7 +586,6 @@ public class DaBigBoss : Enemy
 
             fireballBehavior.SetDirection(direction);
         }
-
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         projectile.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
@@ -584,12 +594,8 @@ public class DaBigBoss : Enemy
         if (!IsPlayerValid) return;
 
         lastMegaFireballTime = Time.time;
-
-
-        if (megaFireballPrefab != null)
-            CreateMegaFireball(megaFireballPrefab);
-        else if (regularFireballPrefab != null)
-            CreateMegaFireball(regularFireballPrefab);
+        isMega = true;
+        animator.SetTrigger("Fireball"); // CreateMegaFireball handled in animation event
     }
 
     private void CreateMegaFireball(GameObject prefab)
@@ -605,6 +611,7 @@ public class DaBigBoss : Enemy
 
 
         GameObject projectile = Instantiate(prefab, startPos, Quaternion.identity);
+        FireballSound();
 
 
         CircleCollider2D circleCollider = projectile.GetComponent<CircleCollider2D>();
@@ -659,7 +666,29 @@ public class DaBigBoss : Enemy
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         projectile.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
+    private void FireballSound()
+    {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.DragonFireballThrow, this.transform.position);
+    }
 
+    private void FireballAnimationEvent()
+    {
+        if (isMega)
+        {
+            if (megaFireballPrefab != null)
+                CreateMegaFireball(megaFireballPrefab);
+            else if (regularFireballPrefab != null)
+                CreateMegaFireball(regularFireballPrefab);
+        }
+        else
+        {
+            if (megaFireballPrefab != null)
+            {
+                CreateRegularFireball(regularFireballPrefab);
+            }
+        }
+
+    }
     private void PerformBiteAttack()
     {
         if (!IsPlayerValid) return;

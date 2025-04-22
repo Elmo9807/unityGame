@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] private TrailRenderer dashTrail;
     [SerializeField] private ParticleSystem dashParticles;
     [SerializeField] private Collider2D playerCollider;
+    [SerializeField] private bool invincible = false;
 
     // Attacking
     [Header("Attacking")]
@@ -483,7 +484,7 @@ public class PlayerController : MonoBehaviour
 
         try
         {
-            if (isDashing && dashInvulnerability)
+            if (isDashing && dashInvulnerability || invincible)
                 return;
 
             int damageAmount = Mathf.RoundToInt(damage);
