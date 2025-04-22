@@ -24,6 +24,7 @@ public class DaBigBoss : Enemy
     public float biteCooldown = 1.5f;
     public float biteRange = 2.5f;
     public float playerKnockbackForce = 15f;
+    public float initialAttackDelay = 2.5f;
 
     [Header("Projectile Settings")]
     public GameObject regularFireballPrefab;
@@ -53,6 +54,7 @@ public class DaBigBoss : Enemy
     private bool isChangingHeight = false;
     private int damageSinceLastPhaseChange = 0;
     private bool isFlying => currentState == DragonState.Flying;
+    private float gameStartTime;
 
 
     private float lastGroundLevel;
@@ -66,6 +68,12 @@ public class DaBigBoss : Enemy
 
     protected override void Start()
     {
+
+        gameStartTime = Time.time;
+
+        lastRegularFireballTime = gameStartTime;
+        lastMegaFireballTime = gameStartTime;
+        lastBiteTime = gameStartTime;
 
         Name = "Dragon Boss";
         MaxHealth = 500;
@@ -251,6 +259,8 @@ public class DaBigBoss : Enemy
 
     protected override void Update()
     {
+
+        bool canAttack = Time.time >= gameStartTime + initialAttackDelay;
 
         if (Time.time > lastPlayerCheckTime + playerCheckInterval)
         {
