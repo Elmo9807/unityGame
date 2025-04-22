@@ -69,7 +69,7 @@ public class DaBigBoss : Enemy
     {
 
         Name = "Dragon Boss";
-        MaxHealth = 500;
+        MaxHealth = 1500;
         Health = MaxHealth;
         Speed = 3f;
 
@@ -815,6 +815,24 @@ public class DaBigBoss : Enemy
     protected override void EnforceGravity()
     {
 
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        AudioManager.instance.SetMusicArea( (MusicArea) 3); // Transitions to outro of bgm when dragon dies
+    }
+
+    private void CallFlapSound()
+    {
+        if (currentState == 0) // if grounded, play idle flaps
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.DragonIdle, this.transform.position);
+        }
+        else if (currentState > 0)
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.DragonFlying, this.transform.position);
+        }
     }
 
     protected override void OnDrawGizmosSelected()

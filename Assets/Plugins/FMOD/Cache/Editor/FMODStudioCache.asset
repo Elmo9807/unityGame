@@ -170,10 +170,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638809390495639814
+  lastModified: 638809467739974395
   FileSizes:
   - Name: Desktop
-    Value: 612704
+    Value: 662688
   Exists: 1
 --- !u!114 &-5337415271053191944
 MonoBehaviour:
@@ -360,7 +360,7 @@ MonoBehaviour:
   Banks:
   - {fileID: -6104483362754535016}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -475,7 +475,7 @@ MonoBehaviour:
   - {fileID: 2610125960349318455}
   MinDistance: 1
   MaxDistance: 20
-  Length: 195555
+  Length: 123626
 --- !u!114 &-1296900666266230239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,7 +644,7 @@ MonoBehaviour:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638809390495639814
+  cacheTime: 638809480739119051
   cacheVersion: 131846
 --- !u!114 &38474895002818570
 MonoBehaviour:
@@ -948,10 +948,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638800999537974010
+  lastModified: 638809480739119051
   FileSizes:
   - Name: Desktop
-    Value: 1916480
+    Value: 1365088
   Exists: 1
 --- !u!114 &4375247370819371103
 MonoBehaviour:
