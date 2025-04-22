@@ -96,6 +96,7 @@ public class AudioManager : MonoBehaviour
         if (scene.name == "Dungeon01")
         {
             InitializeAmbience(FMODEvents.instance.DungeonAmbience);
+            InitializeMusic(FMODEvents.instance.dungeonBgm);
         }
         
     }
@@ -131,6 +132,24 @@ public class AudioManager : MonoBehaviour
         musicBus.setMute(false);
         ambienceBus.setMute(false);
         gameSFXBus.setMute(false);
+    }
+
+    public void FadeoutAll()
+    {
+        if (eventInstances != null)
+        {
+            foreach (EventInstance eventInstance in eventInstances)
+            {
+                eventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                eventInstance.release();
+            }
+        }
+    }
+
+    public void SetMusicArea(MusicArea area)
+    {
+        musicEventInstance.setParameterByName("area", (float) area);
+        Debug.Log($"Setting music enum to {area}");
     }
 
     private void CleanUp()

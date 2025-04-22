@@ -10,7 +10,7 @@ public class Coins : MonoBehaviour
         {
             // Find the PowerupManager
             PowerupManager powerupManager = FindFirstObjectByType<PowerupManager>();
-
+            HealthTracker health = collision.gameObject.GetComponent<HealthTracker>();
             // Check if we found a PowerupManager before using it
             if (powerupManager != null)
             {
@@ -22,6 +22,16 @@ public class Coins : MonoBehaviour
                 Debug.LogWarning("PowerupManager not found - couldn't add gold");
             }
 
+            if (health != null)
+            {
+                health.Heal(10);
+            }
+            else
+            {
+                Debug.LogWarning("HealthTracker not found - couldn't heal player!");
+            }
+
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.CoinPickup, this.transform.position);
             // Destroy the coin regardless of whether we found the PowerupManager
             Destroy(gameObject);
         }

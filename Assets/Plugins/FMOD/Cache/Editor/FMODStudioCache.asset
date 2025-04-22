@@ -27,6 +27,80 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-8882259753221995737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/UI.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD-Audio/OneOfMany/Build/Desktop/UI.bank
+  Name: UI
+  StudioPath: bank:/UI
+  lastModified: 638809506847360590
+  FileSizes:
+  - Name: Desktop
+    Value: 3232
+  Exists: 1
+--- !u!114 &-7346434496751647532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/ArrowHit
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/ArrowHit
+  Guid:
+    Data1: -422174617
+    Data2: 1110636308
+    Data3: 934211480
+    Data4: 336552431
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7194866743647839025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/PlayerDie
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/PlayerDie
+  Guid:
+    Data1: -1054325141
+    Data2: 1081067525
+    Data3: 647190915
+    Data4: -501155543
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6483852762033529924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,10 +170,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638804924479445334
+  lastModified: 638809506847345548
   FileSizes:
   - Name: Desktop
-    Value: 488832
+    Value: 662688
   Exists: 1
 --- !u!114 &-5337415271053191944
 MonoBehaviour:
@@ -128,6 +202,34 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 15
   Length: 0
+--- !u!114 &-5148532078423940458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/dungeonbgm 2
+  m_EditorClassIdentifier: 
+  Path: event:/Music/dungeonbgm 2
+  Guid:
+    Data1: 1348127567
+    Data2: 1091306327
+    Data3: 741482634
+    Data4: 341453954
+  Banks:
+  - {fileID: 4478899813613896146}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 7539844951425160614}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 216000
 --- !u!114 &-4840037789861553035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,10 +253,38 @@ MonoBehaviour:
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
+  Parameters:
+  - {fileID: -3412150655013817618}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 199433
+--- !u!114 &-4765416121531667010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Misc/CoinPickup
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Misc/CoinPickup
+  Guid:
+    Data1: 1107817147
+    Data2: 1216922582
+    Data3: -1480454737
+    Data4: -1599103063
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 510406
+  Length: 0
 --- !u!114 &-4392196735210382395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +312,88 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4232962612932147784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/DragonFireballThrow
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/DragonFireballThrow
+  Guid:
+    Data1: -1613158453
+    Data2: 1189869058
+    Data3: 1365239177
+    Data4: 1557289075
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 685
+--- !u!114 &-3532817609012516685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/Idle
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/Idle
+  Guid:
+    Data1: 1193785305
+    Data2: 1163028197
+    Data3: -1388838983
+    Data4: -938101326
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-3412150655013817618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/dungeonbgm/area
+  m_EditorClassIdentifier: 
+  Name: area
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1106345482
+    data2: 1424357671
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - dungeon_mute
+  - dungeon_calm
+  - dungeon_intense
+  - dungeon_outro
+  Exists: 1
 --- !u!114 &-2606886245630602060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +475,7 @@ MonoBehaviour:
   - {fileID: 2610125960349318455}
   MinDistance: 1
   MaxDistance: 20
-  Length: 195555
+  Length: 123626
 --- !u!114 &-1296900666266230239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,6 +503,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 255
+--- !u!114 &-988554224704830708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Misc/CoinPickup 2
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Misc/CoinPickup 2
+  Guid:
+    Data1: 42335146
+    Data2: 1078854122
+    Data3: 1950342579
+    Data4: -2097310511
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-803212371336956093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +557,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-144023240398645684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/BlockWithArrow
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/BlockWithArrow
+  Guid:
+    Data1: -412804098
+    Data2: 1169984963
+    Data3: 2100278928
+    Data4: -511411038
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,6 +602,7 @@ MonoBehaviour:
   - {fileID: 6533021381237429663}
   - {fileID: 4478899813613896146}
   - {fileID: -6104483362754535016}
+  - {fileID: -8882259753221995737}
   EditorEvents:
   - {fileID: -6483852762033529924}
   - {fileID: 8277615243774728565}
@@ -344,7 +611,6 @@ MonoBehaviour:
   - {fileID: 1029216154037550626}
   - {fileID: -1313372175471959357}
   - {fileID: -1766127894116074527}
-  - {fileID: 3462653498980048440}
   - {fileID: 738550034174508720}
   - {fileID: -6404392974174020157}
   - {fileID: -1296900666266230239}
@@ -359,13 +625,81 @@ MonoBehaviour:
   - {fileID: 8028996182326718088}
   - {fileID: 2420153128212940747}
   - {fileID: 4506120178632028454}
+  - {fileID: 7523011161659141000}
+  - {fileID: -7346434496751647532}
+  - {fileID: -4765416121531667010}
+  - {fileID: 7646383325055417031}
+  - {fileID: -988554224704830708}
+  - {fileID: 1855459221573062155}
+  - {fileID: -7194866743647839025}
+  - {fileID: 38474895002818570}
+  - {fileID: -5148532078423940458}
+  - {fileID: -144023240398645684}
+  - {fileID: 53454565819321180}
+  - {fileID: 812511785747198340}
+  - {fileID: -4232962612932147784}
+  - {fileID: -3532817609012516685}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638804924479445334
+  cacheTime: 638809506847360590
   cacheVersion: 131846
+--- !u!114 &38474895002818570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Character/Combat/PlayerHurt
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Character/Combat/PlayerHurt
+  Guid:
+    Data1: 1483875524
+    Data2: 1292286888
+    Data3: 1953943696
+    Data4: 1410805215
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &53454565819321180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/DragonFireballExplosion
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/DragonFireballExplosion
+  Guid:
+    Data1: -882051307
+    Data2: 1206581345
+    Data3: 1826078877
+    Data4: 575897681
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &738550034174508720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,11 +769,38 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638804924478797818
+  lastModified: 638809506846624868
   FileSizes:
   - Name: Desktop
-    Value: 2234
+    Value: 2896
   Exists: 1
+--- !u!114 &812511785747198340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/Flying
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/Flying
+  Guid:
+    Data1: 555858563
+    Data2: 1115708798
+    Data3: 884326020
+    Data4: 1109018906
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1029216154037550626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +855,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 626
+--- !u!114 &1855459221573062155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/EnemyDie
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/EnemyDie
+  Guid:
+    Data1: 1173662729
+    Data2: 1163641725
+    Data3: -1152087878
+    Data4: 1429811308
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &2420153128212940747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,33 +933,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &3462653498980048440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Enemies/Mage/MageLevitate
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Enemies/Mage/MageLevitate
-  Guid:
-    Data1: -36630791
-    Data2: 1102208442
-    Data3: 796228245
-    Data4: -1794482380
-  Banks:
-  - {fileID: -6104483362754535016}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 16632
 --- !u!114 &3484959865789138482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,10 +948,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638804924478777735
+  lastModified: 638809506846609827
   FileSizes:
   - Name: Desktop
-    Value: 1916480
+    Value: 1365088
   Exists: 1
 --- !u!114 &4375247370819371103
 MonoBehaviour:
@@ -634,10 +995,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638804924479385185
+  lastModified: 638809506847260474
   FileSizes:
   - Name: Desktop
-    Value: 8527360
+    Value: 7375616
   Exists: 1
 --- !u!114 &4506120178632028454
 MonoBehaviour:
@@ -681,11 +1042,93 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638785260910795991
+  lastModified: 638809506846609827
   FileSizes:
   - Name: Desktop
     Value: 1802
   Exists: 1
+--- !u!114 &7523011161659141000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Mage/MageLevitate
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Mage/MageLevitate
+  Guid:
+    Data1: 1856846873
+    Data2: 1118980582
+    Data3: 1786050742
+    Data4: 1898144150
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 12
+  Length: 16632
+--- !u!114 &7539844951425160614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/dungeonbgm 2/area
+  m_EditorClassIdentifier: 
+  Name: area
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1106345482
+    data2: 1424357671
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - dungeon_mute
+  - dungeon_calm
+  - dungeon_intense
+  - dungeon_outro
+  Exists: 1
+--- !u!114 &7646383325055417031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI/Hover
+  m_EditorClassIdentifier: 
+  Path: event:/UI/Hover
+  Guid:
+    Data1: -2023863621
+    Data2: 1326770358
+    Data3: -1924003944
+    Data4: -1979413012
+  Banks:
+  - {fileID: -8882259753221995737}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8028996182326718088
 MonoBehaviour:
   m_ObjectHideFlags: 0

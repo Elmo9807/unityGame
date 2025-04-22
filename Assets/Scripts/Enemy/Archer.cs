@@ -489,7 +489,7 @@ public class Archer : Enemy
 
             animator.SetTrigger("Attack");
             projectileAttacker.ShootProjectile(_playerTransform, "arrow");
-            //AudioManager.instance.PlayOneShot(FMODEvents.instance.ArcherArrowShoot, this.transform.position);
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.ArcherArrowShoot, this.transform.position);
             Debug.Log($"Archer shot arrow at {targetPosition}");
         }
     }

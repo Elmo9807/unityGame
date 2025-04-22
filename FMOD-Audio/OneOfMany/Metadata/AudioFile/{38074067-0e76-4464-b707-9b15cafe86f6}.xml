@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{38074067-0e76-4464-b707-9b15cafe86f6}">
+		<property name="assetPath">
+			<value>Music/dungeonalt_2full_loop.ogg</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>199.43341666666666</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{4553cde7-6a69-4e19-8962-38bd2c830f87}</destination>
+		</relationship>
+	</object>
+</objects>

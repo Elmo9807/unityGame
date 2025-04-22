@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using FMOD.Studio;
 using System;
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Player.HealthChangeHandler healthChangeHandler;
 
     // Components
+    [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -20,8 +22,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform bowFirePoint;
     // [SerializeField] private TrailRenderer dashTrail;
     [SerializeField] private ParticleSystem dashParticles;
+    [SerializeField] private Collider2D playerCollider;
+    [SerializeField] private bool invincible = false;
 
     // Attacking
+    [Header("Attacking")]
     [SerializeField] private float attackRate = 2f;
     [SerializeField] private float attackRange = 0.5f;
     [SerializeField] private float heavyAttackRate = 10f;
@@ -33,12 +38,13 @@ public class PlayerController : MonoBehaviour
     private float bowCooldown = 0.5f;
 
     // Movement
+    [Header("Movement")]
     [SerializeField] private float dashForce = 24f;
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private bool dashInvulnerability = true;
-    private float speed = 8f;
-    private float jumpingPower = 16f;
+    [SerializeField] private float speed = 8f;
+    [SerializeField] private float jumpingPower = 11f;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = 0.2f;
@@ -53,6 +59,7 @@ public class PlayerController : MonoBehaviour
     private float lastDashTime = -10f;
     private Vector2 dashDirection;
 
+    private bool isFallingThrough = false;
 
     private float horizontalInput;
     private bool jumpPressed;
@@ -101,10 +108,10 @@ public class PlayerController : MonoBehaviour
         if (arrowPrefab == null)
             arrowPrefab = Resources.Load<GameObject>("PlayerProjectile");
 
-        playerData.hasBow = true;
+        /* playerData.hasBow = true;
         playerData.hasDash = true;
         playerData.hasDoubleJump = true;
-        playerData.hasHealingPotion = true;
+        playerData.hasHealingPotion = true; */
     }
 
     // Main Update
@@ -126,6 +133,7 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleJumpBuffer();
+        HandleOneWayPlatforms();
 
         if (IsGrounded())
         {
@@ -133,7 +141,7 @@ public class PlayerController : MonoBehaviour
             doubleJump = false;
             animator.SetBool("isJumping", false);
 
-                
+
 
 
         }
@@ -201,13 +209,13 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpPressed)
         {
-            
+
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f) // jump 1
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 coyoteTimeCounter = 0f;
                 jumpBufferCounter = 0f;
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);*/
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerJump, this.transform.position);
             }
             else if (playerData.hasDoubleJump && !doubleJump) // jump 2
             {
@@ -215,22 +223,22 @@ public class PlayerController : MonoBehaviour
                 doubleJump = true;
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDoubleJump, this.transform.position);
             }
-            
+
         }
 
         if (jumpPressed)
             jumpPressed = false;
     }
 
-    void OnGUI() // Jump debugging
-    {
-        GUILayout.Label($"Grounded: {IsGrounded()}");
-        GUILayout.Label($"Double Jump: {doubleJump}");
-        GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
-        GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
-        GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
-        GUILayout.Label($"jumpPressed: {jumpPressed}");
-    }
+    //void OnGUI() // Jump debugging
+    //{
+    //    GUILayout.Label($"Grounded: {IsGrounded()}");
+    //    GUILayout.Label($"Double Jump: {doubleJump}");
+    //    GUILayout.Label($"Coyote Time: {coyoteTimeCounter}");
+    //    GUILayout.Label($"isJumping: {animator.GetBool("isJumping")}");
+    //    GUILayout.Label($"Linear Y Velocity: {rb.linearVelocity.y}");
+    //    GUILayout.Label($"jumpPressed: {jumpPressed}");
+    //}
 
     private bool IsGrounded()
     {
@@ -312,7 +320,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Attack");
-        /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);*/
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordAttack, this.transform.position);
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
@@ -322,14 +330,14 @@ public class PlayerController : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(playerData.meleeAttackDamage);
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);*/
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
                 continue;
             }
 
             Enemy enemyComponent = enemy.GetComponent<Enemy>();
             if (enemyComponent != null)
                 enemyComponent.TakeDamage(Mathf.RoundToInt(playerData.meleeAttackDamage));
-                /*AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);*/
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SwordHit, this.transform.position);
         }
     }
 
@@ -417,6 +425,42 @@ public class PlayerController : MonoBehaviour
         canDash = true;
     }
 
+    private void HandleOneWayPlatforms()
+    {
+        if (Input.GetKey(KeyCode.S) && !isFallingThrough)
+        {
+            StartCoroutine(DisableCollisionTemporarily());
+        }
+    }
+
+    IEnumerator DisableCollisionTemporarily()
+    {
+        Collider2D platformCollider = GetPlatformUnderneath();
+        if (platformCollider != null)
+        {
+            isFallingThrough = true;
+
+            Physics2D.IgnoreCollision(platformCollider, playerCollider, true);
+            yield return new WaitUntil(() => playerCollider.bounds.max.y < platformCollider.bounds.min.y ||
+            playerCollider.bounds.max.x < platformCollider.bounds.min.x ||
+            playerCollider.bounds.min.x > playerCollider.bounds.max.x);
+            yield return new WaitForSeconds(0.1f);
+            Physics2D.IgnoreCollision(platformCollider, playerCollider, false);
+
+            isFallingThrough = false;
+        }
+    }
+
+    Collider2D GetPlatformUnderneath()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 1f);
+        if (hit.collider != null && hit.collider.CompareTag("OneWayPlatform"))
+        {
+            return hit.collider;
+        }
+        return null;
+    }
+
     // Public Methods
     public int GetCurrentHealth()
     {
@@ -440,11 +484,12 @@ public class PlayerController : MonoBehaviour
 
         try
         {
-            if (isDashing && dashInvulnerability)
+            if (isDashing && dashInvulnerability || invincible)
                 return;
 
             int damageAmount = Mathf.RoundToInt(damage);
             playerData.TakeDamage(damageAmount);
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerHurt, this.transform.position);
 
 
             // Add death check here
@@ -453,6 +498,7 @@ public class PlayerController : MonoBehaviour
                 // Call game over since we can't directly access HealthTracker.Die()
                 if (GameManager.Instance != null)
                 {
+
                     GameManager.Instance.GameOver();
                 }
                 else
@@ -469,6 +515,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayerDie, this.transform.position);
+        AudioManager.instance.FadeoutAll();
         GameManager.Instance.GameOver();
     }
 
