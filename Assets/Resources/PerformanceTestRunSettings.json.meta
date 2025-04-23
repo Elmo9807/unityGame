@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: fa00aa84cf182cb4aadf20f852f7cc87
+=======
+guid: 249dd01f99383bf40b6c6f6d750d6402
+>>>>>>> origin/sfx_development
 TextScriptImporter:
   externalObjects: {}
   userData: 

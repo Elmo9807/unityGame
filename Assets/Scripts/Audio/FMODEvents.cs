@@ -41,6 +41,7 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference DragonFireballExplosion { get; private set; }
     [field: SerializeField] public EventReference DragonFlying { get; private set; }
     [field: SerializeField] public EventReference DragonIdle { get; private set; }
+    [field: SerializeField] public EventReference DragonBite { get; private set; }
     [field: Header("UI")]
     [field: SerializeField] public EventReference CoinPickup { get; private set; }
     [field: SerializeField] public EventReference Hover { get; private set; }
