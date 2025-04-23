@@ -468,6 +468,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2848308358921304245, guid: 99a1caa8511131343b85d4947fb82788, type: 3}
+      propertyPath: <DragonBite>k__BackingField.Path
+      value: event:/SFX/Enemies/Dragon/Bite
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848308358921304245, guid: 99a1caa8511131343b85d4947fb82788, type: 3}
+      propertyPath: <DragonBite>k__BackingField.Guid.Data1
+      value: 2053060417
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848308358921304245, guid: 99a1caa8511131343b85d4947fb82788, type: 3}
+      propertyPath: <DragonBite>k__BackingField.Guid.Data2
+      value: 1179590916
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848308358921304245, guid: 99a1caa8511131343b85d4947fb82788, type: 3}
+      propertyPath: <DragonBite>k__BackingField.Guid.Data3
+      value: 2022624640
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848308358921304245, guid: 99a1caa8511131343b85d4947fb82788, type: 3}
+      propertyPath: <DragonBite>k__BackingField.Guid.Data4
+      value: -409193288
+      objectReference: {fileID: 0}
     - target: {fileID: 5084430885455230226, guid: 99a1caa8511131343b85d4947fb82788, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -83,6 +83,12 @@ public class AudioManager : MonoBehaviour
 
     private void InitializeMusic(EventReference musicEventReference)
     {
+        if (musicEventInstance.isValid()) // release music instance before starting a new music instance
+        {
+            musicEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            musicEventInstance.release();
+        }
+
         musicEventInstance = CreateInstance(musicEventReference);
         musicEventInstance.start();
         eventInstances.Add(musicEventInstance);
@@ -97,6 +103,12 @@ public class AudioManager : MonoBehaviour
         {
             InitializeAmbience(FMODEvents.instance.DungeonAmbience);
             InitializeMusic(FMODEvents.instance.dungeonBgm);
+            Debug.Log("AudioManager: Starting dungeonBGM");
+        } 
+        else if (scene.name == "MainMenu"){
+            pauseUnmute();
+            InitializeMusic(FMODEvents.instance.PianoLoop);
+            Debug.Log("AudioManager: Starting piano loop");
         }
         
     }
@@ -145,6 +157,7 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+    
 
     public void SetMusicArea(MusicArea area)
     {

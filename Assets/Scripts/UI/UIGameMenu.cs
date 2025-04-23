@@ -19,6 +19,7 @@ public class UIGameMenu : MonoBehaviour
 
     private void Resume()
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Click, this.transform.position);
         GameManager.Instance.ResumeGame();
     }
 }
