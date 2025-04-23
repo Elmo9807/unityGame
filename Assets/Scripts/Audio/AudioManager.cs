@@ -98,6 +98,10 @@ public class AudioManager : MonoBehaviour
             InitializeAmbience(FMODEvents.instance.DungeonAmbience);
             InitializeMusic(FMODEvents.instance.dungeonBgm);
         }
+        if(scene.name == "MainMenu")
+        {
+            InitializeMusic(FMODEvents.instance.PianoLoop);
+        }
         
     }
 
@@ -145,6 +149,7 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+    
 
     public void SetMusicArea(MusicArea area)
     {

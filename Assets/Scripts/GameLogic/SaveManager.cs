@@ -40,4 +40,21 @@ public static class SaveManager
         }
     }
 
+    public static void DeletePlayerSave()
+    {
+        string path = Application.persistentDataPath + "/player.save";
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Save file deleted");
+        }
+        else
+        {
+            Debug.Log("No save file found to delete at " + path);
+        }
+    }
+
+
+
 }
