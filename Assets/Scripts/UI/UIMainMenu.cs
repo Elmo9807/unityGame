@@ -8,7 +8,7 @@ public class UIMainMenu : MonoBehaviour
     void Start()
     {
         _Play.onClick.AddListener(StartGame);
-        _Play.onClick.AddListener(CloseGame);
+        _Quit.onClick.AddListener(CloseGame);
     }
 
 
@@ -21,6 +21,6 @@ public class UIMainMenu : MonoBehaviour
     public void CloseGame()
     {
         Application.Quit();
-        Debug.Log("PLayer quit the game");
+        Debug.Log("Player quit the game");
     }
 }

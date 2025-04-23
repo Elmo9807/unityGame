@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
     {
         // Code moved to OnSceneLoaded(): This is to handle loading the game on a scene-by-scene basis, rather than whenever the script first starts.
         // This functionality is for DontDestroyOnLoad support
+        Debug.Log("Save file location: " + Application.persistentDataPath + "/player.save");
     }
 
     private void Update()
