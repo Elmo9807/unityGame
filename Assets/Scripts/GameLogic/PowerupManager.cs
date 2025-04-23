@@ -153,9 +153,14 @@ public class PowerupManager : MonoBehaviour
         if (playerCurrency >= price)
         {
             playerCurrency -= price;
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.Buy, this.transform.position);
             powerupFlag = true;
             UpdatePowerupUI();
             UpdateGoldText();
+        }
+        else
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.FailBuy, this.transform.position);
         }
     }
 
@@ -164,9 +169,14 @@ public class PowerupManager : MonoBehaviour
         if (playerCurrency >= price)
         {
             playerCurrency -= price;
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.Buy, this.transform.position);
             healthTracker.SetMaxHealth(healthTracker.maxHealth += 15);
             healthTracker.SetHealth(healthTracker.maxHealth);
             UpdateGoldText();
+        }
+        else
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.FailBuy, this.transform.position);
         }
     }
 
@@ -175,8 +185,13 @@ public class PowerupManager : MonoBehaviour
         if (playerCurrency >= price)
         {
             playerCurrency -= price;
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.Buy, this.transform.position);
             playerData.meleeAttackDamage += 10;
             UpdateGoldText();
+        }
+        else
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.FailBuy, this.transform.position);
         }
     }
 
@@ -185,8 +200,13 @@ public class PowerupManager : MonoBehaviour
         if (playerCurrency >= price)
         {
             playerCurrency -= price;
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.Buy, this.transform.position);
             playerData.bowAttackDamage += 5;
             UpdateGoldText();
+        }
+        else
+        {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.FailBuy, this.transform.position);
         }
     }
 

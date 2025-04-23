@@ -13,6 +13,7 @@ public class UIGameMenu : MonoBehaviour
 
     private void LoadMainMenu()
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Click, this.transform.position);
         SceneSwapManager.instance.LoadMainMenu();
     }
 

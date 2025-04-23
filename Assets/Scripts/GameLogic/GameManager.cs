@@ -393,6 +393,11 @@ public class GameManager : MonoBehaviour
 
             if (pauseScreen != null)
             {
+                if (AudioManager.instance != null)
+                {
+                    AudioManager.instance.pauseMute();
+                    AudioManager.instance.PlayOneShot(FMODEvents.instance.OpenMenu, this.transform.position);
+                }
                 pauseScreen.SetActive(true);
             }
             else
@@ -400,10 +405,7 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("Pause screen UI reference is missing!");
             }
 
-            if (AudioManager.instance != null)
-            {
-                AudioManager.instance.pauseMute();
-            }
+            
 
             Debug.Log("Game paused");
         }
@@ -424,6 +426,7 @@ public class GameManager : MonoBehaviour
             if (AudioManager.instance != null)
             {
                 AudioManager.instance.pauseUnmute();
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.CloseMenu, this.transform.position);
             }
 
             Debug.Log("Game Resumed");
@@ -558,6 +561,7 @@ public class GameManager : MonoBehaviour
     {
         if (shopPanel != null)
         {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.OpenShop, this.transform.position);
             shopPanel.SetActive(true);
         }
         else
