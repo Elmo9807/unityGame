@@ -42,10 +42,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638809683029635531
+  lastModified: 638809765931301693
   FileSizes:
   - Name: Desktop
-    Value: 81568
+    Value: 81792
   Exists: 1
 --- !u!114 &-7638121639384777911
 MonoBehaviour:
@@ -197,10 +197,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638809586623086783
+  lastModified: 638809779139482026
   FileSizes:
   - Name: Desktop
-    Value: 662688
+    Value: 671552
   Exists: 1
 --- !u!114 &-5822007304828555226
 MonoBehaviour:
@@ -755,12 +755,13 @@ MonoBehaviour:
   - {fileID: -2832435061157118586}
   - {fileID: -7638121639384777911}
   - {fileID: 2217659213406816938}
+  - {fileID: 3783222244398395675}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6533021381237429663}
   StringsBanks:
   - {fileID: 795992159213790067}
-  cacheTime: 638809725828428542
+  cacheTime: 638809779139482026
   cacheVersion: 131846
 --- !u!114 &38474895002818570
 MonoBehaviour:
@@ -885,10 +886,10 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638809622102491262
+  lastModified: 638809779138856448
   FileSizes:
   - Name: Desktop
-    Value: 3238
+    Value: 3274
   Exists: 1
 --- !u!114 &812511785747198340
 MonoBehaviour:
@@ -1091,7 +1092,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638809586581657195
+  lastModified: 638809765885124630
   FileSizes:
   - Name: Desktop
     Value: 1365088
@@ -1118,6 +1119,33 @@ MonoBehaviour:
   - {fileID: -8882259753221995737}
   IsStream: 0
   Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &3783222244398395675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemies/Dragon/Bite
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemies/Dragon/Bite
+  Guid:
+    Data1: 2053060417
+    Data2: 1179590916
+    Data3: 2022624640
+    Data4: -409193288
+  Banks:
+  - {fileID: -6104483362754535016}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -1165,7 +1193,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638809725828428542
+  lastModified: 638809765925941993
   FileSizes:
   - Name: Desktop
     Value: 7375616
@@ -1212,7 +1240,7 @@ MonoBehaviour:
   Path: FMOD-Audio/OneOfMany/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638809622102468359
+  lastModified: 638809779138846409
   FileSizes:
   - Name: Desktop
     Value: 3190

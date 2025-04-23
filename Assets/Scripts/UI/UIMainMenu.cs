@@ -21,9 +21,6 @@ public class UIMainMenu : MonoBehaviour
 
         AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayGame, this.transform.position);
 
-
-        //yield return new WaitForSeconds(0.5f);
-
         SceneSwapManager.instance.LoadGame();
     }
 
@@ -34,23 +31,10 @@ public class UIMainMenu : MonoBehaviour
 
         AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayGame, this.transform.position);
 
-
-        //yield return new WaitForSeconds(0.5f);
-
         SceneSwapManager.instance.LoadGame();
     }
 
-    //private IEnumerator StartGameWithFade() // to allow music to fade away
-    //{
-    //    AudioManager.instance.FadeoutAll();
 
-    //    AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayGame, this.transform.position);
-
-        
-    //    yield return new WaitForSeconds(0.5f);
-
-    //    SceneSwapManager.instance.LoadGame();
-    //}
 
     public void CloseGame()
     {

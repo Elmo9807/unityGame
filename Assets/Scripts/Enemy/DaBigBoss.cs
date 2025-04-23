@@ -681,7 +681,7 @@ public class DaBigBoss : Enemy
         AudioManager.instance.PlayOneShot(FMODEvents.instance.DragonFireballThrow, this.transform.position);
     }
 
-    private void FireballAnimationEvent()
+    private void FireballAnimationEvent() // called from animation event
     {
         if (isMega)
         {
@@ -699,7 +699,7 @@ public class DaBigBoss : Enemy
         }
 
     }
-    private void PerformBiteAttack()
+    private void PerformBiteAttack() 
     {
         if (!IsPlayerValid) return;
 
@@ -708,11 +708,13 @@ public class DaBigBoss : Enemy
 
         if (animator != null)
             animator.SetTrigger("Bite");
+    }
 
-
+    private void BiteDamage()
+    {
         if (currentPlayerDistance <= biteRange)
         {
-
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.DragonBite, this.transform.position);
             DamagePlayer(biteDamage);
 
 

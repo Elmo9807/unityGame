@@ -13,11 +13,13 @@ public class UIGameOverMenu : MonoBehaviour
 
     private void LoadMainMenu()
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Click, this.transform.position);
         SceneSwapManager.instance.LoadMainMenu();
     }
 
     private void LoadGame()
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.PlayGame, this.transform.position);
         SceneSwapManager.instance.LoadGame();
     }
 }

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      UL_CGD_Stroke5_Mono_0: 7268345064392205210
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
