@@ -43,6 +43,15 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference DragonIdle { get; private set; }
     [field: Header("UI")]
     [field: SerializeField] public EventReference CoinPickup { get; private set; }
+    [field: SerializeField] public EventReference Hover { get; private set; }
+    [field: SerializeField] public EventReference Click { get; private set; }
+    [field: SerializeField] public EventReference OpenMenu { get; private set; }
+    [field: SerializeField] public EventReference CloseMenu { get; private set; }
+    [field: SerializeField] public EventReference PlayGame { get; private set; }
+    [field: SerializeField] public EventReference FailBuy { get; private set; }
+    [field: SerializeField] public EventReference Buy { get; private set; }
+    [field: SerializeField] public EventReference CloseShop { get; private set; }
+    [field: SerializeField] public EventReference OpenShop { get; private set; }
 
     public static FMODEvents instance { get; private set; }
 

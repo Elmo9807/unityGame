@@ -304,3 +304,66 @@ MonoBehaviour:
       Data3: 1950342579
       Data4: -2097310511
     Path: event:/SFX/Character/Misc/CoinPickup 2
+  <Hover>k__BackingField:
+    Guid:
+      Data1: -2023863621
+      Data2: 1326770358
+      Data3: -1924003944
+      Data4: -1979413012
+    Path: event:/UI/Hover
+  <Click>k__BackingField:
+    Guid:
+      Data1: -379873443
+      Data2: 1309604722
+      Data3: -1754117712
+      Data4: -1309125173
+    Path: event:/UI/Click
+  <OpenMenu>k__BackingField:
+    Guid:
+      Data1: 1311274323
+      Data2: 1282982220
+      Data3: 1969096835
+      Data4: -617346334
+    Path: event:/UI/OpenMenu
+  <CloseMenu>k__BackingField:
+    Guid:
+      Data1: -106209064
+      Data2: 1256647162
+      Data3: 1805224374
+      Data4: 2119987885
+    Path: event:/UI/CloseMenu
+  <PlayGame>k__BackingField:
+    Guid:
+      Data1: 2546312
+      Data2: 1199999176
+      Data3: -722374775
+      Data4: -2084750322
+    Path: event:/UI/PlayGame
+  <FailBuy>k__BackingField:
+    Guid:
+      Data1: -312189418
+      Data2: 1271876001
+      Data3: -1177607768
+      Data4: -275176282
+    Path: event:/UI/FailBuy
+  <Buy>k__BackingField:
+    Guid:
+      Data1: -1565489041
+      Data2: 1250376008
+      Data3: -1586590308
+      Data4: -2136898455
+    Path: event:/UI/Buy
+  <CloseShop>k__BackingField:
+    Guid:
+      Data1: 1024778060
+      Data2: 1202155530
+      Data3: 1739146924
+      Data4: -1910873943
+    Path: event:/UI/CloseShop
+  <OpenShop>k__BackingField:
+    Guid:
+      Data1: -1074051860
+      Data2: 1178338361
+      Data3: -1944480843
+      Data4: 167034222
+    Path: event:/UI/OpenShop
