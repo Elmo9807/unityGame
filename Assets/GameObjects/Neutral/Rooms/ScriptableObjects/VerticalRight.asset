@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f4982380f5cae45887248b5ccd7496, type: 3}
+  m_Name: VerticalRight
+  m_EditorClassIdentifier: 
+  roomPrefab: {fileID: 4060972933801193960, guid: 5ee786b5439580c4398404098a306b72, type: 3}
+  hasTopExit: 1
+  hasBottomExit: 1
+  hasLeftExit: 0
+  hasRightExit: 1
