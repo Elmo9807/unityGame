@@ -20,6 +20,8 @@
 			<destination>{1fc7720e-f959-4719-9e7a-e4f1939c6630}</destination>
 			<destination>{69d13436-ce4d-4648-8c1e-a36b7a3d4c58}</destination>
 			<destination>{39242d31-e99d-41ac-bd17-34554928084e}</destination>
+			<destination>{832b3cd4-7c4a-48af-9a75-8ea5df4d6c6e}</destination>
+			<destination>{2279b079-afe6-4f7c-be45-223815a4271e}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{590e22b8-bd68-45cd-97a7-de466aafe1fa}" />
@@ -46,6 +48,16 @@
 	<object class="LimiterEffect" id="{39242d31-e99d-41ac-bd17-34554928084e}">
 		<property name="ceiling">
 			<value>-1.30000007</value>
+		</property>
+	</object>
+	<object class="ThreeEQEffect" id="{832b3cd4-7c4a-48af-9a75-8ea5df4d6c6e}">
+		<property name="lowGain">
+			<value>4</value>
+		</property>
+	</object>
+	<object class="GainEffect" id="{2279b079-afe6-4f7c-be45-223815a4271e}">
+		<property name="gain">
+			<value>2</value>
 		</property>
 	</object>
 </objects>

@@ -6806,8 +6806,8 @@ MonoBehaviour:
   healingPotionIcon: {fileID: 0}
   playerCurrency: 0
   currencyText: {fileID: 1862150514}
-  bowPrice: 50
-  dashPrice: 75
+  bowPrice: 75
+  dashPrice: 50
   doubleJumpPrice: 120
   healingPotionPrice: 30
 --- !u!1 &1537343676

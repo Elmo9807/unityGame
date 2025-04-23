@@ -24,7 +24,7 @@ public class Coins : MonoBehaviour
 
             if (health != null)
             {
-                health.Heal(10);
+                health.Heal(5);
             }
             else
             {
